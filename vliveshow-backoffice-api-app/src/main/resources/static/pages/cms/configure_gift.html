@@ -1,0 +1,238 @@
+<div class="row-fluid" ng-controller="giftCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin">
+            <div class="box-header">
+                <h4>上架礼物列表<a href="javascript:;" class="btn ml20"  ng-click="giftAddAndEdit('#addGiftModel', false)">添加礼物</a> </h4>
+            </div>
+            <div class="box-content js-page">   <!--no-title-->
+                <div ng-hide="ableList.allList.length != 0">目前还没有上架的礼物哦~</div>
+                <ul ng-hide="ableList.allList.length == 0" class="gift_list clearfix js-page-list">
+                    <li class="span2" ng-repeat="item in ableList.currentList">
+                        <p>
+                            <img src="../../assets/images/gift_default_bg.jpg"/>
+                            <img ng-src="{{item.thumb}}"/>
+                            <span>
+                                <i title="{{item.attrs[0].name}}">{{item.attrs[0].name}}</i>
+                                <i title="{{item.attrs[1].name}}">{{item.attrs[1].name}}<em style="font-style: normal; float: right;">{{item.order}}</em></i>
+                                <i title="{{item.name}}">{{item.name}}</i>
+                            </span>
+                        </p>
+                        <p class="clearfix text-center">
+                            <a href="javascript:;" class="ctrl_status span4 hover_line text-success" ng-click="giftAddAndEdit('#addGiftModel',false, item.id, item.order, item.resource, item.gifResource)">编辑</a>
+                            <a href="javascript:;" class="ctrl_status span4 hover_line text-primary" ng-click="giftTips('#CtrlModel',item.id,'下架')">下架</a>
+                            <a href="javascript:;" class="ctrl_status span4 hover_line text-error" ng-click="giftTips('#CtrlModel',item.id,'删除')">删除</a>
+                        </p>
+                    </li>
+                </ul>
+                <!-- pagination - start -->
+                <div ng-hide="ableList.allList.length == 0" class="page_nav clearfix" style="width: 85%; margin-left: 50px;">
+                    <div page items-source="ableList.allList" page-size="ableList.pageSize" current-page="ableList.currentPage" current-list="ableList.currentList"></div>
+                </div>
+                <!-- pagination - end -->
+
+            </div>
+
+            <div class="box-header">
+                <h4>下架礼物列表</h4>
+            </div>
+            <div class="box-content js-page">   <!--no-title-->
+                <div ng-hide="diaAbledList.allList.length != 0">目前还没有下架的礼物哦~</div>
+                <ul ng-hide="diaAbledList.allList.length == 0" class="gift_list clearfix js-page-list">
+                    <li class="span2" ng-repeat="item in diaAbledList.currentList">
+                        <p>
+                            <img src="../../assets/images/gift_default_bg.jpg"/>
+                            <img ng-src="{{item.thumb}}"/>
+                            <span>
+                                <i title="{{item.attrs[0].name}}">{{item.attrs[0].name}}</i>
+                                <i title="{{item.attrs[1].name}}">{{item.attrs[1].name}}</i>
+                                <i title="{{item.name}}">{{item.name}}</i>
+                            </span>
+                        </p>
+                        <p class="clearfix text-center">
+                            <a href="javascript:;" class="ctrl_status span4 hover_line text-success" ng-click="giftAddAndEdit('#addGiftModel',true, item.id, item.order, item.resource, item.gifResource)">编辑</a>
+                            <a href="javascript:;" class="ctrl_status span4 hover_line text-primary" ng-click="giftTips('#CtrlModel',item.id,'上架')">上架</a>
+                            <a href="javascript:;" class="ctrl_status span4 hover_line text-error" ng-click="giftTips('#CtrlModel',item.id,'删除')">删除</a>
+                        </p>
+                    </li>
+                </ul>
+                <!-- pagination - start -->
+                <div ng-hide="diaAbledList.allList.length == 0" class="page_nav clearfix" style="width: 85%; margin-left: 50px;">
+                    <div page items-source="diaAbledList.allList" page-size="diaAbledList.pageSize" current-page="diaAbledList.currentPage" current-list="diaAbledList.currentList"></div>
+                </div>
+                <!-- pagination - end -->
+
+            </div>
+        </div>
+    </div>
+    <!--删除和上下架 - 摸态框-->
+    <div id="CtrlModel" class="modal hide modal-mini" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>提示</h3>
+        </div>
+        <div class="modal-body">
+            <p>您确定{{currentCtrl}}该表情吗？</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary" ng-click="giftCtrl()">确定</button>
+        </div>
+    </div>
+    <!--删除和上下架 - 摸态框-->
+    <!--预览 - 摸态框-->
+    <div id="viewModel" class="modal hide modal-mini" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>预览</h3>
+        </div>
+        <div class="modal-body">
+            <p class="text-center">
+                <img ng-src="{{currentGiftSrc}}"/>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">关闭</button>
+        </div>
+    </div>
+    <!--预览 - 摸态框-->
+
+    <!--添加礼物 - 摸态框-->
+    <div id="addGiftModel" class="modal hide modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>添加礼物</h3>
+        </div>
+        <form class="mb0" id="giftAdd" name="giftAdd" ng-submit="giftSave('#addGiftModel',giftAdd.$valid)">
+            <input type="hidden"/>
+            <div class="modal-body">
+                <div class="row-fluid clearfix">
+                        <div class="span12 clearfix">
+                            <label class="pull-left"><span><em class="text-error pr10">*</em>礼物形态：</span></label>
+                            <label class="pull-left"><input type="radio" name="giftType" value="0" ng-checked="staticGiftType" ng-click="changeNotice('staticGiftType','animateGiftType')"/>静态礼物</label>
+                            <label class="pull-left ml10"><input type="radio" name="giftType" value="1" ng-checked="animateGiftType" ng-click="changeNotice('animateGiftType','staticGiftType')"/>动态礼物</label>
+                        </div>
+                        <div class="span12 ml0 mt20 clearfix">
+                            <div class="clearfix mb10">
+                                <label class="pull-left">
+                                    <span class="pull-left lh30 text-right"><em class="text-error pr10">*</em>中文简体：</span>
+                                    <input type="text" required name="cnName" ng-model="giftModelData.attrs[0].name"/>
+                                    <!--<p ng-show="isSubmit && giftAdd.cnName.$invalid" class="text-error" style="font-size:12px; padding-left: 90px;">礼物名称不能为空</p>-->
+                                </label>
+                                <label class="pull-left ml20">
+                                    <span class="pull-left lh30 text-right"><em class="text-error pr10">*</em>简体量词：</span>
+                                    <input type="text" required name="cnUnit" class="min_txt" ng-model="giftModelData.attrs[0].unit"/>
+                                    <!--<p ng-show="isSubmit && giftAdd.cnUnit.$invalid" class="text-error" style="font-size:12px; padding-left: 90px;">量词不能为空</p>-->
+                                </label>
+                            </div>
+                            <div class="clearfix mb10">
+                                <label class="pull-left">
+                                    <span class="pull-left lh30 text-right"><em class="text-error pr10">*</em>中文繁体：</span>
+                                    <input type="text" required name="twName" ng-model="giftModelData.attrs[1].name"/>
+                                    <!--<p ng-show="isSubmit && giftAdd.twName.$invalid" class="text-error" style="font-size:12px; padding-left: 90px;">礼物名称不能为空</p>-->
+                                </label>
+                                <label class="pull-left ml20">
+                                    <span class="pull-left lh30 text-right"><em class="text-error pr10">*</em>繁体量词：</span>
+                                    <input type="text" required name="twUnit" class="min_txt" ng-model="giftModelData.attrs[1].unit"/>
+                                    <!--<p ng-show="isSubmit && giftAdd.twUnit.$invalid" class="text-error" style="font-size:12px; padding-left: 90px;">量词不能为空</p>-->
+                                </label>
+                            </div>
+                            <div class="clearfix mb10">
+                                <label class="pull-left">
+                                    <span class="pull-left lh30 text-right"><em class="text-error pr10">*</em>英文：</span>
+                                    <input type="text" required name="enName" ng-disabled="isEditGift" ng-model="giftModelData.name"/>
+                                    <!--<p ng-show="isSubmit && giftAdd.enName.$invalid" class="text-error" style="font-size:12px; padding-left: 90px;">礼物名称不能为空</p>-->
+                                </label>
+                                <label class="pull-left ml20">
+                                    <span class="pull-left lh30 text-right"><em class="text-error pr10">*</em>英文量词：</span>
+                                    <input type="text" required name="enUnit" class="min_txt" ng-model="giftModelData.attrs[2].unit"/>
+                                </label>
+                                <label class="pull-left ml20 text-error lh30" ng-show="isEditGift">如需更改英文名称，请先删除然后添加礼物！</label>
+                            </div>
+                            <div class="clearfix mb10">
+                                <label class="pull-left">
+                                    <span class="pull-left lh30 text-right"><em class="text-error pr10">*</em>价格：</span>
+                                    <input type="tel" required name="diamond" class="min_txt mr10" ng-model="giftModelData.diamond" value="0" ng-pattern="/^([1-9]\d*(\.\d*[1-9])?)|(0(\.\d*[1-9])?)$/"/>V钻
+                                    <span ng-show="isSubmit && giftAdd.diamond.$invalid" class="text-error pl10">请输入0以及0以上的整数或小数</span>
+                                </label>
+                                <!--<label class="pull-left" ng-if="isEditGift" style="margin-left: 113px">-->
+                                <label class="pull-left" style="margin-left: 113px">
+                                    <span class="pull-left lh30 text-right"><em class="text-error pr10">*</em>Order：</span>
+                                    <input type="tel" required name="order" class="min_txt mr10" ng-model="giftModelData.order" />
+                                </label>
+                            </div>
+                        </div>
+                        <div class="span12 ml0 clearfix">
+                            <div class="span6 ml0">
+                                <label>
+                                    <span><em class="text-error pr10">*</em>静态图：</span>
+                                    <a href="javascript:;" class="btn" ngf-select="upload($file, 'staticImg', ['.png'])">上传文件</a>
+                                    <span class="pl10 text-error">注：请上传.png格式的图片</span>
+                                </label>
+                            </div>
+                            <div class="span6" style="position: relative;" ng-hide="staticGiftType">
+                                <label>
+                                    <span><em class="text-error pr10">*</em>动画帧图：</span>
+                                    <input type="hidden" name="aniResource" ng-value="animateImgSrc" >
+                                    <a href="javascript:;" class="btn" ng-disabled="currentCtrl=='编辑' && $scope.currentGiftId!='' && animateImgName!=''" ngf-select="upload($file, 'animateImg',['.zip'])">上传文件</a>
+                                    <span class="pl10">{{animateImgName}}</span>
+                                </label>
+                                <label class="text-error">注：请上传.zip格式的文件</label>
+
+                                <br />
+                                <!-- GIF类型动态礼物 -->
+                                <label>
+                                    <span>GIF图片：</span>
+                                    <input type="hidden" name="aniGifResource" ng-value="animateGifSrc" >
+                                    <a href="javascript:;" class="btn" ng-disabled="currentCtrl=='编辑' && $scope.currentGiftId!='' && animateGifName!=''" ngf-select="upload($file, 'animateGif',['.gif'])">上传文件</a>
+                                    <span class="pl10">{{animateGifName}}</span>
+                                </label>
+                                <label class="text-error">注：请上传.gif格式的文件</label>
+
+                            </div>
+                        </div>
+                        <div class="span12 ml0 clearfix">
+                            <div class="span6 ml0">
+                                <div class="mt20 text-center table-cell"  style=" margin-left: 90px; border: 1px solid #ddd; height: 180px;">
+                                    <img ng-show="staticImgSrc != ''" ng-src="{{staticImgSrc}}"/>
+                                    <input type="hidden" required name="staticImg" ng-value="staticImgSrc">
+                                </div>
+                            </div>
+                            <div class="span6">
+                                <div class="mt20">
+                                    <p class="text-muted">参数配置</p>
+                                    <div style="border: 1px solid #ddd; padding: 10px; height: 130px;">
+                                        <label>
+                                            <span><em class="text-error pr10">*</em>动画：</span>
+                                            <input type="tel" required name="playOnceTime" class="min_txt mr10" ng-model="giftModelData.playOnceTime" ng-pattern="/^([1-9]\d*(\.\d*[1-9])?)|(0(\.\d*[1-9])?)$/"/>s
+                                            <span ng-show="isSubmit && giftAdd.playOnceTime.$invalid" class="text-error pl10">请输入0及以上的数字</span>
+                                        </label>
+                                        <label>
+                                            <span><em class="text-error pr10">*</em>循环次数：</span>
+                                            <input type="tel" required name="repeatTimes" class="min_txt mr10" ng-model="giftModelData.repeatTimes" ng-pattern="/^[1-9]\d*$/"/>次
+                                            <span ng-show="isSubmit && giftAdd.repeatTimes.$invalid" class="text-error pl10">请输入1及以上的整数</span>
+                                        </label>
+                                        <label>
+                                            <span><em class="text-error pr10">*</em>宽高比例：</span>
+                                            <input type="tel" required name="aspectRatio" class="min_txt mr10" ng-model="giftModelData.aspectRatio" ng-pattern="/^([1-9]\d*(\.\d*[1-9])?)|(0(\.\d*[1-9])?)$/"/>
+                                            <span ng-show="isSubmit && giftAdd.aspectRatio.$invalid" class="text-error pl10">请输入0及以上的数字</span>
+                                        </label>
+                                        <!--<p class="clearfix" ng-hide="animateGift">-->
+                                        <!--<span class="pull-left">允许连发：</span>-->
+                                        <!--<label class="pull-left ml10"><input type="radio" name="loop">允许</label>-->
+                                        <!--<label class="pull-left ml10"><input type="radio" name="loop">不允许</label>-->
+                                        <!--</p>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn" data-dismiss="modal" aria-hidden="true" value="取消">
+                <input type="submit" class="btn btn-primary" ng-click="isSubmit=true" value="保存">
+            </div>
+        </form>
+    </div>
+    <!--添加礼物 - 摸态框-->
+</div>
+

@@ -1,0 +1,12 @@
+<div class="row-fluid" ng-controller="moreInfoCtrl">
+    <div class="tabbable more_ctrl">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="" data-toggle="tab" ng-click="blockTab('banner', 'cms')">Banner管理</a></li>
+            <li class=""><a href="" data-toggle="tab" ng-click="blockTab('carouselBanner', 'cms')">轮播Banner</a></li>
+        </ul>
+        <div class="tab-content" id="tabPage">
+            <div ng-include src="tabTemplate"  ng-init="tabTemplate = 'pages/cms/tab_banner.html'"></div>
+        </div>
+    </div>
+
+</div>

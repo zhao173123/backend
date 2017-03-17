@@ -1,0 +1,39 @@
+<div class="row-fluid" ng-controller="moreInfoCtrl">
+    <div class="tabbable more_ctrl">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="" data-toggle="tab" ng-click="blockTab('userinfo', 'user')">用户资料</a></li>
+            <li class=""><a href="" data-toggle="tab" ng-click="blockTab('socialinfo', 'user')">社交信息</a></li>
+            <li class=""><a href="" data-toggle="tab" ng-click="blockTab('financeinfo', 'user')">财务信息</a></li>
+            <li class=""><a href="" data-toggle="tab" ng-click="blockTab('powersinfo', 'user')">权限控制</a></li>
+        </ul>
+        <div class="tab-content" id="tabPage">
+            <div ng-include src="tabTemplate"  ng-init="tabTemplate = 'pages/user/tab_userinfo.html'"></div>
+
+            <!--&lt;!&ndash; 用户资料 - start &ndash;&gt;-->
+            <!--<div class="tab-pane active" id="info">-->
+                <!--<div ng-include="'tab_userinfo.html'"></div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash; 用户资料 - end &ndash;&gt;-->
+
+            <!--&lt;!&ndash; 社交信息 - start &ndash;&gt;-->
+            <!--<div class="tab-pane" id="social">-->
+                <!--<div ng-include="'tab_socialinfo.html'"></div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash; 社交信息 - end &ndash;&gt;-->
+
+            <!--&lt;!&ndash; 财务信息 - start &ndash;&gt;-->
+            <!--<div class="tab-pane" id="finance">-->
+                <!--<div ng-include="'tab_financeinfo.html'"></div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash; 财务信息 - start &ndash;&gt;-->
+
+            <!--&lt;!&ndash; 权限控制 - start &ndash;&gt;-->
+            <!--<div class="tab-pane" id="powers">-->
+                <!--<div ng-include="'tab_powersinfo.html'"></div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash; 权限控制 - start &ndash;&gt;-->
+
+        </div>
+    </div>
+
+</div>

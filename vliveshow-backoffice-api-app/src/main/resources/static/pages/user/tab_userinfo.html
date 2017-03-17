@@ -1,0 +1,236 @@
+<!-- 用户资料 - start -->
+<!-- <div class="tab-pane active" id="info"> -->
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="box user_info">
+                <div class="box-header">
+                    <div class="title">用户资料</div>
+                </div>
+                <div class="box-content" ng-controller="userInfoCtrl">
+                    <form class="form form-horizontal clearfix" style="margin-bottom: 0;" method="post" action="#" accept-charset="UTF-8">
+                        <input name="authenticity_token" type="hidden">
+                        <div class="user_info_up">
+                            <div class="form-group span12 clearfix">
+                                <div class="span5">
+                                    <label class="span3 control-label">用户头像：</label>
+                                    <div class="span9">
+                                        <a class="user_head" href="javascript:;">
+                                            <img alt="Mila Kunis" height="60" ng-src="{{userInfo.avatars}}" src="../../assets/images/avatar.jpg" width="60"/>
+                                            <input type="file" ng-model="head"/>
+                                        </a>
+                                        <!--<a href="javascript:;" class="text-primary hover_line pl20" ng-click="openEdit()">资料编辑</a>-->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">UserID：</label>
+                                <div class="span9 pt5">{{userInfo.userId}}</div>
+                            </div>
+
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">性别：</label>
+                                <div class="span9 clearfix">
+                                    <div class="pull-left">
+                                        <input type="text" disabled ng-model="userInfo.gender" class="uneditable-input input-small"/>
+                                        <!--<i class="icon-edit m_action pl10" ng-hide="editHide"></i>-->
+                                    </div>
+                                    <div class="pull-left pl20" ng-hide="editHide">
+                                        <label class="radio inline">
+                                            <input type="radio" name="sex" value="男" ng-model="sex">男
+                                        </label>
+                                        <label class="radio inline">
+                                            <input type="radio" name="sex" value="女" ng-model="sex">女
+                                        </label>
+                                        <label class="radio inline">
+                                            <input type="radio" name="sex" value="未知" ng-model="sex">未知
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">LoginName：</label>
+                                <div class="span9 pt5">{{userInfo.loginName}}</div>
+                            </div>
+
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">年龄：</label>
+                                <div class="span9 clearfix">
+                                    <div class="pull-left">
+                                        <!--<span class="uneditable-input input-small" ng-show="editHide">{{age}}</span>-->
+                                        <input type="text" ng-disabled="editHide" ng-model="userInfo.age" class="uneditable-input input-small"/>
+                                        <!--<i class="icon-edit m_action pl10" ng-hide="editHide"></i>-->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">Password：</label>
+                                <div class="span9 clearfix">
+                                    <div class="pull-left">
+                                        <input type="password" disabled value="00000000" class="uneditable-input input-small" ng-show="editHide"/>
+                                        <input type="password" value="00000000" class="input-small" ng-hide="editHide"/>
+                                        <!--<i class="icon-edit m_action pl10" ng-hide="editHide"></i>-->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">地区：</label>
+                                <div class="span9 clearfix">
+                                    <div class="pull-left">
+                                        <input type="text" disabled class="uneditable-input input-small" ng-model="userInfo.area[0]" ng-show="editHide">
+                                        <input type="text" disabled class="uneditable-input input-small" ng-model="userInfo.area[1]" ng-show="editHide">
+                                        <input type="text" disabled class="uneditable-input input-small" ng-model="userInfo.area[2]" ng-show="editHide">
+                                        <input type="text" disabled class="uneditable-input input-large" ng-model="userInfo.area[3]" ng-show="editHide">
+                                        <select class="input-small" ng-model="userInfo.area[0]" ng-hide="editHide">
+                                            <option>1</option>
+                                            <option>2</option>
+                                        </select>
+                                        <select class="input-small" ng-model="userInfo.area[1]" ng-hide="editHide">
+                                            <option>1</option>
+                                            <option>2</option>
+                                        </select>
+                                        <select class="input-small" ng-model="userInfo.area[2]" ng-hide="editHide">
+                                            <option>1</option>
+                                            <option>2</option>
+                                        </select>
+                                        <input type="text" ng-model="userInfo.area[3]" class="input-large" ng-hide="editHide"/>
+                                        <!--<i class="icon-edit m_action pl10" ng-hide="editHide"></i>-->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">NickName：</label>
+                                <div class="span9 clearfix">
+                                    <div class="pull-left">
+                                        <!--<span class="uneditable-input input-small" ng-show="editHide">{{nickName}}</span>-->
+                                        <input type="text" ng-disabled="editHide" ng-model="userInfo.nickName" class="uneditable-input input-small"/>
+                                        <!--<i class="icon-edit m_action pl10" ng-hide="editHide"></i>-->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">家乡：</label>
+                                <div class="span9 clearfix">
+                                    <div class="pull-left">
+                                        <input type="text" disabled class="uneditable-input input-small" ng-model="userInfo.hometown[0]" ng-show="editHide">
+                                        <input type="text" disabled class="uneditable-input input-small" ng-model="userInfo.hometown[1]" ng-show="editHide">
+                                        <input type="text" disabled class="uneditable-input input-small" ng-model="userInfo.hometown[2]" ng-show="editHide">
+                                        <input type="text" disabled class="uneditable-input input-large" ng-model="userInfo.hometown[3]" ng-show="editHide">
+                                        <select class="input-small" ng-model="userInfo.hometown[0]" ng-hide="editHide">
+                                            <option>1</option>
+                                            <option>2</option>
+                                        </select>
+                                        <select class="input-small" ng-model="userInfo.hometown[1]" ng-hide="editHide">
+                                            <option>1</option>
+                                            <option>2</option>
+                                        </select>
+                                        <select class="input-small" ng-model="userInfo.hometown[2]" ng-hide="editHide">
+                                            <option>1</option>
+                                            <option>2</option>
+                                        </select>
+                                        <input type="text" ng-model="userInfo.hometown[3]" class="input-large" ng-hide="editHide"/>
+                                        <!--<i class="icon-edit m_action pl10" ng-hide="editHide"></i>-->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">手机号：</label>
+                                <div class="span9 clearfix">
+                                    <div class="pull-left">
+                                        <!--<span class="uneditable-input input-small" ng-show="editHide">{{cellPhone}}</span>-->
+                                        <input type="tel" ng-disabled="editHide" ng-model="userInfo.mobilePhone" class="uneditable-input input-small"/>
+                                        <!--<i class="icon-edit m_action pl10" ng-hide="editHide"></i>-->
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">职业：</label>
+                                <div class="span9 clearfix">
+                                    <div class="pull-left">
+                                        <!--<span class="uneditable-input input-small" ng-show="editHide">{{job}}</span>-->
+                                        <input type="text" ng-disabled="editHide" ng-model="userInfo.job" class="uneditable-input input-small"/>
+                                        <!--<i class="icon-edit m_action pl10" ng-hide="editHide"></i>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="hr-normal span12">
+
+                        <div class="user_info_down">
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">第三方平台：</label>
+                                <div class="span9 pt5">{{userInfo.thirdparty_platform}}</div>
+                            </div>
+
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">身份证号码：</label>
+                                <div class="span9 clearfix">
+                                    <div class="pull-left">
+                                        <!--<span class="uneditable-input input-small" ng-show="editHide">{{idCard}}</span>-->
+                                        <input type="tel" ng-disabled="editHide" ng-model="userInfo.idCard" class="uneditable-input input-small"/>
+                                        <!--<i class="icon-edit m_action pl10" ng-hide="editHide"></i>-->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">TokenID/UID：</label>
+                                <div class="span9 pt5">{{userInfo.tokenId}}</div>
+                            </div>
+
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">等级：</label>
+                                <div class="span9 clearfix">
+                                    <div class="pull-left">
+                                        <!--<span class="uneditable-input input-small" ng-show="editHide">{{rank}}</span>-->
+                                        <input type="tel" ng-disabled="editHide" ng-model="userInfo.level" class="uneditable-input input-small"/>
+                                        <!--<i class="icon-edit m_action pl10" ng-hide="editHide"></i>-->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">第三方昵称：</label>
+                                <div class="span9 pt5">{{userInfo.thirdparty_nikeName}}</div>
+                            </div>
+
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">经验：</label>
+                                <div class="span9 clearfix">
+                                    <div class="pull-left">
+                                        <!--<span class="uneditable-input input-small" ng-show="editHide">{{experience}}</span>-->
+                                        <input type="tel" ng-disabled="editHide" ng-model="userInfo.experience" class="uneditable-input input-small"/>
+                                        <!--<i class="icon-edit m_action pl10" ng-hide="editHide"></i>-->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group span5 pull-left clearfix">
+                                <label class="span3 control-label">第三方认证信息：</label>
+                                <div class="span9 pt5">{{userInfo.thirdparty_valid}}</div>
+                            </div>
+                        </div>
+                        <!--<div class="form_action span12 ml0 clearfix">-->
+                            <!--<div class="span12">-->
+                                <!--<div class="row-fluid text-center">-->
+                                    <!--<a href="javascript:;" class="btn btn-inverse" type="">保存</a>-->
+                                    <!--<a href="javascript:;" class="btn btn-inverse" type="">放弃</a>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- </div> -->
+<!-- 用户资料 - end -->

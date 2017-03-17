@@ -1,0 +1,102 @@
+<div class="row-fluid" ng-controller="bookingCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin">
+            <div class="box-header">
+                <h4>创建订阅（套课统一封面）</h4>
+            </div>
+            <div class="box-content filter_box clearfix">
+                <form>
+                    <div class="tab_contractinfo booking">
+                        <ul class="span12 clearfix">
+                            <li class="span4">
+                                <label>老师ID：</label>
+                                <input type="text" class="span12" ng-model="course.teacherId" value="" placeholder="请输入老师ID"/>
+                            </li>
+                            <li class="span4">
+                                <label>老师姓名：</label>
+                                <input type="text" class="span12" ng-model="course.teacherName" value="" placeholder="请输入老师姓名"/>
+                            </li>
+                            <li class="span4">
+                                <label>课程分类：</label>
+                                <select class="span12 ml10" name="courseType" ng-model="course.courseType" ng-options="t.id as t.value for t in courseTypeList">
+                                    <option value="">请选择类型</option>
+                                </select>
+                            </li>
+                            <li class="span12">
+                                <label>套课标题：</label>
+                                <input type="text" class="span12" ng-model="course.courseName" value="" placeholder="请输入套课标题"/>
+                            </li>
+                            <li class="span12">
+                                <label>上传封面：</label>
+                                <div>
+                                    <span class="btn"  ngf-select="upload($file, 'picCover')">选择图片</span>
+                                    <span class="ml10">请上传格式为jpeg或者png的图片，建议图片大尺寸小于300K</span>
+                                    <span class="ml10"><img class="cover_img" ng-show="picCover != ''" ng-src="{{picCover}}"/></span>
+                                </div>
+                            </li>
+                            <li class="span12">
+                                <label>老师介绍：</label>
+                                <textarea rows="10" class="span12" ng-model="course.teacherDescription"></textarea>
+                            </li>
+                            <li class="span12">
+                                <label>上传头像：</label>
+                                <div>
+                                    <span class="btn"  ngf-select="upload($file, 'picTeacher')">选择图片</span>
+                                    <span class="ml10"><img class="ava_img" ng-show="picTeacher != ''" ng-src="{{picTeacher}}"/></span>
+                                </div>
+                            </li>
+                            <li class="span12">
+                                <label>套课描述：</label>
+                                <textarea rows="10" class="span12" ng-model="course.courseDescription"></textarea>
+                            </li>
+                            <li class="span12">
+                                <label>上传课程图：</label>
+                                <div>
+                                    <span class="btn"  ngf-select="upload($file, 'picDescription')">选择图片</span>
+                                    <span class="ml10"><img class="cover_img" ng-show="picDescription != ''" ng-src="{{picDescription}}"/></span>
+                                </div>
+                            </li>
+                            <li class="span12">
+                                <label>单课描述：</label>
+                                <textarea rows="10" class="span12" ng-model="course.lessonDescription"></textarea>
+                            </li>
+                            <li class="span5">
+                                <label>嘉宾设置：</label>
+                                <select class="input-large" name="maxParticipants" ng-model="course.maxParticipants" ng-options="t.id as t.value for t in maxParticipantsList">
+                                    <option value="">请选择最高连线人数</option>
+                                </select>
+                            </li>
+                            <li class="span7">
+                                <label>嘉宾金额：</label>
+                                <input type="number" class="input-mini text-center mr10" ng-model="course.priceParticipant" value="0"/>
+                                <span class="lh30">自动显示V钻数量</span>
+                            </li>
+                            <li class="span5">
+                                <label>围观设置：</label>
+                                <label class="radio inline">
+                                    <input type="radio" name="allowAudience" ng-model="course.allowAudience" value="1">允许围观
+                                </label>
+                                <label class="radio inline">
+                                    <input type="radio" name="allowAudience" ng-model="course.allowAudience" value="2" ng-click="initAuPrice()">禁止围观
+                                </label>
+                            </li>
+                            <li class="span7" ng-show="course.allowAudience==1">
+                                <label>围观金额：</label>
+                                <input type="number" class="input-mini text-center mr10" ng-model="course.priceAudience" value=""/>
+                                <span class="lh30">自动显示V钻数量</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form_action span12 ml0 clearfix">
+                        <div class="span12">
+                            <div class="row-fluid text-center">
+                                <a href="javascript:;" class="btn btn-inverse" ng-click="save(course)">创建</a>
+                                <a href="javascript:;" class="btn btn-inverse">取消</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+         </div>
+    </div>
+</div>

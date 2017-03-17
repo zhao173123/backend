@@ -1,0 +1,163 @@
+<div class="row-fluid" ng-controller="prioritySetCtrl">
+    <div class="span12 priority_set">
+        <div class="box box-transparent box-nomargin responsive-table">
+            <div class="box-header">
+                <h4>直播间优先级设置</h4>
+            </div>
+            <div class="box-content">
+                <!--直播间优先级设置 - start -->
+                <div class="pt20 clearfix">
+                    <p class="pull-left pl10">
+                        <span >直播间ID</span>
+                        <input type="text" ng-model="roomId"/>
+                    </p>
+                    <p class="pull-left pl20">
+                        <span>优先级</span>
+                        <input type="text" style="margin-left: 11px" ng-model="priority"/>
+                    </p>
+                    <p class="pull-left pl20">
+                        <input class="btn btn-inverse" type="button" ng-click="setPriority(roomId, priority)" value="设置" />
+                        &nbsp;&nbsp;
+                        <input class="btn btn-warning" type="button" ng-click="reset();" value="刷新" />
+                    </p>
+                </div>
+                <div class="pl10 mt10">
+                    <p ng-hide="!startPage && hasRoom">很抱歉，当前还没有正在开播直播间！</p>
+                    <table ng-show="!startPage && hasRoom" class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th width="10%">主播 ID</th>
+                                <th width="20%">昵称</th>
+                                <th width="20%">标题</th>
+                                <th width="30%">直播间 ID</th>
+                                <th width="10%">优先级</th>
+                                <th width="10%">人数</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="roomInfo in roomInfoList">
+                                <td>{{roomInfo.host}}</td>
+                                <td>{{roomInfo.hostNickName}}</td>
+                                <td>{{roomInfo.title}}</td>
+                                <td>{{roomInfo.roomId}}</td>
+                                <td>{{roomInfo.priority}}</td>
+                                <td>{{roomInfo.realOnlineNum}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- pagination - start -->
+                    <div class="page_nav clearfix" ng-show="!startPage && hasRoom">
+                        <p class="pull-right">
+                            <span ng-class="{true: 'btn disabled', false: ''}[onlineRoom.isFirst]" ng-click="getPage(1,'onlineRoom')"><a href="javascript:;">First</a>&nbsp;<i class="icon-fast-backward"></i></span>&nbsp;
+                            <span ng-class="{true: 'btn disabled', false: ''}[onlineRoom.isFirst]" ng-click="getPage(onlineRoom.prevPage,'onlineRoom')"><a href="javascript:;">Prev</a>&nbsp;<i class="icon-backward"></i></span>&nbsp;
+                            <span>{{onlineRoom.currentPage}}</span>
+                            <span ng-class="{true: 'btn disabled', false: ''}[onlineRoom.isLast]" ng-click="getPage(onlineRoom.nextPage,'onlineRoom')"><i class="icon-forward"></i>&nbsp;<a href="javascript:;">Next</a></span>&nbsp;
+                            <span ng-class="{true: 'btn disabled', false: ''}[onlineRoom.isLast]" ng-click="getPage(onlineRoom.lastPage,'onlineRoom')"><i class="icon-fast-forward"></i>&nbsp;<a href="javascript:;">Last</a></span>
+                        </p>
+                        <p class="pull-right"><strong>{{"Rooms " + onlineRoom.prevCount  + "-" + onlineRoom.nextCount  + " of " + onlineRoom.totalCount}}</strong></p>
+                    </div>
+                    <!-- pagination - end -->
+                </div>
+                <!--直播间优先级设置 - end -->
+            </div>
+        </div>
+        <div class="box box-transparent box-nomargin responsive-table">
+            <div class="box-header">
+                <h4>课程预约优先级设置</h4>
+            </div>
+            <div class="box-content">
+                <!--课程预约优先级设置 - start -->
+                <div class="pt20 clearfix">
+                    <p class="pull-left pl10">
+                        <span >课程ID</span>
+                        <input type="text" ng-model="courseId"/>
+                    </p>
+                    <p class="pull-left pl20">
+                        <span >优先级</span>
+                        <input type="text" style="margin-left: 11px" ng-model="priorityCourse"/>
+                    </p>
+                    <p class="pull-left pl20">
+                        <input class="btn btn-inverse" type="button" ng-click="setPriorityCourse(courseId, priorityCourse)"  value="设置" />
+                    </p>
+                </div>
+                <div class="pl10 mt10">
+                    <p ng-hide="!startPage && hasCourse">很抱歉，当前还没有课程预约！</p>
+                    <table ng-show="!startPage && hasCourse" class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <th width="20%">用户ID</th>
+                            <th width="30%">老师姓名</th>
+                            <th width="30%">课程ID</th>
+                            <th width="20%">优先级</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="courseInfo in courseInfoList | filter:{published:true, start:false}">
+                            <td>{{courseInfo.teacherId}}</td>
+                            <td>{{courseInfo.teacherName}}</td>
+                            <td>{{courseInfo.id}}</td>
+                            <td>{{courseInfo.priority}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!--&lt;!&ndash; pagination - start &ndash;&gt;-->
+                    <!--<div class="page_nav clearfix" ng-show="!startPage && hasCourse">-->
+                        <!--<p class="pull-right">-->
+                            <!--<span ng-class="{true: 'btn disabled', false: ''}[onlineCourse.isFirst]" ng-click="getPage(1,'onlineCourse')"><a href="javascript:;">First</a>&nbsp;<i class="icon-fast-backward"></i></span>&nbsp;-->
+                            <!--<span ng-class="{true: 'btn disabled', false: ''}[onlineCourse.isFirst]" ng-click="getPage(onlineCourse.prevPage,'onlineCourse')"><a href="javascript:;">Prev</a>&nbsp;<i class="icon-backward"></i></span>&nbsp;-->
+                            <!--<span>{{onlineCourse.currentPage}}</span>-->
+                            <!--<span ng-class="{true: 'btn disabled', false: ''}[onlineCourse.isLast]" ng-click="getPage(onlineCourse.nextPage,'onlineCourse')"><i class="icon-forward"></i>&nbsp;<a href="javascript:;">Next</a></span>&nbsp;-->
+                            <!--<span ng-class="{true: 'btn disabled', false: ''}[onlineCourse.isLast]" ng-click="getPage(onlineCourse.lastPage,'onlineCourse')"><i class="icon-fast-forward"></i>&nbsp;<a href="javascript:;">Last</a></span>-->
+                        <!--</p>-->
+                        <!--<p class="pull-right"><strong>{{"Rooms " + onlineCourse.prevCount  + "-" + onlineCourse.nextCount  + " of " + onlineCourse.totalCount}}</strong></p>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash; pagination - end &ndash;&gt;-->
+                </div>
+                <!--课程预约优先级设置 - end -->
+            </div>
+        </div>
+        <div class="box box-transparent box-nomargin responsive-table">
+            <div class="box-header">
+                <h4>回放优先级设置</h4>
+            </div>
+            <div class="box-content">
+                <!--回放优先级设置 - start -->
+                <div class="pt20 clearfix">
+                    <p class="pull-left pl10">
+                        <span >回放ID</span>
+                        <input type="text" ng-model="replayId"/>
+                    </p>
+                    <p class="pull-left pl20">
+                        <span >位置</span>
+                        <input type="text" style="margin-left: 11px" ng-model="replayPosition"/>
+                    </p>
+                    <p class="pull-left pl20">
+                        <input class="btn btn-inverse" type="button" ng-click="setPriorityReplay(replayId, replayPosition)"  value="设置" />
+                    </p>
+                </div>
+                <div class="pl10 mt10">
+                    <p ng-hide="hasReplay">很抱歉，当前还没有已发布的回放！</p>
+                    <table ng-show="hasReplay" class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <th width="20%">回放标题</th>
+                            <th width="30%">时长</th>
+                            <th width="30%">回放ID</th>
+                            <th width="20%">位置</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="replayInfo in replayList ">
+                            <td>{{replayInfo.title}}</td>
+                            <td>{{replayInfo.duration}}</td>
+                            <td>{{replayInfo.id}}</td>
+                            <td>{{replayInfo.position}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--回放优先级设置 - end -->
+            </div>
+        </div>
+    </div>
+</div>

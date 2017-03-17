@@ -1,0 +1,126 @@
+<!-- 内容管理-首页编辑 - start -->
+<div class="row-fluid">
+    <div class="span12">
+        <div class="box user_info">
+            <div class="box-header">
+                <!--<div class="title">首页编辑</div>-->
+            </div>
+            <div class="box-content">
+                <div class="responsive-table tab_middle tab_ad">
+                    <div class="hd clearfix span12 mb20">
+                        <a href="javascript:;" class="btn btn-default pull-left" ng-click="openModal('#editAd', 'newAd')">插入广告</a>
+                        <!--<a href="javascript:;" class="btn btn-default pull-left ml10">保存位置调整</a>-->
+                    </div>
+                    <table class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <th>位置符</th>
+                            <!--<th>主播ID</th>-->
+                            <th>Title</th>
+                            <th>封面图</th>
+                            <th>操作</th>
+                            <!--<th>用户昵称</th>-->
+                            <!--<th>开播时间</th>-->
+                            <!--<th>直播时长</th>-->
+                            <!--<th>直播间用户数</th>-->
+                            <!--<th>本次礼物收入</th>-->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="ad in adList | filter: {isDeleted : false}">
+                            <td>
+                                <!--<select>-->
+                                    <!--<option>1</option>-->
+                                    <!--<option>2</option>-->
+                                <!--</select>-->
+                                {{ad.position}}
+                            </td>
+                            <!--<td>6000009</td>-->
+                            <td>{{ad.title}}</td>
+                            <td><img ng-src="{{ad.coverUrl}}" width="230"/></td>
+                            <td>
+                                <!--<a href="javascript:;" class="btn btn-default" ng-click="deleteAd(ad.id)">删除</a>-->
+                                <a href="javascript:;" class="btn btn-default" ng-click="openModal('#deleteAd','', ad.id)">删除</a>
+                                <a href="javascript:;" class="btn btn-default ml20" ng-click="getAdDetail(ad.id, '#editAd')">编辑</a>
+                            </td>
+                            <!--<td></td>-->
+                            <!--<td>2016/7/26 18:00:00</td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--删除广告确认 - start-->
+    <div id="deleteAd" class="modal hide modal-mini" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>提示</h3>
+        </div>
+        <div class="modal-body">
+            <p>您确定删除该广告吗？</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary" ng-click="deleteAd()">确定</button>
+        </div>
+    </div>
+    <!--删除广告确认 - end-->
+
+    <!--编辑广告设置 - start-->
+    <div id="editAd" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 ng-show="!newAd">编辑广告位信息</h3>
+            <h3 ng-show="newAd">添加广告位信息</h3>
+        </div>
+        <div class="modal-body">
+            <form name="formEditAd">
+                <label>
+                    <span class="pull-left"><em class="text-contrast pr10">*</em>Title：</span>
+                    <input type="text" ng-model="adv.title" value="{{advInfo.title}}" required />
+                </label>
+                <label>
+                    <span class="pull-left" >位置符：</span>
+                    <input type="number" name="position" ng-min="0" ng-model="adv.position" value="{{advInfo.position}}"/>
+                    <span ng-show="formEditAd.position.$dirty && formEditAd.position.$invalid" style="color:#b94a48">请正确输入位置符</span>
+                </label>
+                <label>
+                    <span class="pull-left" style="margin-left: 15px">URL：</span>
+                    <!--<select ng-model="adUrl">-->
+                    <!--<option>请选择</option>-->
+                    <!--<option>APP内</option>-->
+                    <!--<option>外链</option>-->
+                    <!--</select>-->
+                    <input  type="text" required placeholder="请输入外链链接地址" ng-model="adv.outerUrl" value="{{advInfo.outerUrl}}"/>
+                    <!--<input ng-show="adUrl=='外链'" type="text" required placeholder="请输入外链链接地址"/>-->
+                    <!--<select ng-show="adUrl=='APP内'" required>-->
+                    <!--<option>直播间</option>-->
+                    <!--</select>-->
+                    <!--<input ng-show="adUrl=='APP内'" type="text" required placeholder="直播间ID"/>-->
+                </label>
+                <label>
+                        <span class="pull-left"><em class="text-contrast pr10">*</em>图片：</span>
+                        <span class="btn"  ngf-select="upload($file, 'coverImgSrc')">上传封面图片</span>
+                        <span class="btn"  ngf-select="upload($file, 'avatarImgSrc')" style="margin-left: 300px">上传头像图片</span>
+                        <span class="id_img mt10" style="margin-left: 56px; float:left"><img class="cover_img" ng-show="coverImgSrc != ''" ng-src="{{coverImgSrc}}" ></span>
+                        <span class="id_img mt10" style="margin-left: 78px"><img class="ava_img" ng-show="avatarImgSrc != ''" ng-src="{{avatarImgSrc}}"></span>
+                </label>
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary" ng-click="submitNewAd(advInfo,'#editAd', adv)" >提交</button>
+        </div>
+    </div>
+    <!--编辑广告设置 - end-->
+
+</div>
+<!-- 内容管理-首页编辑 - start -->

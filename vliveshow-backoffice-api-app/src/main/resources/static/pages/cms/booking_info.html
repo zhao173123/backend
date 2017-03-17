@@ -1,0 +1,287 @@
+<div class="row-fluid" ng-controller="bookingInfoCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin">
+            <div class="box-header">
+                <h4>订阅详情
+                    <input class="btn pull-right ml10" type="button" ng-disabled="!courseInfo.published" ng-click="offShelf('#offShelfModel')" value="下架"/>
+                    <input type="button" class="btn btn-primary pull-right ml10" ng-disabled="courseInfo.published" ng-click="courseRelease(courseInfo.id)" value="发布"/>
+                    <input type="button" class="btn btn-primary pull-right ml10" ng-disabled="courseInfo.published || isSaveBtnDis" ng-click="editDetail(courseInfo)" ng-value="editText"/></h4>
+            </div>
+            <div class="box-content filter_box course_detail clearfix">
+                <div class="span12 mb20">
+                    <label class="text-bold mb10">售课情况</label>
+                    <table class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>嘉宾</td>
+                            <td>围观</td>
+                            <td>详情</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>已售出(总)</td>
+                            <td>{{refundCount.participant + salesCount.participant}}</td>
+                            <td>{{refundCount.audience + salesCount.audience}}</td>
+                            <td><a href="javascript:;" class="btn btn-primary " ng-click="loadPurchaseDetail('#purchaseDetailModel', '总售出')" title="点击查看详情">查看</a></td>
+                        </tr>
+                        <tr>
+                            <td>已退课</td>
+                            <td>{{refundCount.participant}}</td>
+                            <td>{{refundCount.audience}}</td>
+                            <td><a href="javascript:;" class="btn btn-primary " ng-click="loadPurchaseDetail('#purchaseDetailModel', '退款', 2)" title="点击查看详情">查看</a></td>
+                        </tr>
+                        <tr>
+                            <td>实际售出</td>
+                            <td>{{salesCount.participant}}</td>
+                            <td>{{salesCount.audience}}</td>
+                            <td><a href="javascript:;" class="btn btn-primary " ng-click="loadPurchaseDetail('#purchaseDetailModel', '实际售出', 1)" title="点击查看详情">查看</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="span12 tab_contractinfo booking ml0 mb20">
+                    <p class="text-bold mb10">课程详情</p>
+                    <ul class="span12 clearfix">
+                        <li class="span4">
+                            <label>老师ID：</label>
+                            <span><input type="text" class="span12" value=""  ng-disabled="!isEdit" placeholder="请输入老师ID" ng-change="loadNickName(courseInfo.teacherId)" ng-model="courseInfo.teacherId"/></span>
+                            <span style="margin-left: 10px; padding-top: 4px; color:red">{{nickName}}</span>
+                        </li>
+                        <li class="span4">
+                            <label>老师姓名：</label>
+                            <input type="text" class="span12" ng-disabled="!isEdit" value="" placeholder="请输入老师姓名" ng-model="courseInfo.teacherName"/>
+                        </li>
+                        <li class="span4">
+                            <label>课程分类：</label>
+                            <select class="span12 ml10" ng-disabled="!isEdit" name="courseType" ng-model="courseInfo.courseType" ng-options="t.id as t.value for t in courseTypeList">
+                                <option value="">请选择类型</option>
+                            </select>
+                        </li>
+                        <li class="span12">
+                            <label>套课标题：</label>
+                            <span style="width:800px"><input ng-disabled="!isEdit" type="text" class="span12" value="" ng-change="validateStrLength(courseInfo.courseName, 10, 60, 'titleMsg')" ng-model="courseInfo.courseName" placeholder="请输入套课标题"/></span>
+                            <span style="margin-left: 10px; color: red;">{{titleMsg}}</span>
+                        </li>
+                        <li class="span12">
+                            <label>封面：</label>
+                            <div>
+                                <span ng-show="isEdit" style="color: red">（请上传宽高比为16:9的图片！）</span>
+                                <span ng-show="isEdit" class="btn"  ngf-select="upload($file, 'picCover')">选择图片</span>
+                                <span class="ml10"><img class="cover_img" ng-src="{{courseInfo.picCover}}"/></span>
+                            </div>
+                        </li>
+                        <li class="span12">
+                            <label>老师介绍：</label>
+                            <span style="width:800px"><textarea ng-disabled="!isEdit" rows="10" class="span12" ng-change="validateStrLength(courseInfo.teacherDescription, 40, 800, 'teDesMsg')" ng-model="courseInfo.teacherDescription"></textarea></span>
+                            <span style="margin-left: 10px; color:red">{{teDesMsg}}</span>
+                        </li>
+                        <li class="span12">
+                            <label>头像：</label>
+                            <div>
+                                <span ng-show="isEdit" style="color: red">（请上传宽高比为1:1的图片！）</span>
+                                <span ng-show="isEdit" class="btn"  ngf-select="upload($file, 'picTeacher')">选择图片</span>
+                                <span class="ml10"><img class="ava_img" ng-src="{{courseInfo.picTeacher}}"/></span>
+                            </div>
+                        </li>
+                        <li class="span12">
+                            <label>套课描述：</label>
+                            <span style="width:800px"><textarea ng-disabled="!isEdit" rows="10" class="span12" ng-change="validateStrLength(courseInfo.courseDescription, 40, 800, 'courseDesMsg')" ng-model="courseInfo.courseDescription"></textarea></span>
+                            <span style="margin-left: 10px; color:red">{{courseDesMsg}}</span>
+                        </li>
+                        <li class="span12">
+                            <label>课程图：</label>
+                            <div>
+                                <span ng-show="isEdit" style="color: red">（请上传宽高比为16:9的图片！）</span>
+                                <span ng-show="isEdit" class="btn"  ngf-select="upload($file, 'picDescription')">选择图片</span>
+                                <span class="ml10"><img class="cover_img" ng-src="{{courseInfo.picDescription}}"/></span>
+                            </div>
+                        </li>
+                        <li class="span12">
+                            <label>单课描述：</label>
+                            <span style="width:800px"><textarea ng-disabled="!isEdit" rows="10" class="span12" ng-change="validateStrLength(courseInfo.lessonDescription, 40, 800, 'lessonDesMsg')" ng-model="courseInfo.lessonDescription"></textarea></span>
+                            <span style="margin-left: 10px; color:red; padding-top: 4px">{{lessonDesMsg}}</span>
+                        </li>
+                        <li class="span12">
+                            <label>添加课程：</label>
+                            <a href="javascript:;" ng-show="isEdit" class="btn" ng-click="addCourse('#addCourseModel','add')">添加课程<em class="icon-plus ml10"></em></a>
+                        </li>
+                         <li class="span12">
+                             <table class="table table-bordered text-center">
+                                 <thead>
+                                 <tr>
+                                     <td>课程序号</td>
+                                     <td>课程名称</td>
+                                     <td>课程日期</td>
+                                     <td>状态</td>
+                                     <td>评价</td>
+                                     <td>操作</td>
+                                 </tr>
+                                 </thead>
+                                 <tbody>
+                                 <tr ng-repeat="lesson in lessonList">
+                                     <td>{{$index+1}}</td>
+                                     <td>{{lesson.lessonName}}</td>
+                                     <td>{{lesson.startTime}} ~ {{lesson.endTime}}</td>
+                                     <td>{{lesson.start}}</td>
+                                     <td>{{lesson.rating}}</td>
+                                     <td>
+                                         <a href="javascript:;" ng-show="isEdit" class="btn btn-primary " ng-click="addCourse('#addCourseModel','edit', lesson)">修改</a>
+                                         <a href="javascript:;" ng-show="isEdit" class="btn btn-primary  ml20" ng-click="openModal('#deleteLesson', lesson.id)">删除</a>
+                                     </td>
+                                 </tr>
+                                 </tbody>
+                             </table>
+                        </li>
+                        <li class="span5">
+                            <label>嘉宾设置：</label>
+                            <select class="input-large" name="maxParticipants" ng-disabled="!isEdit" ng-model="courseInfo.maxParticipants" ng-options="t.id as t.value for t in maxParticipantsList">
+                                <option value="">请选择最高连线人数</option>
+                            </select>
+                        </li>
+                        <li class="span7">
+                            <label>嘉宾金额：</label>
+                            <input type="number" class="input-mini text-center mr10" ng-disabled="!isEdit" ng-model="courseInfo.priceParticipant" value=""/>
+                            <span class="lh30">钻</span>
+                            <span style="margin-left: 10px; color:red; padding-top: 4px" ng-show="courseInfo.priceParticipant<=0">请输入大于0的数字！</span>
+                        </li>
+                        <!--<li class="span5">-->
+                            <!--<label>围观设置：</label>-->
+                            <!--<label class="radio inline">-->
+                                <!--<input type="radio" name="allowAudience" ng-disabled="!isEdit" ng-model="courseInfo.allowAudience" value="1">允许围观-->
+                            <!--</label>-->
+                            <!--<label class="radio inline">-->
+                                <!--<input type="radio" name="allowAudience" ng-disabled="!isEdit" ng-model="courseInfo.allowAudience" value="2" ng-click="initAuPrice()">禁止围观-->
+                            <!--</label>-->
+                        <!--</li>-->
+                        <!--<li class="span7" ng-show="courseInfo.allowAudience==1">-->
+                        <li class="span12" >
+                            <label>围观金额：</label>
+                            <input type="number" class="input-mini text-center mr10" ng-disabled="!isEdit" ng-model="courseInfo.priceAudience" value=""/>
+                            <span class="lh30">钻</span>
+                            <span style="margin-left: 10px; color:red; padding-top: 4px" ng-show="courseInfo.priceAudience<=0">请输入大于0的数字！</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="span12 tab_contractinfo booking ml0 mb20">
+                    <p class="text-bold mb10">下架信息</p>
+                    <ul>
+                        <li class="span5">
+                            <label>下架时间：</label>
+                            <span class="lh30">{{cancellationTime ? cancellationTime:""}}</span>
+                        </li>
+                        <li class="span7">
+                            <label>下架理由：</label>
+                            <span class="lh30">{{courseInfo.cancellationCustom?courseInfo.cancellationCustom:""}}</span>
+                        </li>
+                    </ul>
+
+               </div>
+            </div>
+        </div>
+
+        <!--购买详情 - 摸态框-->
+        <div id="purchaseDetailModel" class="modal hide modal-mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>购买详情--{{purchaseTitle}}</h3>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered text-center">
+                    <thead>
+                    <tr>
+                        <td>类型</td>
+                        <td>用户ID</td>
+                        <td>手机号</td>
+                        <td>状态</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in purchaseList">
+                        <td>{{item.subscriptionType}}</td>
+                        <td>{{item.userId}}</td>
+                        <td>{{item.phone}}</td>
+                        <td>{{item.refundType}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--购买详情 - 摸态框-->
+
+        <!--添加课程 - 摸态框-->
+        <div id="addCourseModel" class="modal hide modal-mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>添加课程</h3>
+            </div>
+            <div class="modal-body">
+                <p class="clearfix">
+                    <label class="pull-left" style="width: 80px;">课程名称：</label>
+                    <input type="text" class="input-large" value="" ng-model="lessonName" ng-change="validateStrLength(lessonName, 2, 36, 'titleMsg')" placeholder="请输入课程名称"/>
+                    <span style="margin-left: 10px; color: red;">{{titleMsg}}</span>
+                </p>
+                <p class="clearfix">
+                    <label class="pull-left" style="width: 80px;">开始时间：</label>
+                    <label>
+                        <input placeholder="请输入开始时间" type="text" ng-model="startTime"  class="date-select input-large" ng-click="laydate(timeAndDate, 'startTime')" value="{{startTime}}"/>
+                        <span style="color:red; margin-left: 10px">课程开始时间请设置24小时之后</span>
+                    </label>
+                </p>
+                <p class="clearfix">
+                    <label class="pull-left" style="width: 80px;">结束时间：</label>
+                    <input placeholder="请输入结束时间" type="text" ng-model="endTime"  class="date-select input-large" ng-click="laydate(timeAndDate, 'endTime')" value="{{endTime}}"/>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-disabled="isSaveBtnDis" ng-click="submitLesson('#addCourseModel')">确认</button>
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">取消</button>
+            </div>
+        </div>
+        <!--添加课程 - 摸态框-->
+
+        <!--删除课程确认 - start-->
+        <div id="deleteLesson" class="modal hide modal-mini" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>提示</h3>
+            </div>
+            <div class="modal-body">
+                <p>您确定删除该广告吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                <button class="btn btn-primary" ng-click="deleteLesson('#deleteLesson')">确定</button>
+            </div>
+        </div>
+        <!--删除课程确认 - end-->
+
+        <!--下架 - 摸态框-->
+        <div id="offShelfModel" class="modal hide modal-mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>订阅下架</h3>
+            </div>
+            <div class="modal-body">
+                <p class="clearfix">
+                    <label class="pull-left" style="width: 80px;">下架理由：</label>
+                    <select class="pull-left span8 ml10" ng-model="selectedOffReason" ng-options="item.id as item.value for item in offReason" ng-change="getOffReason()" >
+                        <option value="">请选择下架理由</option>
+                    </select>
+                </p>
+                <p class="clearfix">
+                    <label class="pull-left" style="width: 80px;">其他：</label>
+                    <textarea rows="10" class="span8 pull-left" ng-model="otherOffReason" ng-disabled="notOtherReason"></textarea>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="offShelfCommit('#offShelfModel', courseInfo.id)">确认</button>
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">取消</button>
+            </div>
+        </div>
+        <!--下架 - 摸态框-->
+
+    </div>
+</div>

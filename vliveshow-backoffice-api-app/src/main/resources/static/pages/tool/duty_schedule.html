@@ -1,0 +1,125 @@
+<div class="row-fluid" ng-controller="dutyCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin">
+            <!--上传名单 - start-->
+            <h4 class="box-header">排班设置</h4>
+            <div class="box-content filter_box tab_contractinfo message clearfix">
+                <ul class="span8 clearfix">
+                    <li class="span8">
+                        <label>选择时段：</label>
+                        <select class="span6 ml10" ng-model="index">
+                            <option value="-1">请选择</option>
+                            <option value="0">00:00 - 01:00</option>
+                            <option value="1">01:00 - 02:00</option>
+                            <option value="2">02:00 - 03:00</option>
+                            <option value="3">03:00 - 04:00</option>
+                            <option value="4">04:00 - 05:00</option>
+                            <option value="5">05:00 - 06:00</option>
+                            <option value="6">06:00 - 07:00</option>
+                            <option value="7">07:00 - 08:00</option>
+                            <option value="8">08:00 - 09:00</option>
+                            <option value="9">09:00 - 10:00</option>
+                            <option value="10">10:00 - 11:00</option>
+                            <option value="11">11:00 - 12:00</option>
+                            <option value="12">12:00 - 13:00</option>
+                            <option value="13">13:00 - 14:00</option>
+                            <option value="14">14:00 - 15:00</option>
+                            <option value="15">15:00 - 16:00</option>
+                            <option value="16">16:00 - 17:00</option>
+                            <option value="17">17:00 - 18:00</option>
+                            <option value="18">18:00 - 19:00</option>
+                            <option value="19">19:00 - 20:00</option>
+                            <option value="20">20:00 - 21:00</option>
+                            <option value="21">21:00 - 22:00</option>
+                            <option value="22">22:00 - 23:00</option>
+                            <option value="23">23:00 - 24:00</option>
+                        </select>
+                    </li>
+                    <li class="span8">
+                        <label>上传名单：</label>
+                        <span style="margin-right: 10px; color:red; padding-top: 4px;">（请上传格式为CSV的文件）</span>
+                        <div>
+                            <span class="btn"  ngf-select="upload($file, 'csvFile')">选择文件</span>
+                            <span class="ml10" style="color:#03A9F4;"></span>
+                        </div>
+                    </li>
+                    <li class="span8">
+                        <label>人员名单：</label>
+                        <span class="ml10 pt5">{{uploadUserStr}}</span>
+                    </li>
+                </ul>
+                <div class="form_action span12 ml0 clearfix">
+                    <div class="span4">
+                        <div class="row-fluid text-center">
+                            <button class="btn btn-inverse" ng-click="save()">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--上传名单 - end-->
+
+            <!--排班查询 - start-->
+            <h4 class="box-header mt20">班表查询</h4>
+            <div class="box-content filter_box tab_contractinfo message clearfix">
+                <div class="form_action span12 clearfix">
+                        <div class="row-fluid text-left pull-left">
+                            <!--<p class="pull-left pl20 span4">-->
+                                <!--<label class="label_left">选择时段：</label>-->
+                                <!--<select class="ml10" ng-model="indexSearch">-->
+                                    <!--<option value="-1">当前时段</option>-->
+                                    <!--<option value="0">00:00 - 01:00</option>-->
+                                    <!--<option value="1">01:00 - 02:00</option>-->
+                                    <!--<option value="2">02:00 - 03:00</option>-->
+                                    <!--<option value="3">03:00 - 04:00</option>-->
+                                    <!--<option value="4">04:00 - 05:00</option>-->
+                                    <!--<option value="5">05:00 - 06:00</option>-->
+                                    <!--<option value="6">06:00 - 07:00</option>-->
+                                    <!--<option value="7">07:00 - 08:00</option>-->
+                                    <!--<option value="8">08:00 - 09:00</option>-->
+                                    <!--<option value="9">09:00 - 10:00</option>-->
+                                    <!--<option value="10">10:00 - 11:00</option>-->
+                                    <!--<option value="11">11:00 - 12:00</option>-->
+                                    <!--<option value="12">12:00 - 13:00</option>-->
+                                    <!--<option value="13">13:00 - 14:00</option>-->
+                                    <!--<option value="14">14:00 - 15:00</option>-->
+                                    <!--<option value="15">15:00 - 16:00</option>-->
+                                    <!--<option value="16">16:00 - 17:00</option>-->
+                                    <!--<option value="17">17:00 - 18:00</option>-->
+                                    <!--<option value="18">18:00 - 19:00</option>-->
+                                    <!--<option value="19">19:00 - 20:00</option>-->
+                                    <!--<option value="20">20:00 - 21:00</option>-->
+                                    <!--<option value="21">21:00 - 22:00</option>-->
+                                    <!--<option value="22">22:00 - 23:00</option>-->
+                                    <!--<option value="23">23:00 - 24:00</option>-->
+                                <!--</select>-->
+                                <!--&lt;!&ndash;<input placeholder="请输入开始时间" type="text" ng-model="startDate"  class="date-select ml10" ng-click="laydate(timeAndDate, 'startDate')" value="{{startDate}}"/>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<span class="separator">-</span>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<input placeholder="请输入结束日期" type="text" ng-model="endDate"  class="date-select" ng-click="laydate(timeAndDate, 'endDate')" value="{{endDate}}"/>&ndash;&gt;-->
+                            <!--</p>-->
+                            <span class="span4">
+                                <a href="javascript:;" class="btn btn-inverse" ng-click="search()">查询</a>
+                            </span>
+                        </div>
+                </div>
+                <div class="span8 message_count">
+                    <p ng-hide="errMsg == ''" style="color:#b94a48">{{errMsg}}</p>
+                    <table class="table table-bordered text-center" ng-if="dutySchedule.length > 0">
+                        <thead>
+                        <tr>
+                            <th>监控人员</th>
+                            <th>直播间名称</th>
+                            <th>主播名称</th>
+                        </tr>
+                        </thead>
+                        <tr ng-repeat="item in dutySchedule">
+                            <td>{{item.userName}}</td>
+                            <td>{{item.title}}</td>
+                            <td>{{item.nickName}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!--排班查询 - end-->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="row-fluid" ng-controller="contentCtrl">
+    <div class="tabbable more_ctrl">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="" data-toggle="tab" ng-click="blockTab('adindex')">首页编辑</a></li>
+            <li class=""><a href="" data-toggle="tab" ng-click="blockTab('adopen')">开屏广告</a></li>
+        </ul>
+        <div class="tab-content" id="tabPage">
+            <div ng-include src="tabTemplate"></div>
+        </div>
+    </div>
+</div>

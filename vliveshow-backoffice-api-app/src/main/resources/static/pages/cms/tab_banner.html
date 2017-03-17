@@ -1,0 +1,132 @@
+<div class="row-fluid" ng-controller="contentCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin ">
+            <!--<div class="box-content">-->
+                <div class="responsive-table tab_middle tab_ad user_table">
+                    <form class="clearfix">
+                        <label class="span6">
+                            <span class="lh30 pull-left mr10">所在频道</span>
+                            <select class="span12 ml10" style="width: 220px;"  ng-model="reqChannelId" ng-options="t.channelId as t.channelName for t in chanelList">
+                                <option value="">所有频道</option>
+                            </select>
+                        </label>
+                        <span class="hd clearfix span6 mb20">
+                            <a href="javascript:;" class="btn btn-default pull-left mr20" ng-click="loadAll(reqChannelId)">查询</a>
+                            <a href="javascript:;" class="btn btn-default pull-left" ng-click="openModal('#editAd', 'newAd')">插入Banner</a>
+                        </span>
+                    </form>
+                    <div class="scrollable-area">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                            <tr>
+                                <th>标题</th>
+                                <th>频道</th>
+                                <th>位置</th>
+                                <th>名称</th>
+                                <th>封面图</th>
+                                <th>文案</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="ad in adList | filter: {isDeleted : false}">
+                                <td>{{ad.title}}</td>
+                                <td>{{ad.chName}}</td>
+                                <td>{{ad.position}}</td>
+                                <td>{{ad.detailTitle}}</td>
+                                <td><img ng-src="{{ad.coverUrl}}" width="230"/></td>
+                                <td>{{ad.custom}}</td>
+                                <td>
+                                    <a href="javascript:;" class="btn btn-default" ng-click="openModal('#deleteAd','', ad.id)">删除</a>
+                                    <a href="javascript:;" class="btn btn-default ml20" ng-click="openModal('#editAd', '', ad.id)">编辑</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            <!--</div>-->
+        </div>
+    </div>
+
+    <!--删除广告确认 - start-->
+    <div id="deleteAd" class="modal hide modal-mini" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>提示</h3>
+        </div>
+        <div class="modal-body">
+            <p>您确定删除该广告吗？</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary" ng-click="deleteAd()">确定</button>
+        </div>
+    </div>
+    <!--删除广告确认 - end-->
+
+    <!--添加编辑广告设置 - start-->
+    <div id="editAd" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 ng-show="!newAd">编辑广告位信息</h3>
+            <h3 ng-show="newAd">添加广告位信息</h3>
+        </div>
+        <div class="modal-body editAdFm">
+            <form name="formEditAd" style="margin-left: 20px">
+                <label>
+                    <span class="pull-left"><em class="text-contrast pr10">*</em>标题：</span>
+                    <input type="text" name="title" placeholder="20个汉字以内" ng-maxlength="20" ng-model="title" value="" required />
+                    <span ng-show="formEditAd.title.$dirty && formEditAd.title.$invalid" style="color:#b94a48">输入内容请控制在20个汉字以内</span>
+                </label>
+                <label>
+                    <span class="pull-left"><em class="text-contrast pr10">*</em>副标题：</span>
+                    <input type="text" name="detailTitle" placeholder="12个汉字以内" ng-maxlength="12" ng-model="detailTitle" value="" required />
+                    <span ng-show="formEditAd.detailTitle.$dirty && formEditAd.detailTitle.$invalid" style="color:#b94a48">输入内容请控制在12个汉字以内</span>
+                </label>
+                <label>
+                    <span class="pull-left" ><em class="pr10"></em>位置符：</span>
+                    <input type="number" name="position" ng-min="0" ng-model="position" value=""/>
+                    <span ng-show="formEditAd.position.$dirty && formEditAd.position.$invalid" style="color:#b94a48">请正确输入位置符</span>
+                </label>
+                <label>
+                    <span class="pull-left"><em class="pr10"></em>URL：</span>
+                    <input type="text" placeholder="请输入外链链接地址" ng-model="outerUrl" value=""/>
+                </label>
+                <label>
+                    <span class="pull-left"><em class="text-contrast pr10">*</em>自定义文案：</span>
+                    <input type="text" name="custom" placeholder="6个汉字以内" ng-maxlength="6" ng-model="custom" value="" required />
+                    <span ng-show="formEditAd.custom.$dirty && formEditAd.custom.$invalid" style="color:#b94a48">输入内容请控制在6个汉字以内</span>
+                    <span class="lh30 text-error ml20">*图片右上角的文字！</span>
+                </label>
+                <label>
+                    <span class="pull-left" ><em class="text-contrast pr10">*</em>选择频道：</span>
+                    <div style="width: 281px; margin: 0 0 20px 100px">
+                        <label class="checkbox inline offset1" style="margin-left: 10px" ng-repeat="channel in chanelList">
+                            <input type="checkbox" ng-model="channelId" ng-checked="isSelected(channel.channelId)" ng-click="updateSelection($event, channel.channelId)" value="{{channel.channelId}}" />{{channel.channelName}}
+                        </label>
+                    </div>
+                    <!--<select class="span12 ml10" style="width: 220px;"  ng-model="channelId" ng-options="t.channelId as t.channelNameCN for t in chanelLit">-->
+                    <!--<option value="">请选择类型</option>-->
+                    <!--</select>-->
+                </label>
+                <label>
+                    <span class="pull-left"><em class="text-contrast pr10">*</em>图片：</span>
+                    <span class="btn"  ngf-select="upload($file, 'coverImgSrc')">上传封面图片</span>
+                    <span class="btn"  ngf-select="upload($file, 'avatarImgSrc')" style="margin-left: 300px">上传头像图片</span>
+                    <span class="id_img mt10" style="margin-left: 90px; float:left"><img class="cover_img" ng-show="coverImgSrc != ''" ng-src="{{coverImgSrcBase ? coverImgSrcBase : coverImgSrc}}" ></span>
+                    <span class="id_img mt10" style="margin-left: 78px"><img class="ava_img" ng-show="avatarImgSrc != ''" ng-src="{{avatarImgSrcBase ? avatarImgSrcBase: avatarImgSrc}}"></span>
+                </label>
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button ng-disabled="formEditAd.title.$invalid || formEditAd.detailTitle.$invalid || formEditAd.position.$invalid || formEditAd.custom.$invalid"
+                    class="btn btn-primary" ng-click="submitNewAd(advInfo,'#editAd', adv)" >提交</button>
+        </div>
+    </div>
+    <!--添加编辑广告设置 - end-->
+
+</div>

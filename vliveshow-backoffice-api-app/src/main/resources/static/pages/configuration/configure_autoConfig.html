@@ -1,0 +1,51 @@
+<div class="row-fluid" ng-controller="autoConfigCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin">
+            <div class="box-header">
+                <h4>推荐频道自动置顶方案配置</h4>
+            </div>
+            <div class="box-content js-page tab_configure">
+                <form name="configForm">
+                    <ul>
+                        <li>1、更新频率：<input ng-disabled="isEditDisabled" name="refreshTime" type="number" ng-model="configInfo.refreshTime" value="" required/> 分钟 （App自动刷新一次，手动刷新可以获取最新的内容）</li>
+                        <li>
+                            2、显示规则： 现场规则 * <input ng-disabled="isEditDisabled" name="showSite" type="number" ng-model="configInfo.showSite" value="" required/> % +现场规则 * 属性规则 * <input ng-disabled="isEditDisabled" name="showAttribute" type="number" ng-model="configInfo.showAttribute"  value="{{100-configInfo.showSite}}" required/> % = 排序积分
+                            <ul>
+                                <li>A 现场规则：= 观众数 * <input ng-disabled="isEditDisabled" name="siteNum" type="number" ng-model="configInfo.siteNum" step="0.01" value="" required/> % + 打赏人数 * <input ng-disabled="isEditDisabled" name="giftNum" type="number" ng-model="configInfo.giftNum" step="0.01" value="{{100-configInfo.siteNum}}" required/> % (不是人次)</li>
+                                <li>B 属性规则：= 高质量粉排名第一的主播记为 <input ng-disabled="isEditDisabled" name="firstFan" type="text"  ng-model="configInfo.firstFan" value="" required/></li>
+                                <li class="mltab">排名第二的主播记为 <input ng-disabled="isEditDisabled" name="secondFan" type="text"  ng-model="configInfo.secondFan" value="" required/></li>
+                                <li class="mltab">排名第三的主播记为 <input ng-disabled="isEditDisabled" name="thirdFan" type="text"  ng-model="configInfo.thirdFan" value="" required/></li>
+                                <li class="mltab">排序积分最高的排在第一位，其他以此类推</li>
+                            </ul>
+                        </li>
+                        <li>3、允许后台点选某个或者几个直播间主动排序，并且固定位置，剩下的主播遵从第2项规则排序</li>
+                        <li>
+                            4、新开直播间规则：注 在手动固定位置的N个直播间后，
+                            <ul style="margin-left: 135px">
+                                <li>加 <input ng-disabled="isEditDisabled" name="commonLive" type="text" ng-model="configInfo.commonLive" value="" required/> 个正常置顶的直播间，之后再加 <input ng-disabled="isEditDisabled" name="newLive" type="text" ng-model="configInfo.newLive" value="" required/> 个新开直播间</li>
+                                <li>在开播 <input ng-disabled="isEditDisabled" name="step1Time" type="text" ng-model="configInfo.step1Time" value="" required/> 分钟内，如果观众数没有达到 <input ng-disabled="isEditDisabled" name="step1Num" type="text" ng-model="configInfo.step1Num" value="" required/> 人（app显示人数），则直接在{{step1Time==null ? 'X' : configInfo.step1Time}}分钟后自动退出置顶规则，</li>
+                                <li>如果观众数达到{{configInfo.step1Num==null ? 'X' : configInfo.step1Num}}人（app显示人数），则继续在置顶到 <input ng-disabled="isEditDisabled" name="step2Time" type="text" ng-model="configInfo.step2Time" value="" required/> 分钟，</li>
+                                <li>{{configInfo.step2Time==null ? 'X' : configInfo.step2Time}}分钟后，如果观众数达到 <input ng-disabled="isEditDisabled" name="step2Num" type="text" ng-model="configInfo.step2Num" value="" required/> 人（含机器）则继续延长推荐{{configInfo.step2Time==null ? 'X' : configInfo.step2Time}}分钟。</li>
+                                <li>满 <input ng-disabled="isEditDisabled" name="step3Time" type="text" ng-model="configInfo.step3Time" value="" required/> 分钟后，不管直播数据如何，都退出置顶位置。</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="form_action span12 ml0 clearfix">
+                        <div class="row-fluid text-center">
+                            <input type="button" class="btn btn-inverse"
+                                   ng-disabled="configForm.refreshTime.$invalid || configForm.showSite.$invalid || configForm.showAttribute.$invalid
+                                                || configForm.siteNum.$invalid || configForm.giftNum.$invalid || configForm.firstFan.$invalid || configForm.secondFan.$invalid
+                                                || configForm.thirdFan.$invalid || configForm.commonLive.$invalid || configForm.newLive.$invalid || configForm.step1Time.$invalid
+                                                || configForm.step1Num.$invalid || configForm.step2Time.$invalid || configForm.step2Num.$invalid || configForm.step3Time.$invalid"
+                                   ng-click="setEdit(configInfo)" value="{{editText}}"/>
+                            <input type="button" class="btn btn-inverse" ng-click="cancel()" value="取消">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

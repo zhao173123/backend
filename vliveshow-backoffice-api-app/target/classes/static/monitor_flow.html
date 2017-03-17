@@ -1,0 +1,136 @@
+<div class="row-fluid" ng-controller="monitorFlowCtrl">
+    <!-- 流量监控 -->
+    <div class="span12">
+        <div class="box box-transparent box-nomargin">
+            <div class="box-header">
+                <div><input type="button" value="刷新" ng-click="getLiveCount()" class="btn btn-inverse"/></div>
+            </div>
+            <div class="box-content filter_box">
+                <div class="row-fluid flow_00of4">
+                    <div class="span3 flow_1of4_line1">
+                        <div class="box span6">
+                            <div class="box-header gray-background">
+                                <h5>在线用户数</h5>
+                            </div>
+                            <div class="box-content">
+                                <h2 class="text-center">{{liveCount.user}}</h2>
+                            </div>
+                        </div>
+                        <!--<div class="box span6">-->
+                            <!--<div class="box-header gray-background">-->
+                                <!--<h5>今日充值金额</h5>-->
+                            <!--</div>-->
+                            <!--<div class="box-content">-->
+                                <!--<h2 class="text-center">0</h2>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="box span6">
+                            <div class="box-header gray-background">
+                                <h5>直播数量</h5>
+                            </div>
+                            <div class="box-content">
+                                <h2 class="text-center">{{liveCount.host}}</h2>
+                            </div>
+                        </div>
+                        <!--<div class="box span6">-->
+                            <!--<div class="box-header gray-background">-->
+                                <!--<h5>今日礼物消耗(金币)</h5>-->
+                            <!--</div>-->
+                            <!--<div class="box-content">-->
+                                <!--<h2 class="text-center">0</h2>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="box span6">
+                            <div class="box-header gray-background">
+                                <h5>嘉宾连线数量</h5>
+                            </div>
+                            <div class="box-content">
+                                <h2 class="text-center">{{liveCount.guest}}</h2>
+                            </div>
+                        </div>
+                        <!--<div class="box span6">-->
+                            <!--<div class="box-header gray-background">-->
+                                <!--<h5>今日提现金额</h5>-->
+                            <!--</div>-->
+                            <!--<div class="box-content">-->
+                                <!--<h2 class="text-center">0</h2>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    </div>
+                    <!--在线用户排行- start-->
+                    <!--<div class="span3 flow_2of4_line1">-->
+                        <!--<div class="box span12">-->
+                            <!--<div class="box-header gray-background">-->
+                                <!--<h5>在线用户排行</h5>-->
+                            <!--</div>-->
+                            <!--<div class="box-content">-->
+                                <!--<ul class="ml0">-->
+                                    <!--<li class="span12 text-center">-->
+                                        <!--<span class="span4">ID</span>-->
+                                        <!--<span class="span4">主播</span>-->
+                                        <!--<span class="span4">在线用户数</span>-->
+                                    <!--</li>-->
+                                <!--</ul>-->
+                                <!--<div class="text-center">-->
+                                    <!--<a href="javascript:;" class="pl10 pr10"><i class="icon-backward"></i></a>-->
+                                    <!--<a href="javascript:;" class="pl10 pr10"><i class="icon-forward"></i></a>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--在线用户排行- end-->
+
+                    <!--置顶 - start -->
+                    <div class="span6">
+                        <div>
+                            <span >Room ID</span>
+                            <input type="text" ng-model="roomId"/>
+                        </div>
+                        <div>
+                            <span >Priority</span>
+                            <input type="text" style="margin-left: 11px" ng-model="priority"/>
+                        </div>
+                        <div>
+                            <input class="btn btn-inverse" type="button" ng-click="setPriority(roomId, priority)"  value="设置" />
+                        </div>
+                        <div class="user_table responsive-table">
+                            <div class="scrollable-area" style="border: none;">
+                                <table class="table table-bordered text-center" style="margin-bottom: 0;border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                                    <thead>
+                                    <tr>
+                                        <th>userID</th>
+                                        <th>nickName</th>
+                                        <th>roomID</th>
+                                        <th>priority</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="roomInfo in roomInfoList">
+                                        <td>{{roomInfo.host}}</td>
+                                        <td>{{roomInfo.hostNickName}}</td>
+                                        <td>{{roomInfo.roomId}}</td>
+                                        <td>{{roomInfo.priority}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- pagination - start -->
+                            <div class="page_nav clearfix">
+                                <p class="pull-right">
+                                    <span ng-class="{true: 'btn disabled', false: ''}[onlineRoom.isFirst]" ng-click="getPage(1,'onlineRoom')"><a href="javascript:;">First</a>&nbsp;<i class="icon-fast-backward"></i></span>&nbsp;
+                                    <span ng-class="{true: 'btn disabled', false: ''}[onlineRoom.isFirst]" ng-click="getPage(onlineRoom.prevPage,'onlineRoom')"><a href="javascript:;">Prev</a>&nbsp;<i class="icon-backward"></i></span>&nbsp;
+                                    <span>{{onlineRoom.currentPage}}</span>
+                                    <span ng-class="{true: 'btn disabled', false: ''}[onlineRoom.isLast]" ng-click="getPage(onlineRoom.nextPage,'onlineRoom')"><i class="icon-forward"></i>&nbsp;<a href="javascript:;">Next</a></span>&nbsp;
+                                    <span ng-class="{true: 'btn disabled', false: ''}[onlineRoom.isLast]" ng-click="getPage(onlineRoom.lastPage,'onlineRoom')"><i class="icon-fast-forward"></i>&nbsp;<a href="javascript:;">Last</a></span>
+                                </p>
+                                <p class="pull-right"><strong>{{"Rooms " + onlineRoom.prevCount  + "-" + onlineRoom.nextCount  + " of " + onlineRoom.totalCount}}</strong></p>
+                            </div>
+                            <!-- pagination - end -->
+                        </div>
+                    </div>
+                    <!--置顶 - end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

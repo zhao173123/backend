@@ -1,0 +1,116 @@
+<div class="row-fluid" ng-controller="financeOrderCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin">
+            <div class="box-header">
+                <!-- <div class="title">筛选条件</div> -->
+                <h4>筛选条件</h4>
+            </div>
+            <div class="box-content filter_box">
+                <!--结算工单-->
+                <!-- filter condition - start -->
+                <form class="form form-horizontal clearfix" id="searchForm" name="searchForm"  method="post" action="#" accept-charset="UTF-8">
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <div class="btn-group add-on span4">
+                                <select class="input-small" ng-model="userIdFlg">
+                                    <option value="UserID">UserID</option>
+                                    <option value="PhoneNum">手机号</option>
+                                </select>
+                            </div>
+                            <span ng-bind="userIdFlg"></span>
+                            <input class="span8 focused" type="number" ng-show="userIdFlg == 'UserID'" ng-model="userInfo.userId" placeholder="请输入UserID" value="">
+                            <input class="span8 focused" type="number" id="mobilePhone" name="mobilePhone" ng-show="userIdFlg == 'PhoneNum'" ng-model="userInfo.mobilePhone"   placeholder="请输入手机号" value="">
+                            <!--<span class="form-control-feedback" ng-show="searchForm.mobilePhone.$dirty && searchForm.mobilePhone.$invalid">输入正确的手机号</span>-->
+                        </div>
+                    </div>
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">分成比例</span>
+                            <select class="span8 focused">
+                                <option>全部</option>
+                                <option>0:10</option>
+                                <option>1:9</option>
+                                <option>2:8</option>
+                                <option>3:7</option>
+                                <option>4:6</option>
+                                <option>5:5</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form_action span12 ml0 mt20 clearfix">
+                        <div class="span12">
+                            <div class="row-fluid text-center">
+                                <input class="btn btn-inverse" type="button"  ng-click="loadData(userInfo)" ng-disabled="searchForm.$invalid" value="查询" />
+                                <!--<input class="btn btn-inverse" type="button" value="导出" />-->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- filter condition - end -->
+                <div class="user_table responsive-table tab_audit">
+                    <div class="hd clearfix span12 mb20">
+                        <label class="pull-left checkbox ml10"><input type="checkbox"/>全选</label>
+                        <label class="pull-left checkbox ml10"><input type="checkbox"/>反选</label>
+                        <a href="javascript:;" class="btn btn-default pull-left ml10">审核通过</a>
+                        <a href="javascript:;" class="btn btn-default pull-left ml10">审核不通过</a>
+                        <a href="javascript:;" class="btn btn-default pull-left ml10">下载表格</a>
+                        <a href="javascript:;" class="btn btn-default pull-right">上传付款结果</a>
+                    </div>
+                    <!-- filter table - start -->
+                    <div class="scrollable-area">
+                        <table class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <th><p style="width: 30px;">&nbsp;</p></th>
+                            <th>工单ID</th>
+                            <th>UserID</th>
+                            <th>NickName</th>
+                            <th>手机号</th>
+                            <th>真实姓名</th>
+                            <th>结算金额</th>
+                            <th>计价货币</th>
+                            <th>底薪</th>
+                            <th>提现V票</th>
+                            <th>分成比例</th>
+                            <th>月直播时长</th>
+                            <th>超出时长</th>
+                            <th>奖励金额</th>
+                            <th>惩罚金额</th>
+                            <th>结算银行</th>
+                            <th>开户名称</th>
+                            <th>工单状态</th>
+                            <th>结算单生成时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><input type="checkbox"/></td>
+                            <td>1111111</td>
+                            <td>1111111</td>
+                            <td>high ya</td>
+                            <td>13800000000</td>
+                            <td>海燕</td>
+                            <td>1111111</td>
+                            <td>人民币</td>
+                            <td>5000</td>
+                            <td>2000</td>
+                            <td>1:9</td>
+                            <td>100000</td>
+                            <td>1111111</td>
+                            <td>1111111</td>
+                            <td>1111111</td>
+                            <td>1111111</td>
+                            <td>1111111</td>
+                            <td>1111111</td>
+                            <td>2016/6/12 16:22:32</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    <!-- filter table - end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,152 @@
+<div class="row-fluid" ng-controller="replayCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin">
+            <div class="box-header">
+                <h4>回放查询和管理</h4>
+            </div>
+            <div class="box-content js-page">   <!--no-title-->
+                <!--<div ng-hide="0">目前还没有回放哦~</div>-->
+                <form class="clearfix">
+                    <label class="span6">
+                        <span class="lh30 pull-left mr10">回放标题</span>
+                        <input class="pull-left" type="text" class="form-control" ng-model="titleReq" value=""/>
+                    </label>
+                    <label class="span6">
+                        <span class="lh30 pull-left mr10">所在频道</span>
+                        <select class="span12 ml10" style="width: 220px;"  ng-model="reqChannelId" ng-options="t.channelId as t.channelName for t in chanelList">
+                            <option value="">所有频道</option>
+                        </select>
+                    </label>
+                </form>
+                <div class="mt20 pt10 clearfix">
+                    <div class="span12">
+                        <div class="row-fluid text-center">
+                            <input class="btn btn-default pull-left" type="button" ng-click="loadReplayList(titleReq, reqChannelId)" value="查询" />
+                            <input class="btn btn-default pull-left" type="button" style="margin-left: 20px;" ng-click="openModal('#replayModel', 'new')" value="添加回放" />
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-bordered text-center mt20">
+                    <thead>
+                    <tr>
+                        <th>回放标题</th>
+                        <th ng-click="col='createTime';desc=!desc">创建时间<span class="icon-sort" ng-hide="col=='createTime'"></span><span class="icon-sort-up" ng-show="col=='createTime' && !desc"></span><span class="icon-sort-down" ng-show="col=='createTime' && desc"></span></th>
+                        <th>标签</th>
+                        <th>频道名称</th>
+                        <th>位置</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in replayList|orderBy:col:desc">
+                        <td>{{item.title}}</td>
+                        <td>{{item.createTime}}</td>
+                        <td>{{item.custom}}</td>
+                        <td>{{item.chName}}</td>
+                        <td>{{item.position}}</td>
+                        <td>{{item.isDisabled ? '未发布':'已发布'}}</td>
+                        <td>
+                            <input type="button" class="btn btn-default ml10" ng-click="openModal('#replayModel', 'edit', item.id)" value="编辑"/>
+                            <input type="button" class="btn btn-default ml10" ng-click="openModal('#confirmModal', 'release', item.id)" value="发布"/>
+                            <!--<input type="button" ng-disabled="item.isDisabled" class="btn btn-default ml10" ng-click="openModal('#confirmModal', 'cancel', item.id)" value="撤销"/>-->
+                            <input type="button"  class="btn btn-default ml10" ng-click="openModal('#confirmModal', 'delete', item.id)" value="删除"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--删除 - 摸态框-->
+    <div id="confirmModal" class="modal hide modal-mini" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>提示</h3>
+        </div>
+        <div class="modal-body">
+            <p>您确定{{confirmTag}}该回放吗？</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary" ng-if="confirmTag=='删除'" ng-click="deleteReplay()">确定</button>
+            <button class="btn btn-primary" ng-if="confirmTag=='发布'" ng-click="relCanReplay(false)">确定</button>
+            <button class="btn btn-primary" ng-if="confirmTag=='撤销'" ng-click="relCanReplay(true)">确定</button>
+        </div>
+    </div>
+    <!--删除 - 摸态框-->
+
+    <!--添加/编辑回放 - 摸态框-->
+    <div id="replayModel" class="modal hide modal-lg replay_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>编辑回放</h3>
+        </div>
+        <div class="modal-body">
+            <form name="formEditReplay">
+                <label class="clearfix">
+                    <span class="pull-left lh30 mr10"><em class="text-contrast pr10">*</em>标题</span>
+                    <input class="pull-left span6" name="title" type="text" value="" ng-model="repInfo.title" placeholder="请输入标题" ng-maxlength="20" required/>
+                    <span ng-show="formEditReplay.title.$dirty && formEditReplay.title.$invalid" style="color:#b94a48">输入内容请控制在20个汉字以内</span>
+                </label>
+                <label class="clearfix">
+                    <span class="pull-left lh30 mr10"><em class="text-contrast pr10">*</em>主播名称</span>
+                    <input class="pull-left span6" name="detailTitle" type="text" value="" ng-model="repInfo.detailTitle" placeholder="请输入主播名称" ng-maxlength="12" required/>
+                    <span ng-show="formEditReplay.detailTitle.$dirty && formEditReplay.detailTitle.$invalid" style="color:#b94a48">输入内容请控制在12个汉字以内</span>
+                </label>
+                <label class="clearfix">
+                    <span class="pull-left lh30 mr10"><em class="text-contrast pr10">*</em>副标题</span>
+                    <input class="pull-left span6" name="subTitle" type="text" value="" ng-model="repInfo.subTitle" placeholder="请输入副标题"  required/>
+                </label>
+                <label class="clearfix">
+                    <span class="pull-left lh30 mr10"><em class="text-contrast pr10">*</em>图片</span>
+                    <span class="pull-left btn"  ngf-select="upload($file, 'coverImgSrc')">上传封面图片</span>
+                    <span class="pull-left lh30 text-error ml20">*图片宽高比须为16:9！！</span>
+                    <span class="pull-left btn"  ngf-select="upload($file, 'avatarImgSrc')">上传头像图片</span>
+                    <p class="span12" style="margin: 10px 0 10px 100px;">
+                        <img ng-show="coverImgSrc != ''" ng-src="{{coverImgSrcBase ? coverImgSrcBase : coverImgSrc}}" style="width: 160px; height: 90px;">
+                        <img ng-show="avatarImgSrc != ''" ng-src="{{avatarImgSrcBase ? avatarImgSrcBase : avatarImgSrc}}" style="width: 100px; height: 100px; margin-left: 125px">
+                    </p>
+                </label>
+                <label class="clearfix">
+                    <span class="pull-left lh30 mr10"><em class="text-contrast pr10">*</em>视频链接</span>
+                    <input class="pull-left span6" type="text" value="" ng-model="repInfo.videoUrl" placeholder="请输入视频链接" required/>
+                </label>
+                <label class="clearfix">
+                    <span class="pull-left lh30 mr10"><em class="text-contrast pr10">*</em>标签自定义</span>
+                    <input class="pull-left span6" name="custom" type="text" value="" ng-model="repInfo.custom" placeholder="请输入文案" required/>
+                    <span ng-show="formEditReplay.custom.$dirty && formEditReplay.custom.$invalid" style="color:#b94a48">输入内容请控制在6个汉字以内</span>
+                </label>
+                <label class="clearfix">
+                    <span class="pull-left lh30 mr10"><em class="text-contrast pr10">*</em>时长</span>
+                    <input class="pull-left span6" type="text" value="" ng-model="repInfo.duration" placeholder="HH:MM:SS" required/>
+                </label>
+                <label class="clearfix">
+                    <span class="pull-left lh30 mr10"><em class="text-contrast pr10">*</em>频道</span>
+                    <div class="pull-left" style="width: 281px; margin: 0 0 20px 0">
+                        <label class="checkbox inline offset1" style="margin-left: 10px" ng-repeat="channel in chanelList">
+                            <input type="checkbox" ng-model="channelId" ng-checked="isSelected(channel.channelId)" ng-click="updateSelection($event, channel.channelId)" value="{{channel.channelId}}" />{{channel.channelName}}
+                        </label>
+                    </div>
+                    <span class="lh30 text-error ml20">*不可单独设置为推荐！</span>
+                </label>
+                <label class="clearfix">
+                    <span class="pull-left lh30 mr10">设置位置</span>
+                    <input class="pull-left span6" type="number" value="" ng-model="repInfo.position" placeholder="0"/>
+                    <span class="lh30 text-error ml20">*不填写默认为0！</span>
+                </label>
+                <label class="clearfix">
+                    <span class="pull-left lh30 mr10"><em class="text-contrast pr10">*</em>内容简介</span>
+                    <textarea rows="10" class="span6 pull-left" ng-change="" ng-model="repInfo.detail"></textarea>
+                </label>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary" ng-click="submitNewAd(repInfo, '#replayModel')">确定</button>
+        </div>
+    </div>
+    <!--添加礼物 - 摸态框-->
+</div>
+

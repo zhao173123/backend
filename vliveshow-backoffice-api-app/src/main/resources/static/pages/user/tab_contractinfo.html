@@ -1,0 +1,174 @@
+<!-- 合作资料 - start -->
+<!-- <div class="tab-pane" id="cooperation"> -->
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="box user_info">
+                <div class="box-header">
+                    <div class="title">主播合约</div>
+                </div>
+                <div class="box-content" ng-controller="contractInfoCtrl">
+                    <!--对不起！暂无相关的主播合约-->
+                    <form class="form form-horizontal clearfix" name="contractForm" method="post" action="#" accept-charset="UTF-8">
+                        <input name="authenticity_token" type="hidden">
+                        <div class="row-fluid">
+                            <div class="span12 tab_contractinfo">
+                                <ul class="span6">
+                                    <li class="clearfix">
+                                        <label><em class="text-contrast pr10">*</em> 主播来源类型：</label>
+                                        <select class="input-small ml10"  ng-model="managementTeamType" ng-options="option.id as option.value for option in manageTypeList">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </li>
+                                    <li class="clearfix">
+                                        <label><em class="text-contrast pr10">*</em> 主播申请方式：</label>
+                                        <select class="input-small ml10" ng-model="applyType" ng-options="option.id as option.value for option in applyTypeList">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </li>
+                                    <li class="clearfix">
+                                        <label><em class="text-contrast pr10">*</em> 签约类型：</label>
+                                        <label class="radio inline"><input type="radio" name="contract-type" ng-model="contractType" value="1">素人</label>
+                                        <label class="radio inline"><input type="radio" name="contract-type" ng-model="contractType" value="2">专家</label>
+                                        <label class="radio inline"><input type="radio" name="contract-type" ng-model="contractType" value="3">明星</label>
+                                        <label class="radio inline"><input type="radio" name="contract-type" ng-model="contractType" value="4">公会</label>
+                                        <label class="radio inline"><input type="radio" name="contract-type" ng-model="contractType" value="5">未签约</label>
+                                    </li>
+                                    <li class="clearfix">
+                                        <label><em class="text-contrast pr10">*</em> 主播类型：</label>
+                                        <!--<select style="width: 130px" name="talentType" ng-model="talentType" ng-options="t.id as t.value for t in talentList" required></select>-->
+                                        <div style="width: 281px;">
+                                            <label class="checkbox inline offset1" style="margin-left: 10px" ng-repeat="talent in talentList">
+                                                <input type="checkbox" ng-model="talentType" name="{{talent.value}}" ng-checked="isSelected(talent.id)" ng-click="updateSelection($event, talent.id)" value="{{talent.id}}" />{{talent.value}}
+                                            </label>
+                                        </div>
+
+                                    </li>
+                                    <li class="clearfix">
+                                        <label><em class="text-contrast pr10">*</em> 月时长要求：</label>
+                                        <input class="input-large" name="requiredHours" ng-model="requiredHours" type="number" ng-min="1" ng-max="9999" step="0.1" max="9999.9" value="" placeholder="请输入月时长要求"/>
+                                        <span class="text-error" ng-show="contractForm.requiredHours.$invalid">请正确输入月时长要求</span>
+                                    </li>
+                                    <li class="clearfix">
+                                        <label><em class="text-contrast pr10">*</em> 底薪：</label>
+                                        <input class="input-large" type="number" name="salaryAmount" ng-model="baseSalary.amount" ng-min="0" step="0.01" ng-pattern="/^\d+(\.\d{1,2})?$/" value="" placeholder="请输入底薪"/>
+                                        <select class="input-small ml10" name="salaryCurrency" ng-model="baseSalary.currency" ng-options="option.id as option.value for option in currencyList"></select>
+                                        <span class="text-error" ng-show="contractForm.salaryAmount.$invalid">请正确输入底薪数额</span>
+                                    </li>
+                                    <li class="clearfix">
+                                        <label><em class="text-contrast pr10">*</em> 分成比例：</label>
+                                        <input class="input-mini" type="number" name="platformShareRate" ng-model="platformShareRate" ng-min="0" ng-max="100" step="0.01" ng-pattern="/^\d+(\.\d{1,2})?$/" value="" placeholder="平台"/>
+                                        <font class="pl10 pr10">:</font>
+                                        <input class="input-mini" type="number" name="hostShareRate" ng-model="hostShareRate" value="{{platformShareRate ? 100 - platformShareRate : ''}}" placeholder="主播"/>
+                                        <span class="text-error" ng-show="contractForm.platformShareRate.$invalid">请正确输入分成比例</span>
+                                    </li>
+                                    <li class="clearfix">
+                                        <label><em class="text-contrast pr10">*</em> 结算基数：</label>
+                                        <input class="input-large" name="settlementBase" ng-model="settlementBase" ng-min="0" step="0.001" ng-pattern="/^\d+(\.\d{1,3})?$/" type="number" value="" placeholder="请输入结算基数"/>
+                                        <span class="text-error" ng-show="contractForm.settlementBase.$invalid">请正确输入结算基数</span>
+                                    </li>
+                                    <li class="clearfix">
+                                        <label><em class="text-contrast pr10">*</em> 结算日期：</label>
+                                        <input class="input-large" name="settlementDueDay" ng-model="settlementDueDay" type="number" ng-min="1" ng-max="31" value="" placeholder="请输入结算日期"/>
+                                        <span class="text-error" ng-show="contractForm.settlementDueDay.$invalid">请正确输入结算日期</span>
+                                        <!--<input placeholder="请输入结算日期" type="text" id="statementDate" class="date-select input-large" ng-click="laydate(normalDate)"/>-->
+                                    </li>
+                                    <li class="clearfix">
+                                        <label><em class="text-contrast pr10">*</em> 管理人：</label>
+                                        <select class="input-small" name="directorId" ng-model="directorId" ng-options="t.userId as t.nickName for t in directors"></select>
+                                        <select class="input-small ml10" name="supervisorId" ng-model="supervisorId" ng-options="t.userId as t.nickName for t in managers"></select>
+                                        <select class="input-small ml10" name="agentId" ng-model="agentId" ng-options="t.userId as t.nickName for t in agents"></select>
+                                    </li>
+                                    <li class="clearfix">
+                                        <label><em class="text-contrast pr10">*</em> 结算银行：</label>
+                                        <input class="input-large" name="bankName" ng-model="bankName" type="text" value="" placeholder="请输入结算银行"/>
+                                    </li>
+                                    <li class="clearfix">
+                                        <label><em class="text-contrast pr10">*</em> 银行账号：</label>
+                                        <input class="input-large" name="bankAccount" ng-model="bankAccount" type="text" value="" placeholder="请输入银行账号"/>
+                                    </li>
+                                    <li class="clearfix">
+                                        <label><em class="text-contrast pr10">*</em> 合约起始时间：</label>
+                                        <input placeholder="请输入开始时间" type="text" ng-model="startDate" id="contractDateStart" class="date-select input-large" ng-click="laydate(normalDate, 'startDate')" value="{{startDate}}"/>
+                                    </li>
+                                    <li class="clearfix">
+                                        <label><em class="text-contrast pr10">*</em> 合约结束日期：</label>
+                                        <input placeholder="请输入结束日期" type="text" ng-model="endDate" id="contractDateEnd" class="date-select input-large" ng-click="laydate(normalDate, 'endDate')" value="{{endDate}}"/>
+                                    </li>
+
+                                    <li class="clearfix">
+                                        <label>上传合约：</label>
+                                        <div class="btn" ng-model="contractFile" ngf-select="upload($file,null, contractFiles)">上传文件</div>
+
+                                        <!--<span class="progress_bar" ng-show="progress >= 0">-->
+                                            <!--<div style="width:{{progress}}%" ng-bind="progress + '%'"></div>-->
+                                        <!--</span>-->
+                                    </li>
+                                    <li class="clearfix" ng-repeat="file in contractFiles" >
+                                        <label></label>
+                                        <a href="javascript:;" class="text-primary hover_line" style="width: 200px;" ng-click="openModal('#viewModel', file.fileAddress)">{{file.fileName}}</a>
+                                        <a href="javascript:;" class="text-primary hover_line ml10" ng-click="deleteFile($index, contractFiles)">删除</a>
+                                    </li>
+
+                                </ul>
+
+                                <ul class="span6">
+                                    <li class="clearfix">
+                                        <label>身份证扫描件（正）：</label>
+                                        <p class="pull-left">
+                                            <div class="btn" ng-model="contractFile" ngf-select="upload($file, 'idCardFace')">上传文件</div>
+                                            <!--<a href="javascript:;" class="btn upload_file">选择文件<input type="file" iden-front="idenFrontImgFile"/></a>-->
+                                            <!--<a href="javascript:;" class="btn ml10">上传文件</a>-->
+                                            <span class="id_img mt10">
+                                                <img ng-src="{{idCardFace.fileAddress}}" style="max-width:285px;max-height:180px"/>
+                                            </span>
+                                        </p>
+                                    </li>
+                                    <li class="clearfix">
+                                        <label>身份证扫描件（反）：</label>
+                                        <p class="pull-left">
+                                            <div class="btn" ng-model="contractFile" ngf-select="upload($file, 'idCardBack')">上传文件</div>
+                                            <!--<a href="javascript:;" class="btn upload_file">选择文件<input type="file" iden-back="idenBackImgFile"/></a>-->
+                                            <!--<a href="javascript:;" class="btn ml10" >上传文件</a>-->
+                                            <span class="id_img mt10">
+                                                <img ng-src="{{idCardBack.fileAddress}}" style="max-width:285px;max-height:180px"/>
+                                            </span>
+                                        </p>
+                                    </li>
+                                    <li class="clearfix">
+                                        <label>身份证扫描件（手持正面）：</label>
+                                        <p class="pull-left">
+                                            <div class="btn" ng-model="contractFile" ngf-select="upload($file, 'idCardHold')">上传文件</div>
+                                            <!--<a href="javascript:;" class="btn upload_file">选择文件<input type="file" iden-hand="idenHandImgFile"/></a>-->
+                                            <!--<a href="javascript:;" class="btn ml10" >上传文件</a>-->
+                                            <span class="id_img mt10">
+                                                <img ng-src="{{idCardHold.fileAddress}}" style="max-width:285px;max-height:180px"/>
+                                            </span>
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="form_action span12 ml0 clearfix">
+                                <div class="span12">
+                                    <div class="row-fluid text-center">
+                                        <a href="javascript:;"  ng-class="{true: 'btn btn-inverse disabled', false: 'btn btn-inverse'}[isSaveBtnDis]" ng-click="save()" type="">保存</a>
+                                        <a href="javascript:;" class="btn btn-inverse" type="">放弃</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!--预览 - 摸态框-->
+                    <div id="viewModel" class="modal hide modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="height:80%;">
+                        <div class="modal-body" style="height:100%;max-height: 100%; padding: 0;overflow: hidden;">
+                            <embed ng-src="{{pdfPreview}}" style="width:100%; height: 100%;"></embed>
+                        </div>
+                    </div>
+                    <!--预览 - 摸态框-->
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- </div> -->
+<!-- 合作资料 - end -->

@@ -1,0 +1,267 @@
+<div class="row-fluid" ng-controller="anchorCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin">
+            <div class="box-header">
+                <!-- <div class="title">筛选条件</div> -->
+                <h4>筛选条件</h4>
+            </div>
+            <div class="box-content filter_box">
+                <!-- filter condition - start -->
+                <form class="form form-horizontal clearfix" id="searchForm" name="searchForm"  method="post" action="#" accept-charset="UTF-8">
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <div class="btn-group add-on span4">
+                                <select class="input-small" ng-model="userIdFlg">
+                                    <option value="UserID">UserID</option>
+                                    <option value="手机号">手机号</option>
+                                </select>
+                            </div>
+                            <span ng-bind="userIdFlg"></span>
+                            <input class="span8 focused" type="number" ng-show="isUserId()" ng-model="userInfo.userId" placeholder="请输入UserID" value="">
+                            <input class="span8 focused" type="number" id="mobilePhone" name="mobilePhone" ng-hide="isUserId()" ng-model="userInfo.mobilePhone"  ng-pattern="/^1[3|4|5|7|8]\d{9}$/" placeholder="请输入手机号" value="">
+                            <span class="form-control-feedback" ng-show="searchForm.mobilePhone.$dirty && searchForm.mobilePhone.$invalid">输入正确的手机号</span>
+                        </div>
+                    </div>
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">等级</span>
+                            <input class="span4 focused" id="rankMin" name="rankMin" ng-model="userInfo.rankMin" type="number" ng-pattern="/^\+?[0-9][0-9]*$/" placeholder="请输入等级">
+                            <span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>
+                            <input class="span4 focused" id="rankMax" name="rankMax" ng-model="userInfo.rankMax" type="number" ng-min="getSearchMin(userInfo.rankMin)" placeholder="请输入等级" style="border-radius:4px;">
+                            <span class="form-control-feedback" ng-show="searchForm.rankMax.$dirty && searchForm.rankMax.$invalid">第二个输入框请输入大于或等于<i style="font-style: normal; padding:0 4px;" ng-bind="getSearchMin(userInfo.rankMin)"></i>的数字</span>
+                            <span class="form-control-feedback" ng-show="searchForm.rankMin.$dirty && searchForm.rankMin.$invalid">请正确输入等级数</span>
+                        </div>
+                    </div>
+                    <!--<div class="control-group span4">-->
+                        <!--<div class="input-prepend span12">-->
+                            <!--<span class="add-on span4">充值金额</span>-->
+                            <!--<input class="span4" type="tel" placeholder="请输入充值金额">-->
+                            <!--<span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>-->
+                            <!--<input class="span4" type="tel" placeholder="请输入充值金额" style="border-radius:4px;">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">NickName</span>
+                            <input class="span8 focused" ng-model="userInfo.nickName" type="text" placeholder="请输入昵称">
+                        </div>
+                    </div>
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">经验值</span>
+                            <input class="span4 focused" id="xpMin" name="xpMin" ng-model="userInfo.xpMin" type="number" ng-pattern="/^\+?[0-9][0-9]*$/" placeholder="请输入经验值">
+                            <span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>
+                            <input class="span4 focused" id="xpMax" name="xpMax" ng-model="userInfo.xpMax" type="number" ng-min="getSearchMin(userInfo.xpMin)" placeholder="请输入经验值" style="border-radius:4px;">
+                            <span class="form-control-feedback" ng-show="searchForm.xpMax.$dirty && searchForm.xpMax.$invalid">第二个输入框请输入大于或等于<i style="font-style: normal; padding:0 4px;" ng-bind="getSearchMin(userInfo.xpMin)"></i>的数字</span>
+                            <span class="form-control-feedback" ng-show="searchForm.xpMin.$dirty && searchForm.xpMin.$invalid">请正确输入粉丝数</span>
+                        </div>
+                    </div>
+                    <!--<div class="control-group span4">-->
+                        <!--<div class="input-prepend span12">-->
+                            <!--<span class="add-on span4">消费金额</span>-->
+                            <!--<input class="span4" type="tel" placeholder="请输入消费金额">-->
+                            <!--<span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>-->
+                            <!--<input class="span4" type="tel" placeholder="请输入消费金额" style="border-radius:4px;">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="control-group span4">-->
+                        <!--<div class="input-prepend span12">-->
+                            <!--<span class="add-on span4">姓名</span>-->
+                            <!--<input class="span8" type="text" placeholder="请输入姓名">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">关注数</span>
+                            <input class="span4 focused" id="followMin" name="followMin" ng-model="userInfo.followMin" ng-pattern="/^\+?[0-9][0-9]*$/" type="number" placeholder="请输入关注数">
+                            <span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>
+                            <input class="span4 focused" id="followMax" name="followMax" ng-model="userInfo.followMax" type="number" ng-min="getSearchMin(userInfo.followMin)" placeholder="请输入关注数" style="border-radius:4px;">
+                            <span class="form-control-feedback" ng-show="searchForm.followMax.$dirty && searchForm.followMax.$invalid">第二个输入框请输入大于或等于<i style="font-style: normal; padding:0 4px;" ng-bind="getSearchMin(userInfo.followMin)"></i>的数字</span>
+                            <span class="form-control-feedback" ng-show="searchForm.followMin.$dirty && searchForm.followMin.$invalid">请正确输入关注数</span>
+                        </div>
+                    </div>
+                    <!--<div class="control-group span4">-->
+                        <!--<div class="input-prepend span12">-->
+                            <!--<span class="add-on span4">余额</span>-->
+                            <!--<input class="span4" type="tel" placeholder="请输入余额">-->
+                            <!--<span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>-->
+                            <!--<input class="span4" type="tel" placeholder="请输入余额" style="border-radius:4px;">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">性别</span>
+                            <div class="uneditable-input span8">
+                                <label class="checkbox inline span3 offset1" ng-repeat="gender in genderList">
+                                    <input type="checkbox" name="{{gender.value}}"  ng-click="updateSelection($event,gender.value, 'Gender')" value="{{gender.value}}" />{{gender.name}}
+                                </label>
+
+                                <!--<label class="checkbox inline span3 offset1">-->
+                                <!--<input type="checkbox" ng-model="userInfo.male" name="sex" value="male"/>男-->
+                                <!--</label>-->
+                                <!--<label class="checkbox inline span3">-->
+                                <!--<input type="checkbox" ng-model="userInfo.female" name="sex" value="female"/>女-->
+                                <!--</label>-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="control-group span4">-->
+                        <!--<div class="input-prepend span12">-->
+                            <!--<span class="add-on span4">好友数</span>-->
+                            <!--<input class="span4" type="tel" placeholder="请输入好友数">-->
+                            <!--<span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>-->
+                            <!--<input class="span4" type="tel" placeholder="请输入好友数" style="border-radius:4px;">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="control-group span4">-->
+                        <!--<div class="input-prepend span12">-->
+                            <!--<span class="add-on span4">管理人</span>-->
+                            <!--<select class="span8">-->
+                                <!--<option>管理人</option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="control-group span4" style="min-width:500px; ">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">角色</span>
+                            <div class="uneditable-input span8">
+                                <label class="checkbox inline offset1" ng-repeat="role in roleList">
+                                    <input type="checkbox" name="{{role.value}}" ng-disabled="role.value == 'HOST'" ng-checked="role.value == 'HOST'"  ng-click="updateSelection($event,role.value, 'Role')" value="{{role.value}}" />{{role.name}}
+                                </label>
+
+                                <!--<label class="checkbox inline offset1">-->
+                                <!--<input type="checkbox" name="role" value="host"/>主播-->
+                                <!--</label>-->
+                                <!--<label class="checkbox inline">-->
+                                <!--<input type="checkbox" name="role" value="specialUser"/>特殊用户-->
+                                <!--</label>-->
+                                <!--<label class="checkbox inline">-->
+                                <!--<input type="checkbox" name="role" value="superUser"/>场控-->
+                                <!--</label>-->
+                                <!--<label class="checkbox inline">-->
+                                <!--<input type="checkbox" name="role" value="audience"/>普通-->
+                                <!--</label>-->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">粉丝数</span>
+                            <input class="span4 focused" id="fansMin" name="fansMin" ng-model="userInfo.fansMin" type="number" ng-pattern="/^\+?[0-9][0-9]*$/" placeholder="请输入粉丝数">
+                            <span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>
+                            <input class="span4 focused" id="fansMax" name="fansMax" ng-model="userInfo.fansMax" type="number" ng-min="getSearchMin(userInfo.fansMin)" placeholder="请输入粉丝数" style="border-radius:4px;">
+                            <span class="form-control-feedback" ng-show="searchForm.fansMax.$dirty && searchForm.fansMax.$invalid">第二个输入框请输入大于或等于<i style="font-style: normal; padding:0 4px;" ng-bind="getSearchMin(userInfo.fansMin)"></i>的数字</span>
+                            <span class="form-control-feedback" ng-show="searchForm.fansMin.$dirty && searchForm.fansMin.$invalid">请正确输入粉丝数</span>
+                        </div>
+                    </div>
+
+                    <div class="form_action span12 ml0 mt20 clearfix">
+                        <div class="span12">
+                            <div class="row-fluid text-center">
+                                <input class="btn btn-inverse" type="button"  ng-click="loadData(userInfo)" ng-disabled="searchForm.$invalid" value="查询" />
+                                <input class="btn btn-inverse" type="button" value="导出" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- filter condition - end -->
+                <div class="user_table responsive-table">
+                    <div class="scrollable-area">
+                        <!--<div id="grid1" class="gridStyle" ui-grid="gridOptions" ui-grid-auto-resize></div>-->
+                        <!-- filter table - start -->
+                        <table class="table table-bordered text-center">
+                            <thead>
+                            <tr>
+                                <th class="m_action" ng-click="columnSort('userId')">
+                                    UserID
+                                    <span ng-if="userIdSort==''" class="icon-sort"></span>
+                                    <span ng-if="userIdSort=='asc'" class="icon-sort-up"></span>
+                                    <span ng-if="userIdSort=='desc'"  class="icon-sort-down"></span>
+                                </th> <!-- icon-caret-up -->
+                                <th><p>LoginName</p></th>
+                                <th><p>NickName</p></th>
+                                <th>手机号</th>
+                                <th>等级&nbsp;
+                                    <!--<span class="icon-glass"></span>-->
+                                </th>
+                                <th>经验值</th>
+                                <th>性别</th>
+                                <th>姓名</th>
+                                <th class="m_action" ng-click="columnSort('following')">
+                                    关注数&nbsp;
+                                    <span ng-if="followingSort==''" class="icon-sort"></span>
+                                    <span ng-if="followingSort=='asc'" class="icon-sort-up"></span>
+                                    <span ng-if="followingSort=='desc'"  class="icon-sort-down"></span>
+                                </th>
+                                <th >好友数&nbsp;
+                                    <!--<span class="icon-glass"></span>-->
+                                </th>
+                                <th class="m_action" ng-click="columnSort('follower')">
+                                    粉丝数&nbsp;
+                                    <span ng-if="followerSort==''" class="icon-sort"></span>
+                                    <span ng-if="followerSort=='asc'" class="icon-sort-up"></span>
+                                    <span ng-if="followerSort=='desc'"  class="icon-sort-down"></span>
+                                </th>
+                                <th >充值金额&nbsp;
+                                    <!--<span class="icon-glass"></span>-->
+                                </th>
+                                <th >消费金额&nbsp;
+                                    <!--<span class="icon-glass"></span>-->
+                                </th>
+                                <th >余额&nbsp;
+                                    <!--<span class="icon-glass"></span>-->
+                                </th>
+                                <th>注册时间</th>
+                                <th>第三方登录</th>
+                                <th>渠道来源</th>
+                                <th>设备平台</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr ng-repeat="user in list">
+                                <td><a ui-sref="^.moreInfoAnchor({userId:user.userId,navIndex:'01'})" href="javascript:;" title="点击可查看用户详情" class="m_action">{{user.userId}}</a></td>
+                                <td><p></p></td>
+                                <td><p>{{user.nickName}}</p></td>
+                                <td>{{user.mobilePhone}}</td>
+                                <td>{{user.level}}</td>
+                                <td>{{user.experience}}</td>
+                                <td>
+                                    <span ng-if="user.gender=='MALE'">男</span>
+                                    <span ng-if="user.gender=='FEMALE'">女</span>
+                                </td>
+                                <td></td>
+                                <td>{{user.following}}</td>
+                                <td></td>
+                                <td>{{user.follower}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{user.create_time}}</td>
+                                <td>{{user.thirdparty_platform}}</td>
+                                <td></td>
+                                <td>IOS</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- filter table - end -->
+                    </div>
+
+                    <!-- pagination - start -->
+                    <div class="page_nav clearfix">
+                        <p class="pull-right">
+                            <span ng-class="{true: 'btn disabled', false: ''}[isFirst]" ng-click="getPage(1)"><a href="javascript:;">First</a>&nbsp;<i class="icon-fast-backward"></i></span>&nbsp;
+                            <span ng-class="{true: 'btn disabled', false: ''}[isFirst]" ng-click="getPage(prevPage)"><a href="javascript:;">Prev</a>&nbsp;<i class="icon-backward"></i></span>&nbsp;
+                            <span>{{currentPage}}</span>
+                            <span ng-class="{true: 'btn disabled', false: ''}[isLast]" ng-click="getPage(nextPage)"><i class="icon-forward"></i>&nbsp;Next</span>&nbsp;
+                            <span ng-class="{true: 'btn disabled', false: ''}[isLast]" ng-click="getPage(lastPage)"><i class="icon-fast-forward"></i>&nbsp;<a href="javascript:;">Last</a></span>
+                        </p>
+                        <p class="pull-right"><strong>{{"Users " + prevCount  + "-" + nextCount  + " of " + totalCount}}</strong></p>
+                    </div>
+                    <!-- pagination - end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

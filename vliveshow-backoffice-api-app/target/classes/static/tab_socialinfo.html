@@ -1,0 +1,131 @@
+<!-- 社交信息 - start -->
+<!-- <div class="tab-pane" id="social"> -->
+<div class="row-fluid">
+    <div class="span12">
+        <div class="box social_info">
+            <div class="box-header">
+                <div class="title">社交资料</div>
+            </div>
+            <div class="box-content"  ng-controller="socialInfoCtrl">
+                <form class="form form-horizontal clearfix" style="margin-bottom: 0;" method="post" action="#" accept-charset="UTF-8">
+                    <input name="authenticity_token" type="hidden">
+                    <div class="row-fluid">
+                        <!-- 关注用户 - start -->
+                        <div class="span12 mb20">
+                            <div class="span3" style="max-width: 150px;">关注用户：<span class="text-primary">{{followingPage.totalCount}}</span></div>
+                            <div class="box-content auto_table pull-left">  <!-- <div class="box-content span9 auto_table">-->
+                                <p ng-show="followingCount == '0'" style="line-height: 70px;">你还没有关注人哦，很多达人等你关注！</p>
+                                <!--关注列表-->
+                                <table class="table table-bordered text-center" ng-hide="followingCount == '0'">
+                                    <thead>
+                                    <tr>
+                                        <th class="span3">UserID</th> <!-- icon-caret-up -->
+                                        <th class="span3">LoginName</th>
+                                        <th class="span3">NickName</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="item in followingUser">
+                                        <td>{{item.userId}}</td>
+                                        <td></td>
+                                        <td>{{item.nickName}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <!-- pagination - start -->
+                                <div class="page_nav clearfix" ng-hide="followingCount == '0'">
+                                    <p class="pull-right">
+                                        <span ng-class="{true: 'btn disabled', false: ''}[followingPage.isFirst]" ng-click="getPage(1,'following')"><a href="javascript:;">First</a>&nbsp;<i class="icon-fast-backward"></i></span>&nbsp;
+                                        <span ng-class="{true: 'btn disabled', false: ''}[followingPage.isFirst]" ng-click="getPage(followingPage.prevPage,'following')"><a href="javascript:;">Prev</a>&nbsp;<i class="icon-backward"></i></span>&nbsp;
+                                        <span>{{followingPage.currentPage}}</span>
+                                        <span ng-class="{true: 'btn disabled', false: ''}[followingPage.isLast]" ng-click="getPage(followingPage.nextPage,'following')"><i class="icon-forward"></i>&nbsp;<a href="javascript:;">Next</a></span>&nbsp;
+                                        <span ng-class="{true: 'btn disabled', false: ''}[followingPage.isLast]" ng-click="getPage(followingPage.lastPage,'following')"><i class="icon-fast-forward"></i>&nbsp;<a href="javascript:;">Last</a></span>
+                                    </p>
+                                    <p class="pull-right"><strong>{{"Users " + followingPage.prevCount  + "-" + followingPage.nextCount  + " of " + followingPage.totalCount}}</strong></p>
+                                </div>
+                                <!-- pagination - end -->
+                            </div>
+                        </div>
+                        <!-- 关注用户 -  end -->
+
+                        <!-- 粉丝信息 - start -->
+                        <div class="span12 mb20">
+                            <div class="span3" style="max-width: 150px;">粉丝信息：<span class="text-primary">{{followerPage.totalCount}}</span></div>
+                            <div class="box-content auto_table pull-left">
+                                <p ng-show="followerCount == '0'" style="line-height: 70px;">去直播间互动，给自己攒人气吧</p>
+                                <!--粉丝列表-->
+                                <table class="table table-bordered text-center" ng-hide="followerCount == '0'">
+                                    <thead>
+                                    <tr>
+                                        <th class="span3">UserID</th> <!-- icon-caret-up -->
+                                        <th class="span3">LoginName</th>
+                                        <th class="span3">NickName</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <tr ng-repeat="item in followerUser">
+                                        <td>{{item.userId}}</td>
+                                        <td></td>
+                                        <td>{{item.nickName}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <!-- pagination - start -->
+                                <div class="page_nav clearfix" ng-hide="followerCount == '0'">
+                                    <p class="pull-right">
+                                        <span ng-class="{true: 'btn disabled', false: ''}[followerPage.isFirst]" ng-click="getPage(1,'follower')"><a href="javascript:;">First</a>&nbsp;<i class="icon-fast-backward"></i></span>&nbsp;
+                                        <span ng-class="{true: 'btn disabled', false: ''}[followerPage.isFirst]" ng-click="getPage(followerPage.prevPage,'follower')"><a href="javascript:;">Prev</a>&nbsp;<i class="icon-backward"></i></span>&nbsp;
+                                        <span>{{followerPage.currentPage}}</span>
+                                        <span ng-class="{true: 'btn disabled', false: ''}[followerPage.isLast]" ng-click="getPage(followerPage.nextPage,'follower')"><i class="icon-forward"></i>&nbsp;<a href="javascript:;">Next</a></span>&nbsp;
+                                        <span ng-class="{true: 'btn disabled', false: ''}[followerPage.isLast]" ng-click="getPage(followerPage.lastPage,'follower')"><i class="icon-fast-forward"></i>&nbsp;<a href="javascript:;">Last</a></span>
+                                    </p>
+                                    <p class="pull-right"><strong>{{"Users " + followerPage.prevCount  + "-" + followerPage.nextCount  + " of " + followerPage.totalCount}}</strong></p>
+                                </div>
+                                <!-- pagination - end -->
+                            </div>
+                        </div>
+                        <!-- 粉丝信息 - end -->
+
+                        <!-- 好友信息 - start -->
+                        <!--<div class="span12 mb20">-->
+                        <!--<div class="span2">好友信息：<span class="text-primary">222</span></div>-->
+                        <!--<div class="box-content span10">-->
+                        <!--&lt;!&ndash;好友信息&ndash;&gt;-->
+                        <!--<table class="table table-bordered text-center">-->
+                        <!--<thead>-->
+                        <!--<tr>-->
+                        <!--<th class="m_action">UserID</th> &lt;!&ndash; icon-caret-up &ndash;&gt;-->
+                        <!--<th>LoginName</th>-->
+                        <!--<th>NickName</th>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+
+                        <!--<tr ng-repeat="user in list">-->
+                        <!--<td>{{flowUser.userId}}</td>-->
+                        <!--<td></td>-->
+                        <!--<td>{{flowUser.nickName}}</td>-->
+                        <!--</tr>-->
+                        <!--</tbody>-->
+                        <!--</table>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!-- 好友信息 - start -->
+                    </div>
+                    <!--<div class="form_action span12 ml0 clearfix">-->
+                        <!--<div class="span12">-->
+                            <!--<div class="row-fluid text-center">-->
+                                <!--<a href="javascript:;" class="btn btn-inverse" type="">保存</a>-->
+                                <!--<a href="javascript:;" class="btn btn-inverse" type="">放弃</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- </div> -->
+<!-- 社交信息 - end -->

@@ -1,0 +1,92 @@
+<div class="row-fluid" ng-controller="bookingListCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin responsive-table research">
+            <div class="box-header">
+                <h4>订阅列表</h4>
+            </div>
+            <div class="box-content tab_middle user_table clearfix">
+                <p ng-hide="!startPage && hasCourse">很抱歉，当前还没有订阅！</p>
+                <div class="scrollable-area">
+                    <table ng-show="!startPage && hasCourse" class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <th ng-click="col='id';desc=!desc">订阅ID<span class="icon-sort" ng-hide="col=='id'"></span><span class="icon-sort-up" ng-show="col=='id' && !desc"></span><span class="icon-sort-down" ng-show="col=='id' && desc"></span></th>
+                            <th ng-click="col='courseType';desc=!desc">订阅分类<span class="icon-sort" ng-hide="col=='courseType'"></span><span class="icon-sort-up" ng-show="col=='courseType' && !desc"></span><span class="icon-sort-down" ng-show="col=='courseType' && desc"></span></th>
+                            <th ng-click="col='teacherName';desc=!desc">老师姓名<span class="icon-sort" ng-hide="col=='teacherName'"></span><span class="icon-sort-up" ng-show="col=='teacherName' && !desc"></span><span class="icon-sort-down" ng-show="col=='teacherName' && desc"></span></th>
+                            <th>套课标题</th>
+                            <th>开课时间</th>
+                            <th ng-click="col='start';desc=!desc">开播状态<span class="icon-sort" ng-hide="col=='start'"></span><span class="icon-sort-up" ng-show="col=='start' && !desc"></span><span class="icon-sort-down" ng-show="col=='start' && desc"></span></th>
+                            <th ng-click="col='published';desc=!desc">订阅发布<span class="icon-sort" ng-hide="col=='published'"></span><span class="icon-sort-up" ng-show="col=='published' && !desc"></span><span class="icon-sort-down" ng-show="col=='published' && desc"></span></th>
+                            <th>Priority</th>
+                            <th>订阅操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in courseList|orderBy:col:desc">
+                            <td><p>{{item.id}}</p></td>
+                            <td><p>{{courseType[item.courseType-1]["value"]}}</p></td>
+                            <td><p>{{item.teacherName}}</p></td>
+                            <td ui-sref="^.bookingInfo({classId:item.id,navIndex:'31'})"><p><a href="javascript:;" title="点击可查看课程" class="link_txt">{{item.courseName}}</a></p></td>
+                            <td><p>{{item.startTime}}</p></td>
+                            <td><p>{{item.start?"已开播":"未开播"}}</p></td>
+                            <td><p>{{item.published?"已发布":"未发布"}}</p></td>
+                            <td><p>{{item.priority}}</p></td>
+                            <td>
+                                <p>
+                                    <input type="button"  ui-sref="^.bookingInfo({classId:item.id,navIndex:'31'})" class="btn btn-default" value="查看"/>
+                                    <input type="button"  class="btn btn-default ml10" value="发布" ng-disabled="item.published"  ng-click="courseRelease(item.id)"/>
+                                    <input type="button"  class="btn btn-default ml10" value="下架" ng-disabled="!item.published" ng-click="offShelf('#offShelfModel',item.id)"/>
+                                    <input type="button"  class="btn btn-default ml10" value="删除" ng-disabled="item.published"   ng-click="deleteCourse(item.id)"/>
+                                </p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--删除订阅确认 - start-->
+    <div id="deleteCourse" class="modal hide modal-mini" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>提示</h3>
+        </div>
+        <div class="modal-body">
+            <p>您确定删除该订阅吗？</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary" ng-click="courseDeleteCommit()">确定</button>
+        </div>
+    </div>
+    <!--删除订阅确认 - end-->
+
+    <!--下架 - 摸态框-->
+    <div id="offShelfModel" class="modal hide modal-mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>订阅下架</h3>
+        </div>
+        <div class="modal-body">
+            <p class="clearfix">
+                <label class="pull-left" style="width: 80px;">下架理由：</label>
+                <select class="pull-left span8 ml10" ng-model="selectedOffReason" ng-options="item.id as item.value for item in offReason" ng-change="getOffReason()" >
+                    <option value="">请选择下架理由</option>
+                </select>
+            </p>
+            <p class="clearfix">
+                <label class="pull-left" style="width: 80px;">其他：</label>
+                <textarea rows="10" class="span8 pull-left" ng-model="otherOffReason" ng-disabled="notOtherReason"></textarea>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="offShelfCommit('#offShelfModel')">确认</button>
+            <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">取消</button>
+        </div>
+    </div>
+    <!--下架 - 摸态框-->
+
+</div>
+

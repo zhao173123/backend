@@ -1,0 +1,120 @@
+<div class="row-fluid" ng-controller="bookingCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin">
+            <div class="box-header">
+                <h4>创建订阅（套课统一封面）</h4>
+            </div>
+            <div class="box-content filter_box clearfix">
+                <form>
+                    <div class="tab_contractinfo booking">
+                        <ul class="span12 clearfix">
+                            <li class="span4">
+                                <label>老师ID：</label>
+                                <span><input type="text" class="span12" ng-model="course.teacherId" ng-change="loadNickName(course.teacherId)" value="" placeholder="请输入老师ID"/></span>
+                                <span style="margin-left: 10px; padding-top: 4px; color:red">{{nickName}}</span>
+                            </li>
+                            <li class="span4">
+                                <label>老师姓名：</label>
+                                <input type="text" class="span12" ng-model="course.teacherName" value="" placeholder="请输入老师姓名"/>
+                            </li>
+                            <li class="span4">
+                                <label>课程分类：</label>
+                                <select class="span12 ml10" name="courseType" ng-model="course.courseType" ng-options="t.id as t.value for t in courseTypeList">
+                                    <option value="">请选择类型</option>
+                                </select>
+                            </li>
+                            <li class="span12">
+                                <label>套课标题：</label>
+                                <span style="width:800px"><input type="text" class="span12" ng-model="course.courseName" ng-change="validateStrLength(course.courseName, 10, 60, 'titleMsg')" value="" placeholder="请输入套课标题"/></span>
+                                <span style="margin-left: 10px; color: red;">{{titleMsg}}</span>
+                            </li>
+                            <li class="span12">
+                                <label>上传封面：</label>
+                                <div>
+                                    <span style="color: red">（请上传宽高比为16:9的图片！）</span>
+                                    <span class="btn"  ngf-select="upload($file, 'picCover')">选择图片</span>
+                                    <!--<span class="ml10">请上传格式为jpeg或者png的图片，建议图片大尺寸小于300K</span>-->
+                                    <span class="ml10"><img class="cover_img" ng-show="picCover != ''" ng-src="{{picCoverBase}}"/></span>
+                                </div>
+                            </li>
+                            <li class="span12">
+                                <label>老师介绍：</label>
+                                <span style="width:800px"><textarea rows="10" class="span12" ng-change="validateStrLength(course.teacherDescription, 40, 800, 'teDesMsg')" ng-model="course.teacherDescription"></textarea></span>
+                                <span style="margin-left: 10px; color:red">{{teDesMsg}}</span>
+                            </li>
+                            <li class="span12">
+                                <label>上传头像：</label>
+                                <div>
+                                    <span style="color: red">（请上传宽高比为1:1的图片！）</span>
+                                    <span class="btn"  ngf-select="upload($file, 'picTeacher')">选择图片</span>
+                                    <span class="ml10"><img class="ava_img" ng-show="picTeacher != ''" ng-src="{{picTeacherBase}}"/></span>
+                                </div>
+                            </li>
+                            <li class="span12">
+                                <label>套课描述：</label>
+                                <span style="width:800px"><textarea rows="10" class="span12" ng-change="validateStrLength(course.courseDescription, 40, 800, 'courseDesMsg')" ng-model="course.courseDescription"></textarea></span>
+                                <span style="margin-left: 10px; color:red">{{courseDesMsg}}</span>
+                            </li>
+                            <li class="span12">
+                                <label>上传课程图：</label>
+                                <div>
+                                    <span style="color: red">（请上传宽高比为16:9的图片！）</span>
+                                    <span class="btn"  ngf-select="upload($file, 'picDescription')">选择图片</span>
+                                    <span class="ml10"><img class="cover_img" ng-show="picDescription != ''" ng-src="{{picDescriptionBase}}"/></span>
+                                </div>
+                            </li>
+                            <li class="span12">
+                                <label>单课描述：</label>
+                                <span style="width:800px"><textarea rows="10" class="span12" ng-change="validateStrLength(course.lessonDescription, 40, 800, 'lessonDesMsg')" ng-model="course.lessonDescription"></textarea></span>
+                                <span style="margin-left: 10px; color:red; padding-top: 4px">{{lessonDesMsg}}</span>
+                            </li>
+                            <li class="span5">
+                                <label>嘉宾设置：</label>
+                                <select class="input-large" name="maxParticipants" ng-model="course.maxParticipants" ng-options="t.id as t.value for t in maxParticipantsList">
+                                    <option value="">请选择最高连线人数</option>
+                                </select>
+                            </li>
+                            <li class="span7">
+                                <label>嘉宾金额：</label>
+                                <input type="number" class="input-mini text-center mr10" ng-model="course.priceParticipant" value="0"/>
+                                <span class="lh30">钻</span>
+                                <span style="margin-left: 10px; color:red; padding-top: 4px" ng-show="course.priceParticipant<=0">请输入大于0的数字！</span>
+                            </li>
+                            <!--<li class="span5">-->
+                                <!--<label>围观设置：</label>-->
+                                <!--<label class="radio inline">-->
+                                    <!--<input type="radio" name="allowAudience" ng-model="course.allowAudience" value="1">允许围观-->
+                                <!--</label>-->
+                                <!--<label class="radio inline">-->
+                                    <!--<input type="radio" name="allowAudience" ng-model="course.allowAudience" value="2" ng-click="initAuPrice()">禁止围观-->
+                                <!--</label>-->
+                            <!--</li>-->
+                            <!--<li class="span7" ng-show="course.allowAudience==1">-->
+                            <li class="span12" >
+                                <label>围观金额：</label>
+                                <input type="number" class="input-mini text-center mr10" ng-model="course.priceAudience" value=""/>
+                                <span class="lh30">钻</span>
+                                <span style="margin-left: 10px; color:red; padding-top: 4px" ng-show="course.priceAudience<=0">请输入大于0的数字！</span>
+                            </li>
+                            <li class="span12" >
+                                <label>Priority：</label>
+                                <input type="number" class="input-mini text-center mr10" ng-model="course.priority" value=""/>
+                                <span style="margin-left: 10px; color:red; padding-top: 4px" ng-show="course.priority<0">请输入大于等于0的数字！</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form_action span12 ml0 clearfix">
+                        <div class="span12">
+                            <div class="row-fluid text-center">
+                                <input type="button" class="btn btn-inverse" ng-disabled="isSaveBtnDis" ng-click="save(course)" value="创建"/>
+                                <input type="button" class="btn btn-inverse" ui-sref="^.bookResearch" value="取消">
+                                <!--<a href="javascript:;" ng-class="{true: 'btn btn-inverse disabled', false: 'btn btn-inverse'}[isSaveBtnDis]" ng-click="save(course)">创建</a>-->
+                                <!--<a href="javascript:;" ui-sref="^.bookResearch" class="btn btn-inverse">取消</a>-->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+         </div>
+    </div>
+</div>

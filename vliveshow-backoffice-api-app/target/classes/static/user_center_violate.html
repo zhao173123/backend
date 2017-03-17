@@ -1,0 +1,122 @@
+<div class="row-fluid" ng-controller="violateCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin  mail_set">
+            <div class="box-header">
+                <h4>违禁管理</h4>
+            </div>
+            <div class="box-content filter_box clearfix">
+                <div class="span12 clearfix">
+                    <div class="span12 text-error ml0">注意：换行添加多个用户ID</div>
+                    <div class="pull-left mr20">
+                        <textarea rows="10" ng-model="forbiddenId"></textarea>
+                        <p class="text-center">
+                            <input class="btn btn-inverse" ng-click="forbidId(forbiddenId, true)" type="button" value="封停账号">
+                        </p>
+                    </div>
+                    <div class="pull-left ml20">
+                        <textarea rows="10" ng-model="unlockId"></textarea>
+                        <p class="text-center">
+                            <input class="btn btn-inverse" ng-click="forbidId(unlockId, false)" type="button" value="解除封停">
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="box-header">-->
+                <!--<h4>封停列表</h4>-->
+            <!--</div>-->
+            <!--<div class="box-content filter_box">-->
+                <!--<form class="form form-horizontal clearfix ng-pristine ng-valid" id="searchForm" name="searchForm" method="post" action="#" accept-charset="UTF-8">-->
+                    <!--<div class="control-group span4">-->
+                        <!--<div class="input-prepend span12">-->
+                            <!--<span class="add-on span4">UserID</span>-->
+                            <!--<input class="span8 focused" ng-model="userInfo.userId" type="text" placeholder="请输入UserID">-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="control-group span4">-->
+                        <!--<div class="input-prepend span12">-->
+                            <!--<span class="add-on span4">NickName</span>-->
+                            <!--<input class="span8 focused" ng-model="userInfo.nickName" type="text" placeholder="请输入昵称">-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="control-group span4">-->
+                        <!--<div class="input-prepend span12">-->
+                            <!--<span class="add-on span4">手机号</span>-->
+                            <!--<input class="span8 focused" ng-model="userInfo.phone" type="text" placeholder="请输入手机号码">-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="control-group span4">-->
+                        <!--<div class="input-prepend span12">-->
+                            <!--<span class="add-on span4">处理时间</span>-->
+                            <!--<input class="span8 focused" ng-model="userInfo.time" type="text" placeholder="请输入处理时间">-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="control-group span4">-->
+                        <!--<div class="input-prepend span12">-->
+                            <!--<span class="add-on span4">处理结果</span>-->
+                            <!--<select class="span8 focused">-->
+                                <!--<option>全部</option>-->
+                                <!--<option>封停账号</option>-->
+                                <!--<option>封停设备</option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form_action span12 ml0 mt20 clearfix">-->
+                        <!--<div class="span12">-->
+                            <!--<div class="row-fluid text-center">-->
+                                <!--<input class="btn btn-inverse" type="button" ng-click="loadData(userInfo)" ng-disabled="searchForm.$invalid" value="查询">-->
+                                <!--<input class="btn btn-inverse" type="button" value="清空" />-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</form>-->
+
+                <!--<div class="row-fluid">-->
+                    <!--<table class="table table-bordered text-center">-->
+                        <!--<thead>-->
+                        <!--<tr>-->
+                            <!--<th>用户ID</th>-->
+                            <!--<th>用户昵称</th>-->
+                            <!--<th>手机号</th>-->
+                            <!--<th>姓名</th>-->
+                            <!--<th>性别</th>-->
+                            <!--<th>注册时间</th>-->
+                            <!--<th>处理时间</th>-->
+                            <!--<th>处理结果</th>-->
+                            <!--<th>操作</th>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+                        <!--<tr>-->
+                            <!--<td>6000009</td>-->
+                            <!--<td>high ya</td>-->
+                            <!--<td>13800000000</td>-->
+                            <!--<td>海燕</td>-->
+                            <!--<td>女</td>-->
+                            <!--<td>2016/7/26 18:00:00</td>-->
+                            <!--<td>2016/7/26 18:00:00</td>-->
+                            <!--<td><span class="text-warning">封停帐号</span><span class="text-error">封停设备</span></td>-->
+                            <!--<td><a href="javascript:;" class="text-primary link_txt" ng-click="dissolution('#TipModel')">解封</a></td>-->
+                        <!--</tr>-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+    </div>
+
+    <!--解封摸态框 - start-->
+    <div id="TipModel" class="modal hide modal-mini" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-body">
+            <p class="pt20">你确定要对其解除封停？</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn">确定</button>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+        </div>
+    </div>
+    <!--解封摸态框 - end-->
+</div>

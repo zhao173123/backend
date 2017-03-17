@@ -1,0 +1,86 @@
+<div class="row-fluid" ng-controller="monitorFlowCtrl">
+    <!-- 流量监控 -->
+    <div class="span12">
+        <div class="box box-transparent box-nomargin">
+            <div class="box-header">
+                <div><input type="button" value="刷新" ng-click="getLiveCount()" class="btn btn-inverse"/></div>
+            </div>
+            <div class="box-content filter_box">
+                <div class="row-fluid flow_00of4">
+                    <div class="span3 flow_1of4_line1">
+                        <div class="box span6">
+                            <div class="box-header gray-background">
+                                <h5>在线用户数</h5>
+                            </div>
+                            <div class="box-content">
+                                <h2 class="text-center">{{liveCount.user}}</h2>
+                            </div>
+                        </div>
+                        <!--<div class="box span6">-->
+                            <!--<div class="box-header gray-background">-->
+                                <!--<h5>今日充值金额</h5>-->
+                            <!--</div>-->
+                            <!--<div class="box-content">-->
+                                <!--<h2 class="text-center">0</h2>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="box span6">
+                            <div class="box-header gray-background">
+                                <h5>直播数量</h5>
+                            </div>
+                            <div class="box-content">
+                                <h2 class="text-center">{{liveCount.host}}</h2>
+                            </div>
+                        </div>
+                        <!--<div class="box span6">-->
+                            <!--<div class="box-header gray-background">-->
+                                <!--<h5>今日礼物消耗(金币)</h5>-->
+                            <!--</div>-->
+                            <!--<div class="box-content">-->
+                                <!--<h2 class="text-center">0</h2>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="box span6">
+                            <div class="box-header gray-background">
+                                <h5>嘉宾连线数量</h5>
+                            </div>
+                            <div class="box-content">
+                                <h2 class="text-center">{{liveCount.guest}}</h2>
+                            </div>
+                        </div>
+                        <!--<div class="box span6">-->
+                            <!--<div class="box-header gray-background">-->
+                                <!--<h5>今日提现金额</h5>-->
+                            <!--</div>-->
+                            <!--<div class="box-content">-->
+                                <!--<h2 class="text-center">0</h2>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    </div>
+                    <!--在线用户排行- start-->
+                    <!--<div class="span3 flow_2of4_line1">-->
+                        <!--<div class="box span12">-->
+                            <!--<div class="box-header gray-background">-->
+                                <!--<h5>在线用户排行</h5>-->
+                            <!--</div>-->
+                            <!--<div class="box-content">-->
+                                <!--<ul class="ml0">-->
+                                    <!--<li class="span12 text-center">-->
+                                        <!--<span class="span4">ID</span>-->
+                                        <!--<span class="span4">主播</span>-->
+                                        <!--<span class="span4">在线用户数</span>-->
+                                    <!--</li>-->
+                                <!--</ul>-->
+                                <!--<div class="text-center">-->
+                                    <!--<a href="javascript:;" class="pl10 pr10"><i class="icon-backward"></i></a>-->
+                                    <!--<a href="javascript:;" class="pl10 pr10"><i class="icon-forward"></i></a>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--在线用户排行- end-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

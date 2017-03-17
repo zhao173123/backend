@@ -1,0 +1,36 @@
+{
+  "navData": [
+    {
+      "name": "用户中心",
+      "active":true,
+      "icon":"icon-user",
+      "subNav":[
+        {
+          "name":"用户关系管理",
+          "active":true,
+          "route":"relation",
+          "templateUrl":"user_center_relation.html"
+
+        },{
+          "name":"主播管理",
+          "active":false,
+          "route":"anchor",
+          "templateUrl":"user_center_anchor.html"
+
+        }
+      ]
+    },{
+      "name": "监控台",
+      "active":false,
+      "icon":"icon-desktop",
+      "subNav":[
+        {
+          "name":"流量监控",
+          "active":false,
+          "route":"flow",
+          "templateUrl":"monitor_flow.html"
+        }
+      ]
+    }
+  ]
+}

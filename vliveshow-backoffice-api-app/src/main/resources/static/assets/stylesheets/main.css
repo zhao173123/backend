@@ -1,0 +1,115 @@
+/*public*/
+.pl0{ padding-left: 0px!important;}
+.pr0{ padding-right: 0px!important;}
+.pt0{ padding-top: 0px!important;}
+.pb0{ padding-bottom: 0px!important;}
+.pt5{ padding-top: 5px;}
+.pl20{ padding-left: 20px;}
+.pr20{ padding-right: 20px;}
+.pt20{ padding-top: 20px;}
+.pl10{padding-left: 10px;}
+.pr10{padding-right: 10px;}
+.ml0{ margin-left: 0px!important;}
+.mr0{ margin-right: 0px!important;}
+.mt0{ margin-top: 0px!important;}
+.mb0{ margin-bottom: 0px!important;}
+.mt10{ margin-top: 10px;}
+.mb10{ margin-bottom: 10px;}
+.ml10{ margin-left: 10px;}
+.mr10{ margin-right: 10px;}
+.mt20{ margin-top: 20px;}
+.mb20{ margin-bottom: 20px;}
+.ml20{ margin-left: 20px;}
+.mr20{ margin-right: 20px;}
+label{cursor: default}
+body{ font-family: "Hiragino Sans GB", "Microsoft Yahei",Arial,Lucida,Verdana,SimSun,Helvetica,sans-serif;}
+input{ -webkit-box-shadow: none; box-shadow: none; -webkit-transition:none;transition:none;}
+ul,ol,li,dl,dt,dd{ list-style: none;}
+select{ outline: none; }
+select:focus { outline: none; }
+.hover_line:hover{ text-decoration: underline;}   /*hover 出现下划线*/
+.text-white {color: #fff !important; } /*白色字体*/
+.white-background {background-color: #fff !important; } /*白色背景*/
+.gray-background { background-color: #eee !important; } /*灰色背景*/
+.gray-border {border-color: #ddd !important; } /*灰色边框*/
+.m_action:hover{ cursor: pointer;}  /*hover 手型*/
+.m_default:hover{ cursor: default;} /*hover 默认箭头*/
+.no-border{ border: none!important;}
+.box-content.no-title{ border-top: 0!important;}
+.text_btn{ display: inline-block; margin: 0 10px;}
+.text-bold{ font-weight: bold;}
+.min_txt{ width: 80px;}
+.link_txt{ text-decoration: underline;}
+
+/*页面样式格局调整*/
+.page-header{ margin-bottom: 0;}   /*二级title*/
+.filter_box form .caret,table th .caret{ margin-top: 8px;} /*caret 位置*/
+.add-on select{border:0; padding: 0; background: none; height: auto;}  /*筛选栏目*/
+.add-on select:focus{  -webkit-box-shadow: none; box-shadow: none;}
+body.sign-in{ padding-top:0;height: 100%;} /*登录页*/
+body.sign-in .login-action a{ color: #222; text-shadow: none;}
+body.sign-in .contrast-background .login-action a{ color: #fff;text-shadow: 1px 1px 1px rgba(0,0,0,0.3);}
+#content{ background: #fff;} /*主页背景*/
+#main-nav-bg{ z-index: 0;}
+.lh30{ line-height: 30px;}
+
+/*不可用的表单元素*/
+.uneditable-input.span8{ width:65.81196581196582%!important; }
+.uneditable-input.span8 .radio.inline,.uneditable-input.span8 .checkbox.inline{ padding-top: 0;}
+.uneditable-input:hover{  cursor: text;}
+.uneditable-input[disabled]:hover,.uneditable-input[type="password"]:hover{ cursor: default;}
+
+/*信息操作栏*/
+.form_action{ margin: 50px 0 20px;}
+.form_action{position: relative;}
+.form_action .btn-inverse{ width: 124px; margin: 0 15px;}
+.form_action .btn-inverse.pull-left{ position: absolute;  left:0; margin: 0 0; width: auto;}
+.form_action a.disabled:hover{background-color: #222}
+
+/*自动消失的提示框*/
+#minTips{ padding: 10px 20px; border-radius: 4px; background: rgba(0,0,0,0.7); position: fixed;  left: 50%; top: 30%; transform: translate(-50%,0);
+    -webkit-transform: translate(-50%,0);  z-index: 1051; color: #fff;
+    animation: minTips 3s ease-in;
+    -webkit-animation: minTips 3s ease-in;
+}
+@keyframes minTips
+{
+    0% {opacity: 1;}
+    80% {opacity: 1;}
+    100% {opacity: 0;}
+}
+@-webkit-keyframes minTips
+{
+    0% {opacity: 1;}
+    80% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+/*宽度auto的table*/
+.auto_table table{ width: auto;}
+.auto_table table th,.auto_table table td{ width: auto; text-align: center;}
+
+/*表格样式 - 20160811*/
+table.text-center th,table.text-center td{ text-align: center;}
+.tab_middle td{ vertical-align: middle;}
+
+/*摸态框 尺寸 - 20160811*/
+.modal-body{ overflow: hidden; overflow-y: auto;}
+.modal-lg{ width: 900px; margin-left: -450px;}
+.modal-mid{ width: 650px; margin-left: -325px;}
+.modal-mini{ width: 400px; margin-left: -200px;}
+
+/*上传文件 - 20160815*/
+.upload_file{ display: inline-block; position: relative;}
+.upload_file input[type="file"]{ position: absolute; left: 0; top: 0; width: 100%; height:100%; opacity: 0;}
+
+/*无信息的时候*/
+.no-info{ padding: 20px 0;}
+
+/*上下左右居中*/
+.table-cell{ position: relative;}
+.table-cell > img{ position: absolute; left: 50%; top: 50%; max-width: 100%; max-height: 100%; -webkit-transform: translate(-50%,-50%); transform: translate(-50%,-50%);}
+
+.label_left {display: block; float: left; text-align: right; line-height: 18px; padding: 5px;}
+.date-select{width:140px}
+

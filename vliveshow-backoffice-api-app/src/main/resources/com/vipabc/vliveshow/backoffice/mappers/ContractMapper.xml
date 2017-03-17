@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vipabc.vliveshow.backoffice.mappers.HostContractMapper">
+
+
+    <resultMap id="ContractResultMap" type="HostContract">
+        <id column="contract_id" property="contractId"/>
+        <result column="host_id" property="hostId"/>
+        <result column="contract_type" property="contractType"/>
+        <result column="talent_type" property="talentType"/>
+        <result column="required_work_hours" property="requiredWorkHours"/>
+        <result column="platform_share_rate" property="platformShareRate"/>
+        <result column="host_share_rate" property="hostShareRate"/>
+        <result column="settlement_base" property="settlementBase"/>
+        <result column="settlement_due_day" property="settlementDueDay"/>
+        <result column="director_id" property="directorId"/>
+        <result column="supervisor_id" property="supervisorId"/>
+        <result column="agent_id" property="agentId"/>
+        <result column="bank_name" property="bankName"/>
+        <result column="bank_account" property="bankAccount"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+        <result column="contract_files" property="contractFiles"/>
+        <result column="id_card_face" property="idCardFace"/>
+        <result column="id_card_back" property="idCardBack"/>
+        <result column="id_card_hold" property="idCardHold"/>
+        <result column="management_team_type" property="managementTeamType"/>
+        <result column="apply_type" property="applyType"/>
+        <result column="working_hours" property="workingHours"/>
+        <result column="lesson_hours" property="lessonHours"/>
+        <result column="lesson_abstract_submit_day" property="lessonAbstractSubmitDay"/>
+        <association property="baseSalary" javaType="Salary">
+            <result column="base_salary_amount" property="amount"/>
+            <result column="base_salary_currency" property="currency"/>
+        </association>
+    </resultMap>
+
+
+    <select id="findContractByHostId" resultMap="ContractResultMap" parameterType="Long">
+        SELECT *
+        FROM t_host_contract
+        WHERE host_id = #{hostId}
+    </select>
+
+    <insert id="createContract" parameterType="HostContract">
+        INSERT INTO t_host_contract
+        (
+            host_id,
+            contract_type,
+            talent_type,
+            required_work_hours,
+            base_salary_amount,
+            base_salary_currency,
+            platform_share_rate,
+            host_share_rate,
+            settlement_base,
+            settlement_due_day,
+            director_id,
+            supervisor_id,
+            agent_id,
+            bank_name,
+            bank_account,
+            start_date,
+            end_date,
+            contract_files,
+            id_card_face,
+            id_card_back,
+            id_card_hold,
+            management_team_type,
+            apply_type,
+            working_hours,
+            lesson_hours,
+            lesson_abstract_submit_day
+        )
+        VALUES
+            (
+                #{hostId},
+                #{contractType},
+                #{talentType},
+                #{requiredWorkHours},
+                #{baseSalary.amount},
+                #{baseSalary.currency},
+                #{platformShareRate},
+                #{hostShareRate},
+                #{settlementBase},
+                #{settlementDueDay},
+                #{directorId},
+                #{supervisorId},
+                #{agentId},
+                #{bankName},
+                #{bankAccount},
+                #{startDate},
+                #{endDate},
+                #{contractFiles},
+                #{idCardFace},
+                #{idCardBack},
+                #{idCardHold},
+                #{managementTeamType},
+                #{applyType},
+                #{workingHours},
+                #{lessonHours},
+                #{lessonAbstractSubmitDay}
+            )
+    </insert>
+
+    <update id="updateContract" parameterType="Map">
+        UPDATE t_host_contract
+        <set>
+            <if test="hc.contractType != null">contract_type = #{hc.contractType},</if>
+            <if test="hc.talentType != null">talent_type = #{hc.talentType},</if>
+            <if test="hc.requiredWorkHours != null">required_work_hours = #{hc.requiredWorkHours},</if>
+            <if test="hc.baseSalary.amount != null">base_salary_amount = #{hc.baseSalary.amount},</if>
+            <if test="hc.baseSalary.currency != null">base_salary_currency = #{hc.baseSalary.currency},</if>
+            <if test="hc.platformShareRate != null">platform_share_rate = #{hc.platformShareRate},</if>
+            <if test="hc.hostShareRate != null">host_share_rate = #{hc.hostShareRate},</if>
+            <if test="hc.settlementBase != null">settlement_base = #{hc.settlementBase},</if>
+            <if test="hc.settlementDueDay != null">settlement_due_day = #{hc.settlementDueDay},</if>
+            <if test="hc.directorId != null">director_id = #{hc.directorId},</if>
+            <if test="hc.supervisorId != null">supervisor_id = #{hc.supervisorId},</if>
+            <if test="hc.agentId != null">agent_id = #{hc.agentId},</if>
+            <if test="hc.bankName != null">bank_name = #{hc.bankName},</if>
+            <if test="hc.bankAccount != null">bank_account = #{hc.bankAccount},</if>
+            <if test="hc.startDate != null">start_date = #{hc.startDate},</if>
+            <if test="hc.endDate != null">end_date = #{hc.endDate},</if>
+            <if test="hc.contractFiles != null">contract_files = #{hc.contractFiles},</if>
+            <if test="hc.idCardFace != null">id_card_face = #{hc.idCardFace},</if>
+            <if test="hc.idCardBack != null">id_card_back = #{hc.idCardBack},</if>
+            <if test="hc.idCardHold != null">id_card_hold = #{hc.idCardHold},</if>
+            <if test="hc.managementTeamType != null">management_team_type = #{hc.managementTeamType},</if>
+            <if test="hc.applyType != null">apply_type = #{hc.applyType},</if>
+            <if test="hc.workingHours != null">working_hours = #{hc.workingHours},</if>
+            <if test="hc.lessonHours != null">lesson_hours = #{hc.lessonHours},</if>
+            <if test="hc.lessonAbstractSubmitDay != null">lesson_abstract_submit_day = #{hc.lessonAbstractSubmitDay},</if>
+            update_time = now()
+        </set>
+        where contract_id=#{contractId}
+    </update>
+
+</mapper>

@@ -1,0 +1,110 @@
+<!-- 内容管理-开屏广告 - start -->
+<div class="row-fluid" ng-controller="splashCtrl">
+    <div class="span12">
+        <div class="box user_info">
+            <div class="box-header">
+                <div class="title">开屏广告</div>
+            </div>
+            <div class="box-content">
+                <div class="responsive-table user_table tab_middle tab_ad">
+                    <div class="hd clearfix span12 mb20">
+                        <a href="javascript:;" class="btn btn-default pull-left" ng-click="updateModal('#addSplash', 'add')">添加开屏广告</a>
+                    </div>
+                    <div class="scrollable-area">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                            <tr>
+                                <th width="20%" ng-click="col='title';desc=!desc">开屏广告标题<span class="icon-sort" ng-hide="col=='title'"></span><span class="icon-sort-up" ng-show="col=='title' && !desc"></span><span class="icon-sort-down" ng-show="col=='title' && desc"></span></th>
+                                <th width="20%">图片</th>
+                                <th width="20%">URL</th>
+                                <th width="20%" ng-click="col='isDisabled';desc=!desc">发布状态<span class="icon-sort" ng-hide="col=='isDisabled'"></span><span class="icon-sort-up" ng-show="col=='isDisabled' && !desc"></span><span class="icon-sort-down" ng-show="col=='isDisabled' && desc"></span></th>
+                                <th width="20%">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in adList|orderBy:col:desc">
+                                <td>{{ item.title }}</td>
+                                <td><img ng-src="{{ item.coopenImage[0].imgUrl }}" alt="开屏广告" /></td>
+                                <!--item.coopenImage[0].imgUrl-->
+                                <td>{{ item.coopenOuterUrl }}</td>
+                                <td>{{ item.isDisabled?"未发布":"已发布" }}</td>
+                                <td>
+                                    <input type="button" value="发布" class="btn btn-default" ng-disabled="!item.isDisabled" ng-click="submitNewAd(true, false, item.id, true)"/>
+                                    <input type="button" value="撤销" class="btn btn-default ml10" ng-disabled="item.isDisabled"  ng-click="submitNewAd(true, true, item.id, true)"/>
+                                    <input type="button" value="编辑" class="btn btn-default ml10" ng-disabled="!item.isDisabled"  ng-click="updateModal('#addSplash', 'edit', item.id)"/>
+                                    <input type="button" value="删除" class="btn btn-default ml10" ng-click="deleteAd(item.id, '#ctrlModal')"/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--删除警告 - start-->
+    <div id="ctrlModal" class="modal hide modal-mini" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>提示</h3>
+        </div>
+        <div class="modal-body">
+            <p>您确定删除此开屏广告吗？</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary" ng-click="deleteAd(currentAdId)">确定</button>
+        </div>
+    </div>
+    <!--删除警告 - end-->
+
+
+    <!--添加开屏广告 - start-->
+    <div id="addSplash" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 ng-show="!newAd">编辑广告位信息</h3>
+            <h3 ng-show="newAd">添加广告位信息</h3>
+        </div>
+        <div class="modal-body editAdFm">
+            <form name="formEditAd" class="ml20">
+                <label class="clearfix">
+                    <span class="pull-left mr20 lh30"><em class="text-contrast pr10">*</em>Title：</span>
+                    <input type="text" name="title" placeholder="12个汉字（24字符）以内" ng-model="currentAdData.title" ng-change="validateStrLength(currentAdData.title, 2, 24, 'titleMsg')" required/>
+                    <span class="text-error ml20">{{ titleMsg }}</span>
+                </label>
+                <label class="clearfix">
+                    <span class="pull-left mr20 lh30">URL：</span>
+                    <input type="url" name="url" placeholder="请输入URL" ng-model="currentAdData.url" />
+                    <span class="text-error ml20" ng-show="isSubmit && formEditAd.url.$invalid">请输入正确格式的URL，例如：http://www.vliveshow.com/</span>
+                </label>
+                <label class="clearfix">
+                    <span class="pull-left mr20 lh30"><em class="text-contrast pr10">*</em>上传图片：</span>
+                    <a href="javascript:;" class="btn btn-default mb10" ngf-select="upLoadImg($file, 0, '640*784')">上传图片</a>
+                    <span>{{ currentAdData.coopenImage[0].name?currentAdData.coopenImage[0].name:"" }}</span>
+                    <span class="text-error ml20">(可以支持.gif等图片，<em class="text-contrast">640*784</em>)</span>
+                    <p class="span12 mt10" style="margin-left: 120px;" ng-show="currentAdData.coopenImage[0].imgUrl != ''"><img ng-src="{{ currentAdData.coopenImage[0].imgUrl }}" alt="640*784"/></p>
+                    <input type="hidden" ng-model="currentAdData.coopenImage[0].imgUrl" required>
+                </label>
+                <label class="clearfix">
+                    <span class="pull-left mr20 lh30"><em class="text-contrast pr10">*</em>上传图片：</span>
+                    <a href="javascript:;" class="btn btn-default mb10" ngf-select="upLoadImg($file, 1, '1080*1618')">上传图片</a>
+                    <span>{{ currentAdData.coopenImage[1].name?currentAdData.coopenImage[1].name:"" }}</span>
+                    <span class="text-error ml20">(可以支持.gif等图片，<em class="text-contrast">1080*1618</em>)</span>
+                    <p class="span12 mt10" style="margin-left: 120px;" ng-show="currentAdData.coopenImage[1].imgUrl != ''"><img ng-src="{{ currentAdData.coopenImage[1].imgUrl }}" alt="1080*1618"/></p>
+                    <input type="hidden" ng-model="currentAdData.coopenImage[1].imgUrl" required>
+                </label>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary" ng-click="submitNewAd(formEditAd.$valid, true)">保存</button>
+            <button class="btn btn-primary" ng-click="submitNewAd(formEditAd.$valid, false)">保存并发布</button>
+        </div>
+    </div>
+    <!--添加开屏广告 - end-->
+</div>
+<!-- 内容管理-开屏广告 - start -->

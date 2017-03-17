@@ -1,0 +1,109 @@
+<div class="row-fluid" ng-controller="rankingCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin">
+            <div class="box-header">
+                <h4>周排行榜</h4>
+            </div>
+            <div class="box-content filter_box clearfix">
+                <div class="ranking filter_box clearfix">
+                    <!--<ul class="span12">-->
+                        <!--<li class="span6">-->
+                            <!--<label>用户ID：</label>-->
+                            <!--<span>-->
+                                <!--<input type="text" ng-model="" value=""/>-->
+                            <!--</span>-->
+                        <!--</li>-->
+                        <!--<li class="span6">-->
+                            <!--<label>用户昵称：</label>-->
+                            <!--<span>-->
+                                <!--<input type="text" ng-model="" value=""/>-->
+                            <!--</span>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                    <ul class="span12 second_line" style="margin-left: 0">
+                        <li class="span6">
+                            <label>查询内容：</label>
+                            <label class="radio inline"><input type="radio" ng-model="searchType"  value="1">UV排行</label>
+                            <label class="radio inline"><input type="radio" ng-model="searchType"  value="2">V票排行</label>
+                            <label class="radio inline"><input type="radio" ng-model="searchType"  value="3">时间排行</label>
+                        </li>
+                        <!--<li class="span4">-->
+                            <!--<label>活动周期：</label>-->
+                            <!--<select>-->
+                                <!--<option>第一周</option>-->
+                            <!--</select>-->
+                        <!--</li>-->
+                        <li class="span6">
+                            <span>
+                                <input class="btn btn-default pull-left" type="button" ng-click="searchRank(searchType)" value="查询" />
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pl10 mt10 ranking_table" ng-if="vDisplay || uvDisplay || timeDisplay">
+                <div class="span6 pl10">
+                    <label>{{rankTitle}}</label>
+                </div>
+                <div class="span6">
+                    <table class="table table-bordered text-center table_width50" ng-if="vDisplay">
+                        <thead>
+                        <tr>
+                            <th width="25%">用户 ID</th>
+                            <th width="25%">用户昵称</th>
+                            <th width="25%">V票数</th>
+                            <th width="25%">V票排行</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="rankV in vRankList">
+                            <td>{{rankV.hostId}}</td>
+                            <td>{{rankV.hostName}}</td>
+                            <td>{{rankV.totalEarning}}</td>
+                            <td>{{$index + 1}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-bordered text-center table_width50" ng-if="timeDisplay">
+                        <thead>
+                        <tr>
+                            <th width="25%">用户 ID</th>
+                            <th width="25%">用户昵称</th>
+                            <th width="25%">直播总时长</th>
+                            <th width="25%">时长排行</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="rankV in timeRankList">
+                            <td>{{rankV.userId}}</td>
+                            <td>{{rankV.nickName}}</td>
+                            <td>{{rankV.formatTime}}</td>
+                            <td>{{$index + 1}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-bordered text-center table_width50" ng-if="uvDisplay">
+                        <thead>
+                        <tr>
+                            <th width="25%">用户 ID</th>
+                            <th width="25%">用户昵称</th>
+                            <th width="30%">UV总数<br>（7天独立用户总数）</th>
+                            <th width="20%">UV排行</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="rankV in uvRankList">
+                            <td>{{rankV.hostId}}</td>
+                            <td>{{rankV.hostName}}</td>
+                            <td>{{rankV.popularity}}</td>
+                            <td>{{$index + 1}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

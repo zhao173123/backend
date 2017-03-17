@@ -1,0 +1,180 @@
+<div class="row-fluid" ng-controller="auditCtrl">
+    <div class="span12">
+        <div ng-show="applications.length == 0" class="no-info">对不起！还没有主播申请信息~</div>
+        <div class="box box-transparent box-nomargin" ng-hide="applications.length == 0">
+            <div class="box-header">
+                <!-- <div class="title">筛选条件</div> -->
+                <h4>筛选条件</h4>
+            </div>
+            <div class="box-content filter_box">
+                <!--主播审核-->
+                <!-- filter condition - start -->
+                <form class="form form-horizontal clearfix" id="searchForm" name="searchForm"  method="post" action="#" accept-charset="UTF-8">
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <div class="btn-group add-on span4">
+                                <select class="input-small" ng-model="userIdFlg">
+                                    <option value="UserID">UserID</option>
+                                    <option value="PhoneNum">手机号</option>
+                                </select>
+                            </div>
+                            <span ng-bind="userIdFlg"></span>
+                            <input class="span8 focused" type="number" ng-show="userIdFlg == 'UserID'" ng-model="userInfo.userId" placeholder="请输入UserID" value="">
+                            <input class="span8 focused" type="number" id="mobilePhone" name="mobilePhone" ng-show="userIdFlg == 'PhoneNum'" ng-model="userInfo.mobilePhone"   placeholder="请输入手机号" value="">
+                            <!--<span class="form-control-feedback" ng-show="searchForm.mobilePhone.$dirty && searchForm.mobilePhone.$invalid">输入正确的手机号</span>-->
+                        </div>
+                    </div>
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">NickName</span>
+                            <input class="span8 focused" ng-model="userInfo.nickName" type="text" placeholder="请输入昵称">
+                        </div>
+                    </div>
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">姓名</span>
+                            <input class="span8 focused"  ng-model="userInfo.name" type="text" placeholder="请输入姓名">
+                        </div>
+                    </div>
+
+                    <div class="form_action span12 ml0 mt20 clearfix">
+                        <div class="span12">
+                            <div class="row-fluid text-center">
+                                <input class="btn btn-inverse" type="button"  ng-click="loadData()" ng-disabled="searchForm.$invalid" value="查询" />
+                                <!--<input class="btn btn-inverse" type="button" value="导出" />-->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- filter condition - end -->
+                <div class="responsive-table tab_audit">
+                    <div class="hd clearfix span12 mb20">
+                        <a href="" class="btn btn-primary pull-left" data-backdrop="false" ng-click="agree('#TipModel',auditAll,true)">全部审核</a>
+                        <label class="pull-left checkbox ml10"><input type="checkbox" ng-model="selectAll" ng-click="all(selectAll)"/>全选</label>
+                        <label class="pull-left checkbox ml10"><input type="checkbox" ng-model="selectReverse" ng-click="reverse()"/>反选</label>
+                    </div>
+                    <!-- filter table - start -->
+                    <table class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <th><p style="width: 30px;">&nbsp;</p></th>
+                            <th>用户ID</th> <!-- icon-caret-up -->
+                            <th>用户昵称</th>
+                            <th>手机号</th>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th>申请时间</th>
+                            <th>注册时间</th>
+                            <th>观看时长</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in applications" data-applicationId="{{item.applicationId}}">
+                            <td><label><input type="checkbox" ng-model="item.state" ng-click="checkClick()"/></label></td>
+                            <td><a href="" role="button" data-toggle="modal" class="m_action" title="点击查看申请详情" ng-click="openModal('#viewHost',item.applicationId,$index)">{{item.userId}}</a></td>
+                            <td>{{item.nickName}}</td>
+                            <td>{{item.phone}}</td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.gender}}</td>
+                            <td>{{item.createTime}}</td>
+                            <td>{{item.registerTime}}</td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- filter table - end -->
+
+                    <!-- pagination - start -->
+                    <div class="page_nav clearfix">
+                        <p class="pull-right">
+                            <span ng-class="{true: 'btn disabled', false: ''}[isFirst]" ng-click="getPage(1)"><a href="javascript:;">First</a>&nbsp;<i class="icon-fast-backward"></i></span>&nbsp;
+                            <span ng-class="{true: 'btn disabled', false: ''}[isFirst]" ng-click="getPage(prevPage)"><a href="javascript:;">Prev</a>&nbsp;<i class="icon-backward"></i></span>&nbsp;
+                            <span>{{currentPage}}</span>
+                            <span ng-class="{true: 'btn disabled', false: ''}[isLast]" ng-click="getPage(nextPage)"><i class="icon-forward"></i>&nbsp;<a href="javascript:;">Next</a></span>&nbsp;
+                            <span ng-class="{true: 'btn disabled', false: ''}[isLast]" ng-click="getPage(lastPage)"><i class="icon-fast-forward"></i>&nbsp;<a href="javascript:;">Last</a></span>
+                        </p>
+                        <p class="pull-right"><strong>{{"Users " + prevCount  + "-" + nextCount  + " of " + totalCount}}</strong></p>
+                    </div>
+                    <!-- pagination - end -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--主播申请详细资料 - start-->
+    <div id="viewHost" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>主播申请信息</h3>
+        </div>
+        <div class="modal-body">
+            <ul class="clearfix">
+                <li class="clearfix">
+                    <label>UID：</label>
+                    <span>{{applyUser.userId}}</span>
+                </li>
+                <li class="clearfix">
+                    <label>昵称：</label>
+                    <span>{{applyUser.nickName}}</span>
+                </li>
+                <li class="clearfix">
+                    <label>性别：</label>
+                    <span>{{applyUser.gender}}</span>
+                </li>
+                <li class="clearfix">
+                    <label>手机号：</label>
+                    <span>{{applyUser.phone}}</span>
+                </li>
+                <li class="clearfix">
+                    <label>分类信息：</label>
+                    <span>
+                        <i ng-repeat="item in applyUser.skills">{{item.name}}</i>
+                    </span>
+                </li>
+                <li class="clearfix">
+                    <label>身份证照片：</label>
+                    <ol class="pull-left clearfix">
+                        <li><img ng-src="{{applyUser.photo.front}}"/></li>
+                        <li><img ng-src="{{applyUser.photo.back}}"/></li>
+                        <li><img ng-src="{{applyUser.photo.hold}}"/></li>
+                        <li class="no-border" ng-show="applyUser.photo.front">（正面）</li>
+                        <li class="no-border" ng-show="applyUser.photo.back">（反面）</li>
+                        <li class="no-border" ng-show="applyUser.photo.hold">（手持照片）</li>
+                    </ol>
+                </li>
+                <li class="clearfix">
+                    <label>相关专业证明：</label>
+                    <ol class="pull-left clearfix" ng-repeat="item1 in applyUser.skills">
+                        <li ng-repeat="item2 in item1.certificates"><img ng-src="{{item2}}"/></li>
+                    </ol>
+                </li>
+                <li class="clearfix">
+                    <label>生活照：<br/><i class="text-error">最多10张</i></label>
+                    <ol class="pull-left clearfix">
+                        <li ng-repeat="item in applyUser.lifePhotos"><img ng-src="{{item}}"/></li>
+                    </ol>
+                </li>
+            </ul>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" ng-click="nearAudit(currentIndex-1)">上一个</button>
+            <button class="btn" style="margin-right: 40px;" ng-click="nearAudit(currentIndex+1)">下一个</button>
+            <button class="btn" ng-click="disagree('#viewHost',applyUser.applicationId,false)">拒绝</button>
+            <button class="btn btn-primary" ng-click="agree('#viewHost',applyUser.applicationId,false)">审核</button>
+        </div>
+    </div>
+    <!--主播申请详细资料 - end-->
+
+    <div id="TipModel" class="modal hide modal-mini" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>提示</h3>
+        </div>
+        <div class="modal-body">
+            <p>您还没有选择需要审核的主播！</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+        </div>
+    </div>
+
+</div>

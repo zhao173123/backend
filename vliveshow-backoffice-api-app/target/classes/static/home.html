@@ -1,0 +1,126 @@
+<!-- header - start -->
+<header ng-controller="backCtrl">
+    <div class='navbar'>
+        <div class='navbar-inner'>
+            <div class='container-fluid'>
+                <a class='brand' href='javascript:;'>
+                    <!--<i class='icon-heart-empty'></i>-->
+                    <span class='hidden-phone'>VLiveShow</span>
+                </a>
+                <a class='toggle-nav btn pull-left' href='javascript:;'>
+                    <i class='icon-reorder'></i>
+                </a>
+                <ul class='nav pull-right'>
+                    <li class='dropdown dark user-menu'>
+                        <a class='dropdown-toggle' data-toggle='dropdown' href='javascript:;'>
+                            <img alt='Mila Kunis' height='23' src='assets/images/avatar.jpg' width='23' />
+                            <span class='user-name hidden-phone'>{{loginUserName}}</span>
+                            <b class='caret'></b>
+                        </a>
+                        <ul class='dropdown-menu'>
+                            <li>
+                                <a href='javascript:;'>
+                                    <i class='icon-user'></i>Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href='javascript:;'>
+                                    <i class='icon-cog'></i>Settings
+                                </a>
+                            </li>
+                            <li class='divider'></li>
+                            <li ng-controller="loginCtrl">
+                                <a ng-click='logout()'>
+                                    <i class='icon-signout'></i>Sign out
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <form accept-charset="UTF-8" action="" class="navbar-search pull-right hidden-phone" method="get" >
+                    <div>
+                        <input name="utf8" type="hidden" value="&#x2713;" />
+                    </div>
+                    <button class="btn btn-link icon-search" name="button" type="submit"></button>
+                    <input autocomplete="off" class="search-query span2" id="q_header" name="q" placeholder="Search..." type="text" value="" />
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- header - end -->
+
+<div id='wrapper' style="background: #fff;">
+    <!-- sidebar - start -->
+    <div id='main-nav-bg'></div>
+    <nav class='' id='main-nav'> <!--ng-controller="sideBarCtrl"-->
+        <div class='navigation'>
+            <ul class='nav nav-stacked'>
+                <li class='' ng-repeat="nav in navData" ng-class="{true:'active',false:''}[nav.active]">
+                    <a class='dropdown-collapse' href='javascript:;'>
+                        <i class='{{nav.icon}}'></i>
+                        <span>{{nav.name}}</span>
+                        <i class='icon-angle-down angle-down'></i>
+                    </a>
+                    <ul class='nav nav-stacked' ng-class="{true:'in',false:''}[nav.active]">
+                        <li ng-class="{true:'active',false:''}[subNav.active]" ng-repeat="subNav in nav.subNav">
+                            <a ui-sref=".{{subNav.route}}({navIndex:$parent.$index+''+$index})" href="javascript:;">
+                                <i class='icon-caret-right'></i>
+                                <span>{{subNav.name}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- sidebar - end -->
+
+    <!-- content right - start -->
+    <section id='content'>
+        <div class='container-fluid'>
+            <div class='row-fluid' id='content-wrapper'>
+                <div class='span12'>
+                    <!-- title - start -->
+                    <div class='row-fluid'>
+                        <div class='span12'>
+                            <div class='page-header'>
+                                <h1 class='pull-left'>
+                                    <i class='icon-user'></i>
+                                    <span>{{navRightTwo}}</span>
+                                </h1>
+                                <div class='pull-right'>
+                                    <ul class='breadcrumb'>
+                                        <li>
+                                            <a href="javascript:;"><i class="icon-bar-chart"></i></a>
+                                        </li>
+                                        <li class='separator'>
+                                            <i class='icon-angle-right'></i>
+                                        </li>
+                                        <li>{{navRightOne}}</li>
+                                        <li class='separator'>
+                                            <i class='icon-angle-right'></i>
+                                        </li>
+                                        <li class='active'>{{navRightTwo}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- title - end -->
+
+                    <!--<div ng-view=""></div>-->
+                    <div ui-view=""/>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- content right - end -->
+
+    <!-- copyright - start -->
+    <div class='login-action text-center'>
+        <a> vipabc.com all rights reserved © 2008-2016</a>
+    </div>
+    <!-- copyright - end -->
+</div>

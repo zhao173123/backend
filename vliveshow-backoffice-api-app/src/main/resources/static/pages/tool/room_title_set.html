@@ -1,0 +1,96 @@
+<div class="row-fluid" ng-controller="roomTitleSetCtrl">
+    <div class="span12 priority_set">
+        <div class="box box-transparent box-nomargin responsive-table">
+            <div class="box-header">
+                <h4>直播间优先级设置</h4>
+            </div>
+            <div class="box-content">
+                <!--直播间优先级设置 - start -->
+                <div class="pt20 clearfix">
+                    <p class="pull-left pl10">
+                        <span >主播ID</span>
+                        <input type="text" ng-model="req.host"/>
+                    </p>
+                    <p class="pull-left pl20">
+                        <span>直播间标题</span>
+                        <input type="text" style="margin-left: 11px" ng-model="req.title"/>
+                    </p>
+                    <p class="pull-left pl20">
+                        <input class="btn btn-inverse" type="button" ng-click="searchRoomInfo(req)" value="查询" />
+                        &nbsp;&nbsp;
+                        <input class="btn btn-warning" type="button" ng-click="reset();" value="刷新" />
+                    </p>
+                </div>
+                <div class="pl10 mt10">
+                    <p ng-hide="!startPage && hasRoom">很抱歉，当前还没有正在开播直播间！</p>
+                    <table ng-show="!startPage && hasRoom" class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <th width="10%">主播 ID</th>
+                            <th width="10%">主播昵称</th>
+                            <th width="20%">创建时间</th>
+                            <th width="30%">直播间 ID</th>
+                            <th width="20%">直播间标题</th>
+                            <th width="10%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="roomInfo in roomInfoList">
+                            <td>{{roomInfo.host}}</td>
+                            <td>{{roomInfo.hostNickName}}</td>
+                            <td>{{roomInfo.createTime}}</td>
+                            <td>{{roomInfo.roomId}}</td>
+                            <td>{{roomInfo.title}}</td>
+                            <td>
+                                <input type="button" class="btn btn-default ml10" ng-click="openModal('#titleChangeModal', roomInfo.roomId, roomInfo.title)" value="修改标题"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- pagination - start -->
+                    <div class="page_nav clearfix" ng-show="!startPage && hasRoom">
+                        <p class="pull-right">
+                            <span ng-class="{true: 'btn disabled', false: ''}[onlineRoom.isFirst]" ng-click="getPage(1,'onlineRoom')"><a href="javascript:;">First</a>&nbsp;<i class="icon-fast-backward"></i></span>&nbsp;
+                            <span ng-class="{true: 'btn disabled', false: ''}[onlineRoom.isFirst]" ng-click="getPage(onlineRoom.prevPage,'onlineRoom')"><a href="javascript:;">Prev</a>&nbsp;<i class="icon-backward"></i></span>&nbsp;
+                            <span>{{onlineRoom.currentPage}}</span>
+                            <span ng-class="{true: 'btn disabled', false: ''}[onlineRoom.isLast]" ng-click="getPage(onlineRoom.nextPage,'onlineRoom')"><i class="icon-forward"></i>&nbsp;<a href="javascript:;">Next</a></span>&nbsp;
+                            <span ng-class="{true: 'btn disabled', false: ''}[onlineRoom.isLast]" ng-click="getPage(onlineRoom.lastPage,'onlineRoom')"><i class="icon-fast-forward"></i>&nbsp;<a href="javascript:;">Last</a></span>
+                        </p>
+                        <p class="pull-right"><strong>{{"Rooms " + onlineRoom.prevCount  + "-" + onlineRoom.nextCount  + " of " + onlineRoom.totalCount}}</strong></p>
+                    </div>
+                    <!-- pagination - end -->
+                </div>
+                <!--直播间优先级设置 - end -->
+            </div>
+        </div>
+    </div>
+    <!--修改标题 - 摸态框-->
+    <div id="titleChangeModal" class="modal hide modal-mini" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>修改标题</h3>
+        </div>
+        <div class="modal-body editAdFm">
+            <form name="formEditTitle">
+                <label class="clearfix">
+                    <span class="pull-left mr10">现有标题：</span>
+                    <span>{{currentTitle}}</span>
+                </label>
+                <label class="clearfix mt20">
+                    <span class="pull-left mr10">输入新标题：</span>
+                    <span>
+                        <input class="pull-left" type="text" name="roomTitle" ng-minlength="5" ng-maxlength="20" ng-model="newTitle" value="{{currentTitle}}" required/>
+                    </span>
+                </label>
+                <div ng-show="formEditTitle.roomTitle.$dirty && formEditTitle.roomTitle.$invalid" style="color:#b94a48">
+                    <em class="text-contrast pr10">*</em>标题字数请控制在5到20个字符（汉字）之间！
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-disabled="formEditTitle.$invalid"  ng-click="submitNewTitle(newTitle)">确定</button>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+        </div>
+    </div>
+    <!--修改标题 - 摸态框-->
+</div>

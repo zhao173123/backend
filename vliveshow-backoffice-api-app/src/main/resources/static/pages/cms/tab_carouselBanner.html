@@ -1,0 +1,96 @@
+<div class="row-fluid" ng-controller="carBannerCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin ">
+            <!--<div class="box-content">-->
+            <div class="responsive-table tab_middle tab_ad user_table">
+                <form class="clearfix">
+                    <span class="hd clearfix span6 mb20">
+                        <a href="javascript:;" class="btn btn-default pull-left" ng-click="openModal('#carBannerModal', true)">添加轮播Banner</a>
+                    </span>
+                </form>
+                <div class="scrollable-area">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <th width="30%">标题</th>
+                            <th width="20%">位置</th>
+                            <th width="30">封面图</th>
+                            <th width="20">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in carBannerList">
+                                <td>{{item.title}}</td>
+                                <td>{{item.position}}</td>
+                                <td><img ng-src="{{item.coverUrl}}" width="230"/></td>
+                                <td>
+                                    <a href="javascript:;" class="btn btn-default" ng-click="openModal('#deleteAd','', item.id)">删除</a>
+                                    <a href="javascript:;" class="btn btn-default ml20" ng-click="openModal('#carBannerModal', false, item.id)">编辑</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--</div>-->
+        </div>
+    </div>
+
+    <!--删除广告确认 - start-->
+    <div id="deleteAd" class="modal hide modal-mini" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>提示</h3>
+        </div>
+        <div class="modal-body">
+            <p>您确定删除该广告吗？</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary" ng-click="deleteAd()">确定</button>
+        </div>
+    </div>
+    <!--删除广告确认 - end-->
+
+    <!--添加编辑轮播广告 - start-->
+    <div id="carBannerModal" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 ng-show="!newAd">编辑广告位信息</h3>
+            <h3 ng-show="newAd">添加广告位信息</h3>
+        </div>
+        <div class="modal-body editAdFm">
+            <form name="formEditAd" style="margin-left: 20px">
+                <label>
+                    <span class="pull-left"><em class="text-contrast pr10">*</em>标题：</span>
+                    <input type="text" name="title" placeholder="20个汉字以内" ng-maxlength="20" value="" ng-model="bannerReq.title" required />
+                    <span ng-show="formEditAd.title.$dirty && formEditAd.title.$invalid" style="color:#b94a48">输入内容请控制在20个汉字以内</span>
+                </label>
+                <label>
+                    <span class="pull-left" ><em class="pr10"></em>位置符：</span>
+                    <input type="number" name="position" ng-min="0"  value="" ng-model="bannerReq.position"/>
+                    <span ng-show="formEditAd.position.$dirty && formEditAd.position.$invalid" style="color:#b94a48">请正确输入位置符</span>
+                </label>
+                <label>
+                    <span class="pull-left"><em class="pr10"></em>URL：</span>
+                    <input type="text" placeholder="请输入外链链接地址" ng-model="bannerReq.outerUrl" value=""/>
+                </label>
+                <label>
+                    <span class="pull-left"><em class="text-contrast pr10">*</em>图片：</span>
+                    <span class="btn"  ngf-select="upload($file, 'coverUrl')">上传封面图片</span>
+                    <span class="btn"  ngf-select="upload($file, 'avatarUrl')" style="margin-left: 300px">上传头像图片</span>
+                    <span class="id_img mt10" style="margin-left: 90px; float:left" ng-if="bannerReq.coverUrl"><img class="cover_img"  ng-src="{{bannerReq.coverUrlBase ? bannerReq.coverUrlBase : bannerReq.coverUrl}}" ></span>
+                    <span class="id_img mt10" style="margin-left: 78px" ng-if="bannerReq.avatarUrl"><img class="ava_img"  ng-src="{{bannerReq.avatarUrlBase ? bannerReq.avatarUrlBase: bannerReq.avatarUrl}}"></span>
+                </label>
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button ng-disabled="formEditAd.title.$invalid || formEditAd.detailTitle.$invalid || formEditAd.position.$invalid || formEditAd.custom.$invalid"
+                    class="btn btn-primary" ng-click="submit(bannerReq,'#carBannerModal')" >提交</button>
+        </div>
+    </div>
+    <!--添加编辑轮播广告 - end-->
+
+</div>

@@ -1,0 +1,123 @@
+<div class="row-fluid" ng-controller="hotCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin">
+            <div class="box-header">
+                <h4>app内排行榜设置</h4>
+            </div>
+            <div class="box-content js-page">   <!--no-title-->
+                <form class="clearfix">
+                    <label class="span4">
+                        <span class="lh30 pull-left mr10"><em class="text-contrast pr10">*</em>标题</span>
+                        <input class="pull-left span6" type="text" class="form-control" ng-disabled="editDisable" ng-model="ranking.title" value=""/>
+                    </label>
+                    <label class="span4 ml0">
+                        <span class="lh30 pull-left mr10"><em class="text-contrast pr10">*</em>位置</span>
+                        <input class="pull-left span6" type="number" class="form-control" ng-disabled="editDisable" ng-model="ranking.position" value=""/>
+                    </label>
+                    <label class="span4 ml0">
+                        <span class="lh30 pull-left mr10">URL</span>
+                        <input class="pull-left span6" type="text" class="form-control" ng-disabled="editDisable" ng-model="ranking.outerUrl" value=""/>
+                    </label>
+
+                </form>
+                <div class="mt20 pt10 clearfix">
+                    <div class="span12">
+                        <div class="row-fluid text-center">
+                            <input class="btn btn-default pull-left" type="button" ng-disabled="editDisable" ng-click="addHost('#getHostModal')" value="添加主播" />
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-bordered text-center mt20">
+                    <thead>
+                    <tr>
+                        <th>主播ID</th>
+                        <th>主播昵称</th>
+                        <th>排序(priority)</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in hostList">
+                        <td>{{item.userId}}</td>
+                        <td>{{item.nickName}}</td>
+                        <td>{{item.position}}</td>
+                        <td>
+                            <input type="button"  class="btn btn-default ml10" ng-disabled="editDisable" ng-click="removeHost($index)" value="删除"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="form_action span12 ml0 clearfix">
+                    <div class="row-fluid text-center">
+                        <input type="button" class="btn btn-inverse" ng-disabled="releaseStatus.isDisdabled"  ng-value="releaseStatus.text" ng-click="subscribe()"/>
+                        <input type="button" class="btn btn-inverse" ng-disabled="saveStatus.isDisdabled"  ng-value="saveStatus.text" ng-click="edit()"/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--添加主播 - 摸态框-->
+    <div id="getHostModal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>添加热门主播</h3>
+        </div>
+        <div class="modal-body">
+            <form class="clearfix">
+                <label class="span8">
+                    <span class="lh30 pull-left mr10 span3">输入主播ID</span>
+                    <input class="pull-left span8" type="text" class="form-control" ng-model="host.userId" ng-change="loadNickName(host.userId)"/>
+                </label>
+                <label class="span8 ml0">
+                    <span class="lh30 pull-left mr10 span3">主播昵称</span>
+                    <span class="pull-left span8 form-control" >{{host.nickName==''? errMsg : host.nickName}}</span>
+                </label>
+
+                <label class="span8 ml0">
+                    <span class="lh30 pull-left mr10 span3">排序</span>
+                    <select class="pull-left span8" type="number" class="form-control" ng-model="host.position">
+                        <option value="-1">请选择</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </label>
+
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary" ng-click="addHostList(host)">添加</button>
+        </div>
+    </div>
+    <!--添加主播 - 摸态框-->
+
+
+    <!--删除 - 摸态框-->
+    <div id="confirmModal" class="modal hide modal-mini" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>提示</h3>
+        </div>
+        <div class="modal-body">
+            <p>您确定删除该回放吗？</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary">确定</button>
+        </div>
+    </div>
+    <!--删除 - 摸态框-->
+
+</div>
+

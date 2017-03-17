@@ -1,0 +1,313 @@
+<div class="row-fluid" ng-controller="mailCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin  mail_set">
+            <div class="box-header">
+                <!-- <div class="title">筛选条件</div> -->
+                <h4>筛选条件</h4>
+            </div>
+            <div class="box-content filter_box">
+                <!--站内信-->
+                <!-- filter condition - start -->
+                <form class="form form-horizontal clearfix" id="searchForm" name="searchForm"  method="post" action="#" accept-charset="UTF-8">
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <div class="btn-group add-on span4">
+                                <select class="input-small" ng-model="userIdFlg">
+                                    <option value="UserID">UserID</option>
+                                    <option value="PhoneNum">手机号</option>
+                                </select>
+                            </div>
+                            <span ng-bind="userIdFlg"></span>
+                            <input class="span8 focused" type="number" ng-show="userIdFlg == 'UserID'" ng-model="userInfo.userId" placeholder="请输入UserID" value="">
+                            <input class="span8 focused" type="number" id="mobilePhone" name="mobilePhone" ng-show="userIdFlg == 'PhoneNum'" ng-model="userInfo.mobilePhone"   placeholder="请输入手机号" value="">
+                        </div>
+                    </div>
+
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">等级</span>
+                            <input class="span4 focused" id="rankMin" name="rankMin" ng-model="userInfo.rankMin" type="number" ng-pattern="/^\+?[0-9][0-9]*$/" placeholder="请输入等级">
+                            <span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>
+                            <input class="span4 focused" id="rankMax" name="rankMax" ng-model="userInfo.rankMax" type="number" ng-min="getSearchMin(userInfo.rankMin)" placeholder="请输入等级" style="border-radius:4px;">
+                            <span class="form-control-feedback" ng-show="searchForm.rankMax.$dirty && searchForm.rankMax.$invalid">第二个输入框请输入大于或等于<i style="font-style: normal; padding:0 4px;" ng-bind="getSearchMin(userInfo.rankMin)"></i>的数字</span>
+                            <span class="form-control-feedback" ng-show="searchForm.rankMin.$dirty && searchForm.rankMin.$invalid">请正确输入等级数</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">充值金额</span>
+                            <input class="span4 focused" id="rechargeMin" name="rechargeMin" ng-model="rechargeMin" type="number" placeholder="请输入充值金额">
+                            <span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>
+                            <input class="span4 focused" id="rechargeMax" name="rechargeMax" ng-model="rechargeMax" type="number" ng-min="getSearchMin('rechargeMin')" placeholder="请输入充值金额" style="border-radius:4px;">
+                            <span class="form-control-feedback" ng-show="searchForm.rechargeMax.$dirty && searchForm.rechargeMax.$invalid">第二个输入框请输入大于或等于<i style="font-style: normal; padding:0 4px;" ng-bind="getSearchMin('rechargeMin')"></i>的数字</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">NickName</span>
+                            <input class="span8 focused" ng-model="userInfo.nickName" type="text" placeholder="请输入昵称">
+                        </div>
+                    </div>
+
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">经验值</span>
+                            <input class="span4 focused" id="xpMin" name="xpMin" ng-model="userInfo.xpMin" type="number" ng-pattern="/^\+?[0-9][0-9]*$/" placeholder="请输入经验值">
+                            <span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>
+                            <input class="span4 focused" id="xpMax" name="xpMax" ng-model="userInfo.xpMax" type="number" ng-min="getSearchMin(userInfo.xpMin)" placeholder="请输入经验值" style="border-radius:4px;">
+                            <span class="form-control-feedback" ng-show="searchForm.xpMax.$dirty && searchForm.xpMax.$invalid">第二个输入框请输入大于或等于<i style="font-style: normal; padding:0 4px;" ng-bind="getSearchMin(userInfo.xpMin)"></i>的数字</span>
+                            <span class="form-control-feedback" ng-show="searchForm.xpMin.$dirty && searchForm.xpMin.$invalid">请正确输入粉丝数</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">消费金额</span>
+                            <input class="span4 focused" id="payMin" name="payMin" ng-model="payMin" type="number" placeholder="请输入消费金额">
+                            <span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>
+                            <input class="span4 focused" id="payMax" name="payMax" ng-model="payMax" type="number" ng-min="getSearchMin('payMin')" placeholder="请输入消费金额" style="border-radius:4px;">
+                            <span class="form-control-feedback" ng-show="searchForm.payMax.$dirty && searchForm.payMax.$invalid">第二个输入框请输入大于或等于<i style="font-style: normal; padding:0 4px;" ng-bind="getSearchMin('payMin')"></i>的数字</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">姓名</span>
+                            <input class="span8 focused" type="text" placeholder="请输入姓名">
+                        </div>
+                    </div>
+
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">关注数</span>
+                            <input class="span4 focused" id="followMin" name="followMin" ng-model="userInfo.followMin" ng-pattern="/^\+?[0-9][0-9]*$/" type="number" placeholder="请输入关注数">
+                            <span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>
+                            <input class="span4 focused" id="followMax" name="followMax" ng-model="userInfo.followMax" type="number" ng-min="getSearchMin(userInfo.followMin)" placeholder="请输入关注数" style="border-radius:4px;">
+                            <span class="form-control-feedback" ng-show="searchForm.followMax.$dirty && searchForm.followMax.$invalid">第二个输入框请输入大于或等于<i style="font-style: normal; padding:0 4px;" ng-bind="getSearchMin(userInfo.followMin)"></i>的数字</span>
+                            <span class="form-control-feedback" ng-show="searchForm.followMin.$dirty && searchForm.followMin.$invalid">请正确输入关注数</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">余额</span>
+                            <input class="span4 focused" id="balanceMin" name="balanceMin" ng-model="balanceMin" type="number" placeholder="请输入余额">
+                            <span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>
+                            <input class="span4 focused" id="balanceMax" name="balanceMax" ng-model="balanceMax" type="number" ng-min="getSearchMin('balanceMin')" placeholder="请输入余额" style="border-radius:4px;">
+                            <span class="form-control-feedback" ng-show="searchForm.balanceMax.$dirty && searchForm.balanceMax.$invalid">第二个输入框请输入大于或等于<i style="font-style: normal; padding:0 4px;" ng-bind="getSearchMin('balanceMin')"></i>的数字</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">性别</span>
+                            <div class="uneditable-input span8">
+                                <label class="checkbox inline span3 offset1" ng-repeat="gender in genderList">
+                                    <input type="checkbox" name="{{gender.value}}"  ng-click="updateSelection($event,gender.value, 'Gender')" value="{{gender.value}}" />{{gender.name}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">好友数</span>
+                            <input class="span4 focused" id="friendMin" name="friendMin" ng-model="friendMin" type="number" placeholder="请输入好友数">
+                            <span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>
+                            <input class="span4 focused" id="friendMax" name="friendMax" ng-model="friendMax" type="number" ng-min="getSearchMin('friendMin')" placeholder="请输入好友数" style="border-radius:4px;">
+                            <span class="form-control-feedback" ng-show="searchForm.friendMax.$dirty && searchForm.friendMax.$invalid">第二个输入框请输入大于或等于<i style="font-style: normal; padding:0 4px;" ng-bind="getSearchMin('friendMin')"></i>的数字</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group span4" style="min-width:500px; ">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">角色</span>
+                            <div class="uneditable-input span8">
+                                <label class="checkbox inline offset1" ng-repeat="role in roleList">
+                                    <input type="checkbox" name="{{role.value}}"  ng-click="updateSelection($event,role.value, 'Role')" value="{{role.value}}" />{{role.name}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">观看时间</span>
+                            <input class="span4 focused" id="timeMin" name="timeMin" ng-model="userInfo.timeMin" type="number" ng-pattern="/^\+?[0-9][0-9]*$/" placeholder="请输入粉丝数">
+                            <span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>
+                            <input class="span4 focused" id="timesMax" name="timesMax" ng-model="userInfo.timesMax" type="number" ng-min="getSearchMin(userInfo.timeMin)" placeholder="请输入粉丝数" style="border-radius:4px;">
+                            <span class="form-control-feedback" ng-show="searchForm.timesMax.$dirty && searchForm.timesMax.$invalid">第二个输入框请输入大于或等于<i style="font-style: normal; padding:0 4px;" ng-bind="getSearchMin(userInfo.timeMin)"></i>的数字</span>
+                            <span class="form-control-feedback" ng-show="searchForm.timeMin.$dirty && searchForm.timeMin.$invalid">请正确输入粉丝数</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group span4">
+                        <div class="input-prepend span12">
+                            <span class="add-on span4">粉丝数</span>
+                            <input class="span4 focused" id="fansMin" name="fansMin" ng-model="userInfo.fansMin" type="number" ng-pattern="/^\+?[0-9][0-9]*$/" placeholder="请输入粉丝数">
+                            <span class="pull-left" style="display:block; font-size:14px; padding:5px 0.9208103130755067%;">-</span>
+                            <input class="span4 focused" id="fansMax" name="fansMax" ng-model="userInfo.fansMax" type="number" ng-min="getSearchMin(userInfo.fansMin)" placeholder="请输入粉丝数" style="border-radius:4px;">
+                            <span class="form-control-feedback" ng-show="searchForm.fansMax.$dirty && searchForm.fansMax.$invalid">第二个输入框请输入大于或等于<i style="font-style: normal; padding:0 4px;" ng-bind="getSearchMin(userInfo.fansMin)"></i>的数字</span>
+                            <span class="form-control-feedback" ng-show="searchForm.fansMin.$dirty && searchForm.fansMin.$invalid">请正确输入粉丝数</span>
+                        </div>
+                    </div>
+
+                    <div class="form_action span12 ml0 mt20 clearfix">
+                        <div class="span12">
+                            <div class="row-fluid text-center">
+                                <input class="btn btn-inverse" type="button"  ng-click="loadData(userInfo)" ng-disabled="searchForm.$invalid" value="添加到收件人组" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- filter condition - end -->
+            </div>
+
+            <!--消息发送与编辑 - start-->
+            <div class="box-header">
+                <h4>发送消息</h4>
+            </div>
+            <div class="box-content filter_box">
+                <div class="row-fluid">
+                    <form class="form form-horizontal clearfix" id="sendForm" name="searchForm"  method="post" action="#" accept-charset="UTF-8">
+                        <!-- 收件人组 - start -->
+                        <div class="span12 mb20">
+                            <div class="span3" style="max-width: 150px;">收件人组：<span class="text-primary ng-binding">0</span></div>
+                            <div class="span9 box-content auto_table pull-left ml0">
+                                <ul class="addressee_ul">
+                                    <li class="clearfix">
+                                        <p class="pull-left blue-background"><a href="javascript:;" class="del_btn">&times;</a>性别：男</p>
+                                        <p class="pull-left blue-background"><a href="javascript:;" class="del_btn">&times;</a>性别：男</p>
+                                        <p class="pull-left blue-background"><a href="javascript:;" class="del_btn">&times;</a>性别：男</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 收件人组 -  end -->
+                        <!-- 消息内容 - 简体中文 - start -->
+                        <div class="span12 mb20 ml0">
+                            <div class="span3" style="max-width: 150px;">消息内容：<span class="text-primary ng-binding">简体中文</span></div>
+                            <div class="span9 box-content auto_table pull-left ml0">
+                                <textarea placeholder="请输入消息内容"></textarea>
+                            </div>
+                        </div>
+                        <!-- 消息内容 - 简体中文 -  end -->
+
+                        <!-- 消息内容 - 繁体中文 - start -->
+                        <div class="span12 mb20 ml0">
+                            <div class="span3" style="max-width: 150px; color: #fff;">消息内容：<span class="text-primary ng-binding">繁体中文</span></div>
+                            <div class="span9 box-content auto_table pull-left ml0">
+                                <textarea placeholder="请输入消息内容"></textarea>
+                            </div>
+                        </div>
+                        <!-- 消息内容 - 繁体中文 -  end -->
+
+                        <!-- 消息内容 - 英文 - start -->
+                        <div class="span12 mb20 ml0">
+                            <div class="span3" style="max-width: 150px; color: #fff;">消息内容：<span class="text-primary ng-binding">英文</span></div>
+                            <div class="span9 box-content auto_table pull-left ml0">
+                                <textarea placeholder="请输入消息内容"></textarea>
+                            </div>
+                        </div>
+                        <!-- 消息内容 - 英文 -  end -->
+
+                        <!-- 发送时间 - start -->
+                        <div class="span12 mb20 ml0">
+                            <div class="span3" style="max-width: 150px;">发送时间：</div>
+                            <div class="span9 pull-left ml0">
+                                <input placeholder="请选择开始时间" type="text" ng-click="laydate(normalDate)"/>
+                            </div>
+                        </div>
+                        <!-- 发送时间 -  end -->
+
+                        <!-- 发送方式 - start -->
+                        <div class="span12 mb20 ml0">
+                            <div class="span3" style="max-width: 150px;">发送方式：</div>
+                            <div class="span9 pull-left ml0">
+                                <select>
+                                    <!--<option>push</option>-->
+                                    <option>站内信</option>
+                                    <!--<option>短信</option>-->
+                                </select>
+                            </div>
+                        </div>
+                        <!-- 发送方式 -  end -->
+
+                        <div class="form_action span12 ml0 mt20 clearfix">
+                            <div class="span12">
+                                <div class="row-fluid text-center">
+                                    <input class="btn btn-inverse" type="button"  ng-click="sendInfo()" ng-disabled="sendForm.$invalid" value="确定" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--消息发送与编辑 - end-->
+
+            <!--发送记录 - start-->
+            <div class="box-header">
+                <h4>发送记录</h4>
+            </div>
+            <div class="box-content filter_box">
+                <div class="row-fluid">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>发送内容</th>
+                            <th>发送时间</th>
+                            <th>发送状态</th>
+                            <th>收件人组</th>
+                            <th>收件人数</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td class="m_action" ng-click="openModal('#messageModel')"><p style="max-width:300px; display: inline-block; text-align: left;">早上朋友打电话向我借3000块钱，我说行啊，朋友激动的说还是你够义气</p></td>
+                                <td>2016/6/10 13:11:25</td>
+                                <td><span class="text-success text_btn hover_line">已执行</span><span class="text-primary text_btn hover_line">待执行</span><span class="text-error text_btn hover_line">取消</span></td>
+                                <td ng-click="openModal('#addresseeModel')"><a href="javascript:;" class="text_btn hover_line">查看</a></td>
+                                <td>3784645</td>
+                                <td><a href="javascript:;" class="text-primary text_btn hover_line">取消</a><a href="javascript:;" class="text-primary text_btn hover_line">立即执行</a><a href="javascript:;" class="text-primary text_btn hover_line">重新执行</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--发送记录 - end-->
+        </div>
+    </div>
+    <!--查看消息摸态框 - start-->
+    <div id="messageModel" class="modal hide modal-mini in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+        <div class="modal-body">
+            <p class="text-bold mb10 text-primary">简体中文</p>
+            <p>早上朋友打电话向我借3000块钱，我说行啊，朋友激动的说还是你够义气</p>
+            <p class="text-bold mb10 text-primary">繁体中文</p>
+            <p>早上朋友打电话向我借3000块钱，我说行啊，朋友激动的说还是你够义气</p>
+            <p class="text-bold mb10 text-primary">英文</p>
+            <p>早上朋友打电话向我借3000块钱，我说行啊，朋友激动的说还是你够义气</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+        </div>
+    </div>
+    <!--查看消息摸态框 - end-->
+
+    <!--查看收件人组摸态框 - start-->
+    <div id="addresseeModel" class="modal hide modal-mini in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+        <div class="modal-body">
+            收件人组
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+        </div>
+    </div>
+    <!--查看收件人组摸态框 - end-->
+
+
+</div>

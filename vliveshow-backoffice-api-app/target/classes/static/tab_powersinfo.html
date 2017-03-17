@@ -1,0 +1,96 @@
+<!-- 权限控制 - start -->
+<!-- <div class="tab-pane" id="powers"> -->
+<div class="row-fluid" >
+    <div class="span12">
+        <div class="box powers_tab">
+            <div class="box-header">
+                <div class="title">权限标签</div>
+            </div>
+            <div class="box-content" ng-controller="powerInfoCtrl">
+                <form class="form form-horizontal clearfix" name="powerForm" id="powerForm" ng-submit="submitRole()" style="margin-bottom: 0;" method="post" action="#" accept-charset="UTF-8">
+                    <input name="authenticity_token" type="hidden">
+                    <div class="form-group">
+                        <label class="checkbox inline">角色：</label>
+                        <div class="radio_inline">
+                            <label class="checkbox inline" ng-click="turnRadio('HOST',['HOST','SUPER_USER'])">
+                                <input type="checkbox" value="HOST" name="HOST" ng-model="role.HOST">主播
+                                <!--<input type="radio" value="HOST" name="hostName" ng-model="radioRole">主播-->
+                            </label>
+                            <label class="checkbox inline" ng-click="turnRadio('SUPER_USER',['HOST','SUPER_USER'])">
+                                <input type="checkbox" value="SUPER_USER" name="SUPER_USER" ng-model="role.SUPER_USER">场控
+                                <!--<input type="radio" value="SUPER_USER" name="hostName" ng-model="radioRole">场控-->
+                            </label>
+                        </div>
+                        <label class="checkbox inline box-content">
+                            <input type="checkbox" value="SPECIAL_GUEST" name="SPECIAL_GUEST" ng-model="role.SPECIAL_GUEST">特殊观众
+                        </label>
+                        <label class="checkbox inline box-content">
+                            <input type="checkbox" value="TRIAL_HOST" name="TRIAL_HOST" ng-model="role.TRIAL_HOST">试播
+                        </label>
+                        <label class="checkbox inline box-content">
+                            <input type="checkbox" value="COURSE_VIP" name="COURSE_VIP" ng-model="role.COURSE_VIP">VIP
+                        </label>
+                    </div>
+                    <!--<label class="checkbox inline">动作：</label>-->
+                    <!--<label class="checkbox inline box-content">-->
+                    <!--<input type="checkbox" value="option1">账号封停-->
+                    <!--</label>-->
+                    <!--<label class="checkbox inline box-content">-->
+                    <!--<input type="checkbox" value="option2">禁止直播-->
+                    <!--</label>-->
+                    <!--<label class="checkbox inline box-content">-->
+                    <!--<input type="checkbox" value="option3">设备封停-->
+                    <!--</label>-->
+                    <!--<label class="checkbox inline box-content">-->
+                    <!--<input type="checkbox" value="option4">IP封停-->
+                    <!--</label>-->
+                    <!--<label class="checkbox inline box-content">-->
+                    <!--<input type="checkbox" value="option5">禁止发言<input class="text-center" type="tel" value="" style="width:40px; border:0; border-bottom:1px solid #666; -webkit-box-shadow:none; box-shadow:none; height:16px; padding:0 6px;"/>小时-->
+                    <!--</label>-->
+                    <!--</div>-->
+                    <!--<div class="form-group other_tip" ng-keydown="endEdit($event)">-->
+                        <!--<label class="checkbox inline">其他标签：</label>-->
+                        <!--<div class="box-content checkbox inline js-customTag" ng-repeat="item in customTag">-->
+                            <!--<label class="pull-left">-->
+                                <!--<input type="checkbox" value="option1" ng-checked="item.isSel">-->
+                                <!--<span class="m_default">{{tagType[item.thisTagType]}}：{{item.thisTagValue}}</span>-->
+                            <!--</label>-->
+                            <!--<a href="javascript:;" class="edit_btn text-primary" ng-click="editTips($event)"><i class="icon-edit"></i></a>-->
+                            <!--<select class="input-small" ng-model="tagType[item.thisTagType]" ng-click="initSelect($event)">-->
+                                <!--<option ng-selected="item.thisTagType">{{tagType[item.thisTagType]}}</option>-->
+                            <!--</select>-->
+                            <!--<input type="text" class="input-small" ng-model="item.thisTagValue" value="" autofocus="autofocus" placeholder="输入标签内容"/>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash;<div class="box-content checkbox inline js-customTag" ng-keydown="endEdit($event)">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<label class="pull-left">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<input type="checkbox" value="option1">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<span class="m_default">消费模型：土豪</span>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</label>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a href="javascript:;" class="edit_btn text-primary" ng-click="editTips($event)"><i class="icon-edit"></i></a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<select class="input-small">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<option>消费模型:</option>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<option>上线规律:</option>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="text" class="input-small" value="" placeholder="输入标签内容"/>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--<label class="checkbox inline box-content" style="padding:10px 20px;" ng-click="addNewTips()">-->
+                            <!--<i class="icon-plus" style="display:inline;"></i>-->
+                        <!--</label>-->
+                    <!--</div>-->
+                    <div class="form_action span12 ml0 clearfix">
+                        <div class="span12">
+                            <div class="row-fluid text-center">
+                                <a href="javascript:;" class="btn btn-inverse" ng-click="submitRole()">保存</a>
+                                <a href="javascript:;" class="btn btn-inverse" ng-click="cancelRole()">放弃</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- </div> -->
+<!-- 权限控制 - start -->

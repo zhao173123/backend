@@ -1,0 +1,124 @@
+<div class="row-fluid" ng-controller="scoreComCtrl">
+    <div class="span12 priority_set">
+        <div class="box box-transparent box-nomargin responsive-table">
+            <div class="box-header">
+                <h4>直播间评价查询</h4>
+            </div>
+            <div class="box-content score_table">
+                <div class=" score_search">
+                    <div class="pt20 span12 ">
+                        <p class="pull-left pl20 span4">
+                            <span >直播间ID</span>
+                            <input class="ml10" type="text" ng-model="req.roomId"/>
+                        </p>
+                        <p class="pull-left pl20 span4">
+                            <span>直播间标题</span>
+                            <input class="ml10" type="text" ng-model="req.title"/>
+                        </p>
+                    </div>
+                    <div class="pt20 span12 ml0">
+                        <p class="pull-left pl20 span4 ">
+                            <span>主播ID</span>
+                            <input class="ml10" type="text" ng-model="req.hostId"/>
+                        </p>
+                        <p class="pull-left pl20 span4">
+                            <span>主播昵称</span>
+                            <input class="ml10" type="text" ng-model="req.nickName"/>
+                        </p>
+                    </div>
+                    <div class="pt20 span12 ml0 mb20">
+                        <p class="pull-left pl20 span6 ">
+                            <span>直播时间</span>
+                            <input placeholder="请输入开始时间" type="text" ng-model="startDate"  class="date-select ml10" ng-click="laydate(normalDate, 'startDate')" value="{{startDate}}"/>
+                            <span class="separator">-</span>
+                            <input placeholder="请输入结束日期" type="text" ng-model="endDate"  class="date-select" ng-click="laydate(normalDate, 'endDate')" value="{{endDate}}"/>
+                        </p>
+                        <p class="pull-left span6">
+                            <input  class="btn btn-inverse" type="button" ng-click="searchScoreInfo(req)" value="查询"/>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pl10 mt10 pt20">
+                    <p ng-hide="!startPage && hasData">请查询后获取直播间评价！</p>
+                    <table class="table table-bordered text-center" ng-show="!startPage && hasData">
+                        <thead>
+                        <tr>
+                            <th width="15%">主播 ID</th>
+                            <th width="15%">主播昵称</th>
+                            <th width="10%">开播时间</th>
+                            <th width="20%">直播间 ID</th>
+                            <th width="20%">直播间标题</th>
+                            <th width="10%">打分</th>
+                            <th width="10%">查看</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="scoreItem in scoreList">
+                            <td>{{scoreItem.host_id}}</td>
+                            <td>{{scoreItem.nick_name}}</td>
+                            <td>{{scoreItem.start_time}}</td>
+                            <td>{{scoreItem.room_id}}</td>
+                            <td>{{scoreItem.title}}</td>
+                            <td>{{scoreItem.evaluatescore}}</td>
+                            <td>
+                                <input type="button" value="查看" class="btn btn-default"  ng-click="loadScoreDetail(scoreItem.room_id)"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- pagination - start -->
+                    <div class="page_nav clearfix" ng-show="!startPage && hasData">
+                        <p class="pull-right">
+                            <span ng-class="{true: 'btn disabled', false: ''}[scoreItem.isFirst]" ng-click="getPage(1,'scoreItem')"><a href="javascript:;">First</a>&nbsp;<i class="icon-fast-backward"></i></span>&nbsp;
+                            <span ng-class="{true: 'btn disabled', false: ''}[scoreItem.isFirst]" ng-click="getPage(scoreItem.prevPage,'scoreItem')"><a href="javascript:;">Prev</a>&nbsp;<i class="icon-backward"></i></span>&nbsp;
+                            <span>{{scoreItem.currentPage}}</span>
+                            <span ng-class="{true: 'btn disabled', false: ''}[scoreItem.isLast]" ng-click="getPage(scoreItem.nextPage,'scoreItem')"><i class="icon-forward"></i>&nbsp;<a href="javascript:;">Next</a></span>&nbsp;
+                            <span ng-class="{true: 'btn disabled', false: ''}[scoreItem.isLast]" ng-click="getPage(scoreItem.lastPage,'scoreItem')"><i class="icon-fast-forward"></i>&nbsp;<a href="javascript:;">Last</a></span>
+                        </p>
+                        <p class="pull-right"><strong>{{scoreItem.prevCount  + "-" + scoreItem.nextCount  + " of " + scoreItem.totalCount}}</strong></p>
+                    </div>
+                    <!-- pagination - end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--评价详情 - start-->
+    <div id="scoreDetailModal" class="modal hide modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>观众评价列表</h3>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered text-center">
+                <thead>
+                <tr>
+                    <th width="10%">评价用户 ID</th>
+                    <th width="10%">用户昵称</th>
+                    <th width="10%">手机号</th>
+                    <th width="10%">评价星级</th>
+                    <th width="40%">评价内容</th>
+                    <th width="20%">评论时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in scoreDetail">
+                    <td>{{item.userId}}</td>
+                    <td>{{item.nickName}}</td>
+                    <td>{{item.phone}}</td>
+                    <td>{{item.rating}}</td>
+                    <td>{{item.content}}</td>
+                    <td>{{item.rateTime}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary" ng-click="deleteAd(currentAdId)">确定</button>
+        </div>
+    </div>
+    <!--评价详情 - end-->
+</div>

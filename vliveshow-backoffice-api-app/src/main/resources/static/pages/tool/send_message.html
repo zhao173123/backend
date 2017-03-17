@@ -1,0 +1,97 @@
+<div class="row-fluid" ng-controller="messageCtrl">
+    <div class="span12">
+        <div class="box box-transparent box-nomargin">
+            <!--发送短信 - start-->
+            <h4 class="box-header">发送短信</h4>
+            <div class="box-content filter_box tab_contractinfo message clearfix">
+                <ul class="span8 clearfix">
+                    <!--<li class="span4">-->
+                        <!--<label>活动类型：</label>-->
+                        <!--<select class="span6 ml10" name="">-->
+                            <!--<option>拉新</option>-->
+                        <!--</select>-->
+                    <!--</li>-->
+                    <li class="span8">
+                        <label>活动名称：</label>
+                        <select class="span6 ml10"  ng-model="activity" ng-options="t.activityName  for t in actList">
+                            <option value="">请选择活动</option>
+                        </select>
+                        <!--<select class="span6 ml10" name="">-->
+                            <!--<option>换气小姐</option>-->
+                        <!--</select>-->
+                    </li>
+                    <li class="span12">
+                        <label>短信内容：</label>
+                        <!--<select class="span6 ml10" name="">-->
+                            <!--<option>模板一</option>-->
+                        <!--</select>-->
+                        <span style="padding-top: 4px; width:80%">{{activity.messageContent}}</span>
+                    </li>
+                    <li class="span8">
+                        <label>导入手机号：</label>
+                        <span style="margin-right: 10px; color:red; padding-top: 4px;">（请上传格式为CSV的文件）</span>
+                        <div>
+                            <span class="btn"  ngf-select="upload($file, 'csvFile')">选择文件</span>
+                            <span class="ml10" style="color:#03A9F4;">{{csvFile}}</span>
+                        </div>
+                    </li>
+                </ul>
+                <div class="form_action span12 ml0 clearfix">
+                    <div class="span4">
+                        <div class="row-fluid text-center">
+                            <button class="btn btn-inverse" ng-disabled="isSending" ng-click="sendMsg()">发送</button>
+                            <span ng-show="isSending">正在发送中<img src="../../assets/images/ajax-loaders/11.gif"></span>
+                            <!--<a href="javascript:;" class="btn btn-inverse" ng-click="sendMsg()">发送</a>-->
+                            <!--<a href="javascript:;" class="btn btn-inverse">取消</a>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--发送短信 - end-->
+
+            <!--短信群发状态 - start-->
+            <h4 class="box-header mt20">短信群发状态</h4>
+            <div class="box-content filter_box tab_contractinfo message clearfix">
+                <ul class="span8 clearfix">
+                    <li class="span4 mb0">
+                        <label>活动名称：</label>
+                        <select class="span6 ml10"  ng-model="activityReq" ng-options="t.activityName for t in actList">
+                            <option value="">请选择活动</option>
+                        </select>
+                    </li>
+                    <!--<li class="span4 mb0">-->
+                        <!--<label>短信模板：</label>-->
+                        <!--<select class="span6 ml10" name="">-->
+                            <!--<option>模板一</option>-->
+                        <!--</select>-->
+                    <!--</li>-->
+                </ul>
+                <div class="span12 mt20 mb20 clearfix">
+                    <div class="row-fluid text-left pull-left clearfix">
+                        <a href="javascript:;" class="btn btn-inverse pull-left mr20" ng-click="getMessageList(activityReq.id)">短信群发统计</a>
+                        <span class="pull-left lh30">当短信没有发送完毕，该统计不会显示统计结果</span>
+                    </div>
+                </div>
+                <div class="span8 message_count">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <th>活动名称</th>
+                            <th>短信群发总数</th>
+                            <th>成功数量</th>
+                            <th>失败数量</th>
+                        </tr>
+                        </thead>
+                        <tr>
+                            <td>{{messageResult.activityName}}</td>
+                            <td>{{messageResult.totalcount}}</td>
+                            <td>{{messageResult.successcount}}</td>
+                            <td>{{messageResult.failCount}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!--短信群发状态 - end-->
+        </div>
+    </div>
+</div>
